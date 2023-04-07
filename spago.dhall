@@ -1,5 +1,15 @@
 { name = "purescript-gym"
-, dependencies = [ "console", "effect", "prelude" ]
+, dependencies =
+  [ "argonaut-codecs"
+  , "argonaut-core"
+  , "argonaut-generic"
+  , "console"
+  , "effect"
+  , "either"
+  , "prelude"
+  , "integers"
+  , "numbers"
+  ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
 }

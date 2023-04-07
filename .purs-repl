@@ -1,0 +1,5 @@
+import Prelude
+import GymService.Types.User
+import Data.Argonaut.Decode.Class
+import Data.Argonaut.Encode.Class
+import Data.Argonaut.Core

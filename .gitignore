@@ -2,7 +2,6 @@
 .psci_modules
 node_modules
 .spago
-.purs-repl
 
 # Generated files
 .psci
