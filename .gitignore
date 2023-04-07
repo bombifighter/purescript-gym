@@ -6,3 +6,10 @@ node_modules
 # Generated files
 .psci
 output
+
+#TeX generated files
+diplomamunka.aux
+diplomamunka.log
+diplomamunka.out
+diplomamunka.synctex.gz
+diplomamunka.toc

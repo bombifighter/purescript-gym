@@ -1,0 +1,891 @@
+\documentclass[12pt]{article}
+\title{Játékok modellezése hagyományos és színezett Petri hálókkal}
+\author{Szabó Benedek}
+\date{2021}
+\renewcommand{\contentsname}{Tartalomjegyzék}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{ {./kepek/} }
+\usepackage{wrapfig}
+\renewcommand{\figurename}{Ábra}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{amssymb}
+\usepackage[export]{adjustbox}
+\usepackage[magyar]{babel}
+\usepackage[breaklinks]{hyperref}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+%\usepackage{natbib}
+
+\setlength{\arrayrulewidth}{0.5mm}
+\setlength{\tabcolsep}{7pt}
+\renewcommand{\arraystretch}{2.5}
+
+\textwidth=14cm \textheight=20cm
+%\hoffset=-1cm
+%\voffset=-1cm
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definíció}[theorem]{Definíció}
+\newtheorem{discussion}[theorem]{Discussion}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{explanation}[theorem]{Explanation}
+\newtheorem{illustration}[theorem]{Illustration}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+
+\makeatletter
+\renewcommand*{\@biblabel}[1]{–}
+\makeatother
+
+\begin{document}
+\begin{titlepage}
+
+	\begin{center}
+	\mbox{}\\
+	\vspace{35mm}
+	\huge
+	\textsc{Szakdolgozat}
+	\end{center}
+
+	
+	\vspace{55mm}
+	\Large
+	\hspace*{\fill} 
+	\textbf{Szabó Benedek}
+	
+	\begin{center}
+	\vspace{55mm}
+	Debrecen\\	
+	2022
+	
+	\end{center}
+\end{titlepage}
+\begin{titlepage}
+
+	\vspace*{-2cm}
+	\hspace*{-1.5cm}
+
+	\begin{center}
+	\large
+	Debreceni Egyetem
+	
+	Gazdaságtudományi Kar	
+
+	Alkalmazott Informatika és Logisztika Intézet
+	
+	\vspace{17mm}
+	\huge
+	\LARGE
+    \textbf{Üzleti folyamatok modellezése és ERP rendszer üzleti követelményspecifikáció készítése a Cívisagro Kft. számára}
+	
+	\vspace{9mm}
+	\large
+	\textsc{Szakdolgozat}
+	
+	\normalsize
+	\vspace{15mm}
+	\textsc{Készítette:}
+	
+	\vspace{5mm}
+	\Large
+	\textbf{Szabó Benedek}
+	
+	\normalsize
+	gazdálkodási és menedzsment szakos hallgató
+	
+	\vspace{18mm}
+	\textsc{Témavezető:}\\
+	\vspace{5mm}
+	\large
+	Takács Viktor László \\
+	\normalsize
+	tanársegéd\\
+	
+	\vspace{27mm}
+	Debrecen\\	
+	2022
+	
+	\end{center}
+\end{titlepage}
+\newpage
+\tableofcontents
+\newpage
+\section*{Bevezetés}
+\addcontentsline{toc}{section}{Bevezetés}
+
+A huszonegyedik század harmadik évtizedében minden vállalatnak, cégnek vagy szervezetnek elengedhetetlenül szükségessé vált az informatika bevonása a mindennapi működésbe. A cégek versenyképességük megőrzése, a hatékonyság és profitabilitás növelése érdekében már gyakorlatilag egy mikrovállalkozás méretétől kezdve rászorulnak valamiféle speciális céges szoftver, vállalatirányítási rendszer használatára. Egy kicsit nagyobb vállalatnál pedig már egészen elképzelhetetlen lenne a működés e szoftverek nélkül. A költségcsökkentés és automatizálás mellett meg kell említeni az információ növekvő szerepét, egy vállalatirányítási rendszer biztosíthatja a gyors (valós idejű) információ hozzáférést a munkatársaknak, illetve adatokkal látja el a döntéshozókat.
+
+A digitális transzformáció előnyeit egyre több vállalkozás kihasználja. Véleményem szerint a vállalatiránytási rendszerek iránti növekvő igény az elkövetkező években, évtizedekben is megmarad. Egyrészt fejleszteni, javítani és személyre szabni mindig kell a meglévő rendszereket, másrészt pedig újabb, modernebb technológiák is folyamatosan megjelennek az iparágban.
+
+Az elmúlt években egyre inkább előtérbe kerülnek a felhős megoldások. Számos előnyük van az on demand rendszerekhez képest, például: nincs karbantartási, személyzeti és rezsi költség, rendkívül biztonságos, nagyon jó rendelkezésre állással és megbízhatósággal rendelkeznek. A költségek eloszlása is kedvezőbb: nem kell a beszerzéskor egy hatalmas összeget befektetni, hanem havonta folyamatosan elég rendezni a költségeket, ezáltal adózás szempontjából is kedvezőbb. A rendszer pedig bármikor könnyűszerrel skálázható marad.
+
+Persze a felhőüzemeltetők beépítik az áraikba ezeket a költségeket, számos esetben még mindig megérheti a felhős rendszer használata. Egy tisztán webes alkalmazás pedig teljesen platformfüggetlen, bármilyen eszközről el lehet érni, akár asztali gépről, laptopról, tabletről vagy telefonról is, különböző operációs rendszerekről. A világjárvány alatt a felhős rendszerek értékelése növekedett.
+
+Egy másik növekvő trend a mesterséges intelligencia használata az üzleti szektorban. Például a vásárlói szokások elemzésében, vagy bizonyos termék fogyásának előrejelzésében is hasznos lehet.
+
+A téma aktualitása mellett személyes háttere is van a választásnak: programtervező informatikus szakon nappali tagozaton tanulmányokat folytatok, és a jövőben szívesen dolgoznék vállalatirányítási rendszerekkel. A fejlesztés mellett érdekel a bevezetés és működés támogatása és az ügyfelekkel való kapcsolattartás is, szívesen dolgoznék a jövőben tanácsadóként.
+
+A szakmai gyakorlatomat a debreceni székhelyű Cívisagro Kft.-nél töltöttem. Egy egészen családias jellegű vállalkozásról van szó, 9 ember dolgozik itt teljes állásban, így a gyakorlat alatt a működés számos területébe lehetőségem volt belelátni. A szakdolgozatom céljául tűztem ki a vállalat üzleti folyamatainak feltérképezését és modellezését, a felhasznált modellezési eszközök összehasonlítását, majd egy vállalatirányítási rendszer követelmény specifikációinak elkészítését. A feladatom a vállalat igényeinek megértése és dokumentálása, az üzlettel kapcsolatos információk összegyűjtése. A specifikáció inkább üzleti követelmény specifikáció mintsem szoftverkövetelmény specifikáció. A dolgozatban az elkészítendő szoftver architekturális tervezésére és egyéb, inkább szoftverfejlesztési lépésekre nem célom kitérni. Inkább gazdasági, mintsem informatikus szemmel szeretném ezt a dolgozatot elkészíteni.
+
+
+%https://hu.wikipedia.org/wiki/V%C3%A1llalatir%C3%A1ny%C3%ADt%C3%A1si_inform%C3%A1ci%C3%B3s_rendszerek
+%https://clouderp.hu/vallalatiranyitasi-rendszer/vallalatiranyitas-rendszer-trendek/
+%Egy modern szemléletű cég ma már nem csak a múltból dolgozik és historikus adatokra támaszkodik, hanem az új technológiák segítségével képes egyre pontosabban “megjósolni” a jövőt.
+\newpage
+\section{Szakirodalmi áttekintés}
+
+\subsection{Üzleti folyamatok modellezése, modellezési eszközök}
+Ebben a fejezetben először ismertetem a modellezés motivációit, majd áttekintésre kerül néhány lehetséges modellezési eszköz, melyek üzleti folyamatok, workflow-k modellezése esetén szóba jöhetnek.
+
+Egy vállalat hatékony működése érdekében elengedhetetlen a folyamatok megfelelő átlátása és megértése. Egy logikusan szervezett és felépített rendszerben sokkal kisebb a hibalehetőség, és a működés is bizonyosan hatékonyabb, költségkímélőbb, így versenyképesebb is lesz. A dolgozatomban a modellezés elsődleges célja egy vállalatirányítási szoftver tervezése lesz, de a valóságban emellett is számos előnye van, ha egy cég tisztában van a folyamataival. A részletekbe menő modellezés, majd elemzés során kiderülhetnek esetleges hibalehetőségek, rosszul szervezett mechanizmusok. Ennek köszönhetően a szervezetnek lehetősége lesz a működés újjászervezésére, hatékonyabbá tételére, a struktúra átalakítására, új megoldások kidolgozására a működés bármely területén.
+
+Mivel egy-egy ilyen modell elég bonyolult és összetett lehet, a papír alapú tervezés helyett számítógépes alkalmazások állnak rendelkezésünkre. Ez továbbá lehetővé teszi a gyakori változtatásokat, illetve a munkamegosztást, jobb kommunikációt is. A következőkben néhány ismertebb modellezési eszközt mutatok be.
+
+\subsubsection{ARIS}
+
+Az ARIS (Architecture of Integrated Information System – Integrált Információs Rendszerek Architektúrája) egy modellező eszközcsaládot jelent, mely számos lehetőséget kínál üzleti folyamatok tervezésére, elemzésére, dokujmentálására, implementálására és optimalizálására (\textit{Vidovic–Vuksic, 2003}). Vállalatok és egyéb intézmények belső működésének és külső kapcsolatainak leírására is alkalmas.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{aris_elemek}
+\caption{Az ARIS objektumai, és az ARIS ház felépítése. A jobb oldali ábra forrása:  \textit{Fonó, 2005}}
+\end{figure}
+
+A koncepció alapja az ARIS-ház, mely öt különböző nézetben teszi lehetővé a szervezetnek folyamatai kezelését, ezt illusztrálja az első ábra jobb oldala. Az ábra bal oldalán pedig  a folyamatok leírására használt elemek láthatók. Esemény egy olyan történés, aminek nincs végrehajtója, felelőse, vagy nem annyira lényeges, például műszaki hiba történt, az áru beérkezett. Magenta színű hatszöggel ábrázoljuk. Folyamatok és tevékenységek kategóriába tartozik például a számla kiállítása, a gépsor ellenőrzése, ajánlatkérés elbírálása, vagyis itt az eseménnyel szemben van egy felelős, végrehajtó. A lekerekített sarkú zöld téglalap egy tevékenységet, míg a konkáv zöld hatszög (vagy jobbra mutató tábla) egy egész folyamatot jelent. Az adatok, információk  közé kerülhetnek megrendelések, dokumentumok, illetve természetesen bármi egyéb adat objektumot így kell ábrázolni. Szervezeti elemek lehetnek a szervezet egyes részlegei, egységei, feladatkörei vagy konkrét személyei, például beszerzés, könyvelés, értékesítés, egy beszállító vagy a projektmenedzser. Egy csoportra sárga ellipszis, míag személyekre sárga téglalap vonatkozik. Amennyien a szervezeten kívüli csoportról vagy személyről van szó, az objektum fehér.  Grafikus elemként használhatók továbbá erőforrások: informatikai rendszerek, szoftverek, gépek, berendezések.
+\begin{wrapfigure}{l}{0.3\textwidth}
+\includegraphics[width=0.3\textwidth]{function2}
+\caption{Funkció fa.}
+\end{wrapfigure}
+Ennek a jelölésrendszernek a használatával különböző ábrákat, diagramokat tudunk konstruálni. A fentebb ismertetett jelölések a felhasznált irodalmakban fordultak elő, némely ábrán kicsit modernebb, de hasonló elemek találhatók, ezek az ábrák az ArisCloud szoftverben készültek.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{org}
+\caption{Organogram.}
+\end{figure}
+
+Az ARIS-ház felső háromszögében helyezkedik el a szervezeti felépítés (organogram). A szervezeti egységeket és a közöttük lévő kapcsolatokat írja le statikus módon. Szerepelhetnek benne részlegek, osztályok, szervezeti egységek: ezeket egy sárga ellipszis jelképezi. A betöltött absztrakt tisztséget sárga téglalapban a tevékenységi kör mellett egy fekete vonal jelenti, míg egy konkrét személynél csak sárga téglalap. Megtudhatjuk belőle például az egységek vezetőit, a helyüket, vagy egy ember beosztottjait.
+
+
+
+A funkció nézet az elvégzendő feladatokat tartalmazza, rendszerezi. Két modelltípus tartozik ide: Alkamazási rendszer típus diagram és Funkció fa  (\textit{Fonó, 2005}). Az első a szervezet által használt informatikai rendszerrel (rendszerekkel) foglalkozik. Tartalmazhatja a rendszer moduljait, hogy milyen platformon, milyen nyelven fejlesztették, milyen adatbázist használ. A funkció fa pedig a tevékenységek hierarchiáját ábrázolja, változtatható részletességgel. A funkció azt írja le, hogy mit, nem pedig azt, hogy hogyan szeretnénk valamit megvalósítani.
+
+Az adat nézet a harmadik pillér. Ide tartozik, hogy a vállalat milyen adatokkal rendelkezik, milyen kapcsolatok és összefüggések vannak az egyes adatok között, milyen tulajdonságokkal írjuk le az egyedeket  (\textit{Fonó, 2005}). Az első modelltípusa az eERM modell (Kibővített egyed-kapcsolat modell, Enhanced Entity Relationship Diagram). Az előbbi kérdésekre kaphatunk belőle választ. A másik ide tartozó modelltípus a szakkifejezés modell, mely a vállalat által használt szakkifejezéseket írja le, a jobb közérthetőség érdekében.
+
+A ház koncepciónak a lényege igazából az, hogy ezeket a nézeteket tetszőlegesen lehet kombinálni. Így szinte bármilyen, a szervezetet érintő kérdésre választ kaphatunk. Például, a funkció és az adat nézet kombinálásával választ kaphatunk arra, hogy milyen adatokra van szükség egy adott feladat végrhajtásához. Így jutunk el a ház közepéhez, a folyamat nézethez. A folyamat nézet fő kérdése: "Melyik szervezeti elem mely feladatot milyen adatok felhasználásával, milyen rendszer támogatásával látja el?"  (\textit{Fonó, 2005}). A következő modelltípusok erre keresik a választ.
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+\includegraphics[width=0.4\textwidth]{test1}
+\caption{Értékteremtő lánc diagram.}
+\end{wrapfigure}
+
+ Az értékteremtő lánc diagram (Value Added Chain Diagram – VACD) a folyamatok közötti viszonyokat, előzmény-következmény kapcsolatokat és a folyamatok közötti hierarchiát ábrázolja  (\textit{Fonó, 2005}). A folyamatok mellet tartalmazhatja a folyamat által használt erőforrásokat, dokumentumokat, adatkat, illetve a felelős szervezeti egységeket is.
+
+Az egyik legfontosabb diagramtípus az eEPC (extended Event driven Process Chain), vagyis Kibővített eseményvezérelt folyamatlánc diagram. A funkció nézetben helyezkedik el, célja az adat, funkció és szervezeti nézetek elemeinek összekapcsolása. A folyamatokat idő és logikai kapcsolat szerint ábrázolja. Az események és funkciók kombinációinak sorrendbe rendezésével úgynevezett esemény-vezérelt folyamat láncok (eEPC-k) jönnek létre (\textit{Smuck}). Az események és tevékenységek közti logikai kapcsolatok kifejezésére logikai kapcsolók szolgálnak: és, vagy, kizárólagos vagy (and, or, xor). Ahol több él is indul vagy érkezik, ott szükséges a használatuk a megfelelő értelmezés végett. Használatuk a logikában megszokott jelentéssel bír, de két dolog nem megengedett: egy esemény után nem következhet sem vagy, sem kizáró vagy elágazás. Amennyiben ezeket a konstrukciókat megengednénk, egy nemdeterminisztikus viselkedésű modellt kapnánk.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pincer}
+\caption{ Kibővített eseményvezérelt folyamatlánc diagram.}
+\end{figure}
+
+Mivel minden eseménynek és tevékenységnek csak egy bemenő és egy kimenő kapcsolata lehet, így egynél több kapcsolat esetén szükség lesz logikai operátorokra. Amennyiben több kimenő és egy bemenő kapcsolata van az operátornak, divergáló (elágaztató) operátorról, amennyiben több bemenő és csak egy kimenő kapcsolata van, konvergáló (csatlakoztató) csomópontról beszélünk.
+
+ A diagram nagyjából egy páros gráfra hasonlít (a Petri hálókhoz hasonlóan, csak nem annyira kötött formalizmussal): az események tevékenységeket eredményeznek, a tevékenységek után pedig események következnek.
+
+Lehetőség van a modell hierarchizálására, ami egy nagyon hasznos tulajdonság. Ezáltal a modellt különböző részletességgel tudjuk átlátni. A nagy méretű és áttekinthetetlen bonyolultságú modellek helyett érdemes a nagyobb, átfogó tevékenységek alá részletező modelleket szervezni, így magasabb szinten is átlátható marad, és az információtartalom sem veszik el. Egyes részeket így el lehet rejteni vagy meg lehet jeleníteni. Elméletileg tetszőleges mélységű modellek léterhozására van lehetőség  (\textit{Fonó, 2005}).
+
+A folyamat nézethez tartozik még két diagramtípus. A folyamat szelekciós mátrix egy értékteremtő lánc tevékenységeit bizonyos eshetőségek szerint tovább részletezi, mátrix formában. Így az esetek közötti hasonlóságok és különbségek jól észrevehetőek. A funkció hozzárendelési diagram (FAD -  Function Allocation Diagram) pedig az eseményvezérelt folyamatlánc egy adott tevékenységét részletezi, az ahhoz tartozó input, output objektumokat, szervezeti elemeket egy különálló modellben ábrázolja. Tulajdonképpen az eEPC egy szelete.
+
+A nézeteket lehet integrálni, kapcsolódhatnak egymáshoz. Ezt illusztrálja a hatodik ábra. A modellezésre két opció van: először a funkciók, adatok, a szervezet kidolgozása, majd ezekből a folyamatok összeállítása, vagy először a folyamatok feltérképezése, és ezután kerül hierarchizálásra a ház többi eleme (\textit{Szalontay et al.}).
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{arishaz2}
+\caption{ARIS-ház: nézetek integrációja. Az ábra forrása:  (\textit{Fonó, 2005})}
+\end{figure}
+
+Ugyanaz az objektum szerepelhet több modellben is, pontosabban hivatkozhatunk ugyanarra az objektumra több modellben. A folyamatok feltérképezésének alapvetően két lehetséges megközelítése van: \textit{ top down} és \textit{bottom up}. A \textit{top down} felülről halad lefelé, vagyis a főbb, áttekintő folyamatokkal kezdi, majd ezeket részletezi. A \textit{bottom up} megközelítés ennek az ellentéte, vagyis először a részletes alfolyamatokkal kezd, és csak azután építi ezeket össze. Véleményem szerint vállalatok modellezésénél célszerűbb az első megoldás, ugyanis így egy logikusabban felépített modellt kaphatunk.
+
+Hasznos tulajdonsága még az ARIS-nak, hogy lehetőség van a modellekből lekérdezések, riportok előállítására, például a szervezettel, az informatikai rendszerrel, vagy a folyamatokkal kapcsolatosan (\textit{Fonó, 2005}).
+
+\subsubsection{BPMN}
+
+Business Process Model and Notation. Egy grafikus jelölőrendszer kifejezetten üzleti folyamatok modellezésére. A később ismertetett UML tevékenység diagramhoz nagyban hasonlít. Célja, hogy a folyamatokat mind az üzleti oldalról érkező folyamattervezők, mind a fejlesztők, elemzők, IT oldali szakértők számára egyaránt értető módon ábrázolja a folyamatokat (\textit{Kovács, 2011}). Ez a felek közötti kommunikációt nagyban megkönnyíti, kevesebb félreértésre vezet. Egyik nagy előnye, hogy bármilyen szintű, egyszerű vagy összetett folyamatábrát készíthetünk vele, melyek az üzleti élet minden szintjén értelmezhetőek.  Ennek köszönhetően hamar elterjedt és népszerűvé vált számos különböző iparág, szakterület és vállalkozás között  (\textit{Microsoft, 2022}).
+
+Ami hátrányként megemlíthető, az a matematikai formalizáltság hiánya, a struktúra nem annyira kötött, mint például a Petri hálóknál, ezért a verifikáció, algoritmikus vizsgálatok lehetőségei valamivel korlátozottabbak.
+
+A jelölésrendszer ismertetésénél a "Folyamatmodellezés (BPMN) és alkalmazásai" című forrásra támaszkodtam. Mivel szabványról van szó, a jelölések persze nagyrészt minden szakirodalomban megegyeznek. Az ábrák a Visual Paradigm Online szoftver segítségével készültek.
+
+A folyamatok leírására három alapobjektum van:  események (events), tevékenységek (activities) és átjárók (gateways).
+Az eseményeket mindig egy kör jelöli. Ez egy olyan dolog, ami megtörténik (szemben a tevékenységgel, a tevékenységet valaki elvégzi) (\textit{Wikipédia, 2022}). Három altípusa létezik: kezdő, köztes és befejező esemény. A kezdő esemény található a folyamat legelején, mindig egy sima, egy körvonallal rendelkező kör jelképezi. A befejező kör a folyamat legvége, szimpla, vastag körvonallal rendelkezik. A köztes esemény értelemszerűen a kettő között van, dupla körvonallal. A kör belsejében speciális eseményeket is jelölhetünk, például egy boríték egy üzenetet, egy óra ikonja pedig időzítést reprezentál (\textit{Wikipédia, 2022}).
+
+A tevékenységeket  lekerekített sarkú téglalapok jelölik. A modell leggyakoribb építőköve. Lehet atomi (egyszerű, task) vagy összetett (alfolyamat). Egy atomi tevékenység nem bontható további résztevékenységekre (vagy legalábbis a modellezés szempontjából ez nem lényeges).
+
+\begin{figure}
+\includegraphics[width=\textwidth]{BPMNTabla}
+\caption{A BPMN jelölésrendszere.}
+\end{figure}
+
+Az alfolyamatok önálló kezdő- és végponttal rendelkező folyamatok, ezeket kinyitni/becsukni tudjuk. A hierarchikus modellezést valósítják meg. Nagy előnyük, hogy a folyamatot így tetszőleges szintről át tudjuk látni, nem muszáj egy, hatalmas és bonyolult ábrát szemlélnünk, csak a számunkra lényeges részletességi szint jelenik meg. Ez a modell átláthatóságában sokat segít. Például egy webshop tervezésénél a \textit{Fizetés} tevékenység lehet egy ilyen alfolyamat: magasabb koncepcionális tervezésnél igazából lényegtelen látni a fizetési alfolyamat részleteit, de a fejlesztőknek ez egy fontos részlet.
+
+Az átjárókat (gateway) rombuszok jelölik. A tevékenységek közötti logikai kapcsolatok leírását segítik. Többféle típus van, például: és, vagy, kizáró vagy (and, or, xor), divergencia (több részre ágazás), konvergencia (összetartás). Az és-nél értelemszerűen minden ág/feltétel teljesülése szükséges, a vagynál minimum az egyik, a kizáró vagynál pedig pontosan az egyik.
+
+Még néhány speciálisabb jelöléssel találkozhatunk a modellekben, ilyen a pool, sáv, adatobjektum, csoport és annotáció. A pool a tevékenység főbb résztevőit reprezentálja, például szervezeteket.  (\textit{Wikipédia, 2022}) Egy poolon belül több sáv is lehet, a sáv tovább részletezi a szereplőt. Egy poolt be lehet zárni és ki lehet nyitni, attól függöen, hogy kíváncsiak vagyunk-e a szereplő tevékenységeire. Az adatobjektum a felhasznált vagy előállított adatot jelenti. A csoport jelölés a tevékenységek csoportosítására szolgál, de a folyamatra nincs hatással, inkább valamiféle összetartozást jelöl. Az annotációk pedig szöveges kiegészítést adnak az olvasó számára.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{BPMNpelda}
+\caption{ BPMN modell.}
+\end{figure}
+
+Az alapobjektumok között különböző kapcsolatok lehetnek. A szekvenciális kapcsolat a tevékenységek egymás utániságát fejezi ki, ezt egy sima nyíl jelöli. A szaggatott nyíl két folyamat közötti információcserét jelent (üzenet), míg a pontozott vonal asszociáció, például valamilyan adat hozzárendelést takar.
+
+\subsubsection{Unified Modeling Language (UML)}
+
+A szoftverfejlesztés területén az egyik legismertebb modellezési nyelv az UML (Unified Modeling Language), magyarul egységesített modellező nyelvként lehetne fordítani. Egy nyílt szabványnak tekinthető. Az UML többfajta diagramtípust is magában foglal, melyeket a fejlesztés különböző fázisaiban lehet használni. Ezekhez a diagramkhoz előre definiált elemeket használhatunk, melyeknek adott jelentése van. 
+Az UML előnye, hogy könnyen megtanulhatók a jelölések, de ezzel párhuzamosan bonyolult modelleket is lehet vele készíteni. Implementációtól független tervezést tesz lehetővé, és a teljes szoftverfejlesztési életciklust támogatja \cite{UML2}.  Az ábrák a Visual Paradigm Online szoftver segítségével készültek.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{UMLT}
+\caption{UML diagram típusok. A táblázat forrása:  \textit{Koc et al., 2021}
+}
+\end{figure}
+
+Az kilencedik ábrán az UML diagramtípusok láthatók. A bal oldali oszlopban a viselkedési (dinamikus) typusok : használati eset, aktivitás (tevékenység), állapotgép, kölcsönhatás diagramok, míg a jobb oldali oszlopban a strukturális típusok szerepelnek: osztály, komponens, telepítési, objektum, csomag diagram.
+
+Koc és társai 2021-es kutatásából  (\textit{Koc et al., 2021}) az derül ki, hogy a legtöbbet használt UML diagram típus az osztálydiagram. Utóbbi lehetőséget biztosít objektum orientált programozási paradigmában az osztályok és a közöttük fennálló viszonyok ábrázolására. Minden osztályt egy doboz ábrázol, az osztály doboza tartalmazza az attribútumokat és metódusokat láthatóságukkal és típusukkal együtt. Az öröklődési hierarchia szemléltetésére a dobozok közötti nyilak szolgálnak.  A második ábrán egy UML osztálydiagram látható. A kutatásból kiderül továbbá az is, hogy a diagramok több, mint kétharmadát (68,7 \%)  a tervezés és modellezés fázisában, 13,3\%-ot az implementáció, míg 18 százalékot a tesztelés fázisában használtak.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{UMLC}
+\caption{UML osztálydiagram. A kép forrása:  \textit{Visual Paradigm, 2022}
+}
+\end{figure}
+
+A második leggyakrabban használt diagramtípus a tevékenység diagram (Activity Diagram). Ez egy dinamikus diagramtípus. Tulajdonképpen egy folymatábra, mely tevékenységeket ábrázol, és azoknak sorrendjét, egymás utániságát. Maga gráf tartalmaz ellipsziseket, ezekbe kerülnek a tevékenységek. A rombuszok elágazások, a fekete sávok pedig a megosztás vagy csatlakozás szombólumai. A kezdő elem egy fekete tömör kör, a befejező pedig egy körvonallal körülvett fekete kör. Az elemek közötti nyilak pedig értelemszerűen a tevékenységek lehetséges sorrendjének megfelelően vannak irányítva. 
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{UMLA3}
+\caption{UML Activity Diagram. A képek forrása:  \textit{Visual Paradigm, 2022}
+}
+\end{figure}
+
+Az UML tevékenységi diagramok a 2.x verziótól már számos különböző területen felhasználhatók, például beágyazott rendszerek tervezésénél, továbbá az így készült specifikációk verifikációja lehetséges modellellenőrző technikákkal. (\textit{Grobelna et al.}) Ez azt jelenti, hogy automatikusan lehet ellenőrizni, hogy a modell bizonyos feltételeknek eleget tesz-e, teljesülnek-e bizonyos tulajdonságok. Ez leginkább annak köszönhető, hogy a kettes számú verzióban a diagramokat újraformalizálták, a Petri hálókhoz hasonló szemantikával, ezáltal a modellek szélesebb körű használatára is lehetőség nyílt  (\textit{Störrle et al., 2004}). A fekete elosztó-csatlakoztató elemek révén lehetőség adódik a konkurrencia egy bizonyos fokú alkalmazására. Egyes folyamatszakaszok párhuzamosítása is lehetséges.
+
+A 11. ábrán látható, hogy lehetőség adódik a folyamat szemléltetésére több résztvevő szempontjából is, kiderül hogy egy adott tevékenység kinek a feladata, illetve kire kell várnia egy adott szereplőnek bizonyos tevékenység előtt.
+
+A dolgozat szempontjából egy szintén fontos diagramtípus a Use Case Diagram, vagy használati eset diagram. Ez a diagramtípus grafikusan ábrázolja egy felhasználó interakcióit a rendszerrel. A felhasználókat gyakran pálcikaemberekkel ábrázolják, a használati esetek (tevékenységek) pedig ellipszisekbe kerülnek. A használati esetek inkább rendszer kívánt viselkedését írják le (mit), nem pedig azt, hogy hogyan valósítsa ezt meg, így gyakorlatilag a felhasználó nézőpontjából modellezi a rendszert. (\textit{Visual Paradigm, 2022}) Egy nagyon egyszerű és könnyen elkészíthető diagramtípus, melynek fő célja az, hogy tisztán lássuk, mit szeretne a megrendelő, mire legyen képes a szoftver. Ebből kifolyólag gyakorlatilag csak a funkcionális követelményeket tartalmazza, a további részletek feltérképezéséhez más eszközök szükségeltetnek.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{UMLU}
+\caption{UML Use Case Diagram. A képek forrása:  \textit{Visual Paradigm, 2022}
+}
+\end{figure}
+
+
+\subsubsection{Petri hálók}
+
+Carl Adam Petri (1926 - 2010) német matematikus nevéhez kötődik a Petri-hálók megalkotása. Eredetileg kémiai folyamatok leírására szánta, majd később a matematikai alapokat a doktori disszertációjában dolgozta ki 1962-ben, melyben számítógépes rendszerek komponenseinek aszinkron kommunikációját vizsgálta  (\textit{Petri, 1962}). A Petri háló alkalmas párhuzamos, aszinkron, konkurrens, nemdeterminisztikus, elosztott rendszerek modellezésére. Egyik legnagyobb előnye a mögötte rejlő precíz matematikai formalizmus, mely lehetővé teszi a modellek automatikus feldolgozását, verifikációját, bizonyos tulajdonságok vizsgálatát (model checking).  Grafikus reprezentációja pedig az emberi szem számára is áttekinthető.
+Alkalmazzák számítógépes hardver és szoftver rendszerek, protokollok, gyártósorok, üzleti folyamatok modellezésében, de még videójátékok cselekményeinek modellezésére is  (\textit{Brom et al., 2007}),  (\textit{Araújo–Roque., 2009}). 
+
+A továbbiakban bemutatom a Petri-hálók alapvető struktúráját, a háló működésének alapvetéseit. A hálók bemutatása során felhasználtam egy általam korábban készített szakdolgozatot (\textit{Szabó, 2021}).
+
+\begin{definíció}
+A Petri háló ($PN$) egy ($P, T, E, w, m_0$) rendszer, ahol
+\begin{enumerate}
+\item $P$ a helyek véges halmaza,
+\item $T$ a tranzíciók véges halmaza feltéve, hogy $P \cap T = \emptyset$,
+\item $E \subseteq (P \times T) \cup (T \times P)$ az élek véges halmaza,
+\item $ w: E\rightarrow N^+$ a súlyfüggvény,
+\item $ m: P\rightarrow N$ a token-eloszlás függvény,
+\item $ m_0$ a kezdeti token eloszlás.
+\end{enumerate}
+A Petri háló struktúrát $(P, T, E, w)$ módon jelöljük. (\textit{Peterson., 1981})
+\end{definíció}
+
+A Petri-háló grafikusan egy  körökből, téglalapokból és az őket összekötő nyilakból álló súlyozott, irányított és páros gráf. 
+A körök helyeket jelentenek, amelyek a rendszerben feltételeket vagy erőforrásokat reprezentálnak. A téglalapok tranzícióknak felelnek meg, egy tranzíció egy eseményt szimbolizál. Az $m$ token-eloszlás függvény adott állapotban megadja a helyeken levő tokenek számát.  Az $m$ tekinthető egy $|P|$ elemű oszlopvektornak is, ahol a vektor elemei a $p\in P$ helyeken az $m$ szerinti tokenek száma, azaz $m(p)$. A gráf páros, mivel a nyilakkal jelölt irányított élek egy helyből csak tranzícióba, illetve egy tranzícióból csak helyhez vezethetnek (\textit{Szabó, 2021}).
+
+Egy helyből tranzícióba, illetve egy tranzícióból helyhez több él is vezethet, ezt gyakran egy súlyozott éllel oldják meg, ekkor a nyílon egy szám, vagyis az adott súly szerepel, amit a $w$ súlyfüggvény ad meg. Ekkor az $e$ él címkéje $w(e)$. Amennyiben nem szerepel szám a nyílon, egyszeres élről van szó. Ha a hálóban minden él súlya egy, akkor a Petri-hálót egyszerűnek nevezzük. Egy tranzícióból vezethet él olyan helyhez is, melyből kiindul él az adott tranzícióhoz, ekkor rajzolhatunk két irányú nyilat közéjük, ami megfelel két különálló, ellentétes irányú nyílnak.
+Az $m: P\rightarrow N$ token eloszlást a helyeken lévő tokenek, vagyis pontok számával szimbolizálhatjuk: $m$ állapotban $m(p)$-t a $p$ helyen $m(p)$ darab pont (token) reprezentálja. Az alábbi ábrán egy Petri-háló látható, az ábrák a $Yasper$ nevű szoftver segítségével készültek. A továbbiakban a Petri-hálót $(N,m)$ formában is megadhatjuk, ahol $N$ a Petri-háló gráfja, $m$ pedig a kiinduló konfiguráció (\textit{Szabó, 2021}).
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+\centering
+\includegraphics[width=0.4\textwidth]{pelda01}
+\caption{Egy Petri háló}
+\end{wrapfigure}
+
+A dolgozatom célja végett a továbbiakban a háló működésénél mellőzni fogom a matematikai formalizmust. A háló működése tranzíciók tüzelésének egy sorozata. Egy tranzíció akkor van engedélyezve, ha minden őse (olyan hely, ahonnan vezet nyíl az adott tranzícióba) rendelkezik legalább annyi tokennel, amilyen súly szerepel a két elem közötti élen. A tüzelés eredménye: az ősökből az él súlyának megfelelő token elvétele, az utódokba pedig a feléjük vezető él súlyával megegyező számú token helyezése. Amennyiben egyszerre több tranzíció is engedélyezett, egyszerre csak az egyik tüzel (konkurrencia és a nemdeterminizmus).
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.45\textwidth}
+\includegraphics[width=8cm]{pelda1} 
+\end{subfigure}
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=8cm]{pelda2}
+\end{subfigure}
+\caption{A háló $t_1$ tüzelése előtt és után}
+\end{figure}
+
+A 14. ábrán egy Petri háló két állapota látható. Az bal oldali állapotban $t_1$ engedélyezve van, mivel $p_1$-ben található egy darab token. A $t_1$ tüzelése után a második állapotba megy át a háló, $t_1$ minden kimeneti helyeihez annyi token adódik hozzá, ahányszoros súly szerepel a kimeneti nyilakon, jelen esetben $p_2$ és $p_3$ is egy-egy tokent kap. Ebben az állapotban nincs már több engedélyezett tranzíció.
+
+Az évek során számos kiterjesztést fejlesztettek a hagyományos, állapot-átmenet (P/T) Petri-hálókhoz. Ez egyrészt a számítási erő növelése, másrészt pedig az érthetőség, olvashatóság javítása céljából történt. A hagyományos Petri-hálók számítási ereje kisebb, mint a Turing-gépeké  (\textit{Peterson., 1981}). Különféle kiegészítő konstrukciókkal a Petri-hálók Turing-teljessé tehetőek. Az egyik ilyen lehetőség a tiltó élek bevezetése, más lehetőség valamiféle  időbeliség értelmezése az állapotátmenetek során. A tiltó éllel (másképp inhibitor-él) kibővitett Petri-háló úgy működik, hogy ha a tranzícióhoz tiltó él vezet, a tranzíció akkor lesz engedélyezett, ha a tiltó él kiiindulási helyén a tokenek száma nem éri el a tiltó él súlyát. Ugyanilyen kifejező erőt képviselnek a prioritásos Petri hálók is, ezekben a tranzíciók között egyfajta rangsor kerül felállításra: minden tranzícióhoz egy proiritás értéket rendelünk. A több engedélyezett tranzíció közül a nagyobb prioritású tüzelhet, egyenlő prioritásnál továbbra is véletlen a választás (\textit{Szabó, 2021}).
+
+A kifejezési erőt nem növelő, de nagyon hasznos kiterjesztés a hierarchia bevezetése. Ez lehetővé teszi, hogy bizonyos részleteket elrejtsünk a hálóból, ezzel könnyítve az átláthatóságot, így a koncepcionálisabb, átfogóbb tervezést segíti. Egy nagy, komplex rendszert több kisebb, hierarchikus kapcsolatban álló hálóra tudunk bontani.
+
+Elterjedt kiterjesztése a Petri-hálóknak még az időzített Petri-háló. Majewski  (\textit{Majewski, 2011}) három fő megközelítést említ az idő bevonásában. Az első változat az \emph{intervallumos} időzített Petri-háló, melyben a tranzíciók tüzeléséhez egy időtartam van rendelve. Egy másik fajta időzített Petri-háló az \emph{időzített nyíl} Petri-háló. A harmadik típus a Merlin és Farber által megalkotott modell  (\textit{Merlin, 1974}), melyben minden tranzícióhoz egy időintervallum van rendelve. A tranzíció akkor tüzelhet, ha az "órája" az intervallum alsó, és az intervallum felső határai közé eső időpontot mutat és engedélyezve van a hagyományos értelemben. A tüzelés után a tranzíció stoppere visszaáll a korábbi állapotba vagy lenullázódik. Az időzített Petri-hálók számítási ereje az általános Turing-gépekével megegyező (\textit{Szabó, 2021}).
+
+A színezett Petri-háló a hagyományos Petri-háló egy magas szintű kiterjesztése, gyakran CPN-ként rövidítik (Coloured Petri Net). Egy grafikus modellezési nyelv konkurens  rendszerek modellezésére és elemzésére, mely kombinálja a Petri-hálók és egy magas szintű programnyelv lehetőségeit  (\textit{Jensen–Kristensen, 2009}). A grafikus reprezentáció alapja a hagyományos Petri-háló, és ehhez társulnak CPN ML-ben írt kifejezések, melyekkel adattípusokat deklarálhatunk, illetve az adatokkal dolgozhatunk. Színezett Petri-hálókkal gyakran modelleznek hálózatokat, kommunikációs protokollokat és egyéb párhuzamos rendszereket, ahol fontos a konkurencia, kommunikáció vagy a szinkronizáció (\textit{Szabó, 2021}).
+
+\begin{figure}
+\includegraphics[width=\textwidth]{rep3}
+\caption{Egy hagyományos Petri-háló. Az ábra a \textit{Yasper} nevű szoftverrel készült.}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{fil4}
+\caption{Étkező filozófusok. A bal oldali kép forrása: J. L. Peterson. 1981. Petri Net Theory and the Modeling of Systems. Prentice Hall. A jobb oldali modell forrása a CPN Tools példatár.
+}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{sz1}
+\caption{Színezett Petri-háló.  Az ábra a \textit{CPN Tools} nevű szoftverrel készült.}
+\end{figure}
+
+
+Bár a színezett Petri hálók kifejező ereje azonos a hagyományos Petri-hálókéval, a modellezés szemlélete, felhasználása mégis eltér. Erre szeretnék egy példát bemutatni. Az étkező filozófusok problémája egy jól ismert eset a Petri-hálós modellezésben, Dijkstra nevéhez fűződik 1968-ból. Öt keleti filozófus egy nagy, kerek asztal körül ül és mindegyikőjük vagy gondolkozik, vagy eszik (egyszerre csak az egyiket). Bármely két filozófus között egy evőpálcika található, de az evéshez mindkét oldalukon lévő evőpálcikára szükségük van. Ha mindenki felveszi a csak a jobb (vagy csak a bal) oldalán található evőpálcikát, akkor senki sem tud enni, és a filozófusok éhen halnak, mivel egymásra várnak (holtpont).
+
+Ennek a problémának két lehetséges megoldását mutatja a kilences számú ábra. A bal oldali modell a hagyományos Petri-hálós megközelítés. $C_1, ..., C_5$ az evőpálcikákat jelentik, kezdőállapotban mindegyikben egy token található. $M_i$ és $E_i$ az i-edik filozófust reprezentálja, aki vagy meditál, vagy eszik. Ahhoz, hogy a meditáló állapotból az evő állapotba kerüljön, egyszerre kell mind a két oldali evőpálcikának elérhetőnek lennie, így nem alakulhat ki holtpont.
+A jobb oldali színezett modell ehhez képest máshogyan közelíti meg a problémát. A filozófusokat tokenek reprezentálják, vagy a meditáló, vagy az evő helyen vannak, de meditálásból csak úgy kerülhet egy filozófus az étkező állapotba, amennyiben a megfelelő evőpálcikák a rendelkezésére állnak.
+Bár a két modell ugyanazt a jelenséget modellezi, a színezett modell mégis átláthatóbb, és sokkal egyszerűbben skálázható: a deklarációban mindössze egy értéket kellene átírni (val n= 5), ha például azt szeretnénk, hogy öt helyett ötezer filozófusról szóljon a modell, míg a hagyományos Petri hálónál ez a változtatás meglehetősen nagy beavatkozást igényelne (\textit{Szabó, 2021}).
+
+A Petri-hálók használatának egyik jelentős előnye, hogy a matematikai formalizmusnak köszönhetően számítógép segítségével lehetőségünk van a rendszer ellenőrzésére, verifikálására. Bizonyos matematikailag formalizált tulajdonságok teljesülését (például holtpontok lehetősége), vagy éppen nem teljesülését vizsgálhatjuk. Ez a formális, automatizált ellenőrzési lehetőség kiemelten hasznos lehet nagy és komplex modellek ellenőrzésekor.
+
+A RAPN (Resource aware-Petri net) egy olyan bővítés, mellyel munkafolyamatokat és a hozzájuk kapcsolódó erőforrásokat is lehetőség adódik modellezni (\textit{Pla et al, 2012}). Pla és társai cikkükben workflow tevékenységeket  az általuk szükségeltetett erőforrásokkal együtt modelleznek ezzel a típusú kiterjesztéssel. A rendszer felügyeli a workflow végrehajtását és a felismeri a lehetséges késleltetéseket erőforrás-tudatos Petri-hálókkal (\textit{Pla et al, 2012}).
+
+%33^PJqQ9v,TWNhx
+\newpage
+\subsection{Vállalatirányítási rendszerek}
+
+Amint a bevezetésben is említettem, a mai versenyhelyzetben a legtöbb cégnek, szervezetnek szüksége van valamiféle informatikai rendszerre, mely a működést támogatja, automatizál, ezáltal költségeket spórol meg. A hatékony működés szinte elengedhetetlen feltétele lett egy vállalatirányítási rendszer megléte. Az információ értékére is egyre inkább ráismert az elmúlt évtizedekben a versenyszféra, számos hatalmas nemzetközi vállalatnak a legfőbb értéke maga az általa birtokolt adat, információ és tudás. A döntéshozók számára is kulcsfontosságú a megfelelő minőségű adat rendelkezésre állása. A következőkben áttekintem, hogy mi is egy vállalatirányítási rendszer, milyen részekből áll és milyen célja van.
+\begin{figure}[h!]
+\includegraphics[width=\textwidth]{erp}
+\caption{Információs rendszerek időrendi áttekintése.}
+\end{figure}
+
+"A vállalatirányítási (corporate governance) információs rendszer – a szakirodalomban egyre inkább ERP-ként emlegetett információs rendszer – a vállalat környezetére, belső működésére és a vállalat–környezet tranzakcióira vonatkozó információk koordinált és folyamatos beszerzését, feldolgozását, tárolását és szolgáltatását végző személyek, tevékenységek, valamint a funkciók ellátását lehetővé tevő hardver- és szoftvereszközök összessége (\textit{Wikipédia, 2022})."
+
+A 18. ábrán szereplő táblázat a vállalatok által használt információs rendszerek történetét tekinti át (\textit{Szenteleki–Rózsa}). Vállalatirányítási rendszer alatt az ERP-t értjük, de az elnevezés már nem csak az erőforrás-tervezés funkcióját takarja. Az ERP az egész vállalatra kiterjedő adat- és folyamatintegrációt valósít meg (\textit{Szenteleki–Rózsa}). Ez az integráció egyre magasabb fokú. Ezek a rendszerek vertikálisan két részre oszlanak: vezetői információs, döntéstámogató funkció, valamint tranzakció-feldolgozási funkció (\textit{Szenteleki–Rózsa}). Horizontálisan pedig modulokra oszlanak, például: pénzügy, HR, értékesítés, beszerzés, raktárkészlet kezelés, gyártásvezérlés, kontrolling. Az vállalatirányítási rendszer legfőbb feladata tehát kezelni és feldolgozni az üzleti tranzakciók során keletkező nagy mennyiségű adatot, és ebből ellátni a vállalat vezetőit a döntéshozáshoz szükséges információval.
+
+
+
+A vállalati információs rendszerek alkalmazási területe egyre bővült az évtizedek során, és ez a tendencia most is érvényes. Egyre több külső rendszert szeretnének a felhasználók a céges rendszerhez integrálni, ezáltal egyszerűbbé, kompaktabbá tenni a felhasználást. Példa erre a különböző raktárkezelést segítő eszközök, vonalkódolvasók, IoT rendszerek vagy külső szoftverek (webshop, ellenőrző szerv rendszere) integrációja.
+
+A bevezetésben említett felhő és mesterséges intelligencia bevonása mellett szintén egy új fejlődési lehetőség a mobileszközök bevonása. Fontos lehet egy vállalat számára, hogy a felhasználók a valós idejű adatokat ne csak a céges asztali gépen vagy laptopon, hanem akár saját mobiltelefonjukon vagy tabletükön is el tudják érni, helytől függetlenül. Továbbá a mobil verzió lehetőleg teljes értékű legyen, a szoftver minden funkcióját el lehessen érni.
+
+
+\newpage
+\section{Anyag és módszer}
+
+Ebben a fejezetbenaz elkészített anyagokban használt módszereket, a felhasznált technikákat ismertetem. A specifikációk elkészültekor Dr. Kusper Gábor és Dr. Radványi Tibor tananyagára támaszkodtam.
+
+A következő dokumentumokat készítettem el a specikfikáció részeként:
+
+\begin{enumerate}
+\item A jelenlegi helyzet leírása.
+\item Vágyálom rendszer leírása.
+\item A rendszerre vonatkozó  törvények, rendeletek, szabályzatok, pályázatok, szabványok és ajánlások felsorolása.
+\item Irányított és szabad szöveges riportok szövege.
+\item Jelenlegi üzleti folyamatok modellje.
+\item Igényelt üzleti folyamatok modellje.
+\item Követelménylista.
+\item Használati esetek.
+\item Megfeleltetés, hogyan fedik le a használati esetek a követelményeket.
+\item Képernyő tervek.
+\item Forgatókönyvek.
+\item Funkció – követelmény megfeleltetés.
+\item Fogalomszótár.
+\end{enumerate}
+
+A követelményspecifikáció egy olyan dokumentum, mely tartalmazza a megrendelő követelményeit, elvárásait, amit a termék fejlesztésekor figyelembe kell venni. Többféle követelmény specifikáció létezik, dolgozatom célja üzleti követelmény specifikációt (BRS: Business Requirements Specification) készítése. Ez  egy olyan dokumentum, mely tartalmazza a rendszer üzleti vonatkozásait, az üzlet felől elvárt funkciókat, az üzleti működést befolyásoló tényezőket és tudnivalókat. Arra is alkalmas, hogy megmutassuk a megrendelőnek egyeztetés céljából, ugyanis nagyon magas szinten írja le a funkcionális specifikációkat.
+
+ A követelményeknek érthetőnek, teljesnek, pontosnak és ellentmondástól mentesnek kell lenniük. Az első lépésem a rögzítés volt, a szükséges információt gyűjtöttem össze. Egyrészt a gyakorlaton elsajátított ismeretekre támaszkodtam, másrészt az illetékes személyekkel, jövőbeli felhasználókkal konzultáltam. Az így készült jegyzeteket használtam a későbbiekben a dokumentáció elkészítéséhez.
+
+A jelenlegi helyzet leírása tartalmazza a vállalat jelenlegi állapotainak, rendszereinek a leírását. Ez egy áttekintő leírás. A vágyálom rendszer szintén egy nagyvonalú leírás, nem konkrétan a funkciókat, csak nagy vonalakban tartalmazza azt, hogy mit szeretne a megrendelő, mi lenne a legfőbb célja a készülő rendszernek.
+
+A jelenlegi és igényelt üzleti folyamatok modellezésére több, már korábban ismertetett modellezési eszközt használtam (ARIS, BPMN, UML). Egy folyamat példáján keresztül szemléltetem a három eszköz különbségeit, illetve hasonlóságaikat. 
+
+A riportoknak két lehetséges formája van, a szabad és az irányított riport. Az elsőnél a megrendelő a \textit{"hogyan működjön a rendszer?"} kérdésre a saját elgondolásaival válaszol, érdemes nem túl hosszúra venni, hogy ne legyen sok tévedés a szövegben (\textit{Kusper–Radványi, 2012}). Kérdéseket nem szabad közbeszúrni, csak akkor, ha a riport alanya nem világosan, érthetően fogalmaz, vagy önmagával ellentmondásba keveredik. Fontos, hogy a megrendelő a válaszban minden lehetséges esetet lefedjen. A későbbiekben ez egy fontos dokumentum lesz. 
+
+A szabad riporton alapszik a következő dokumentum, az irányított riport. Itt már előre megírt kérdésekre válaszol a megrendelő. A rendszer részleteibe is bele lehet menni, például az alrendszerek, a rendszer követelményeinek számszerűsítése, vagy a nem funkcionális tulajdonságok. Igyekeztem nem csak a vezető pozíciójú illetékes személyekkel konzultálni, hanem a rendszert szintén napi szinten használó alkalmazottakkal is, ugyanis bizonyos funkciókat ők fognak használni, érdemes lehet az ő nézőpontjukat is megismerni.
+A riportokról érdemes jegyzőkönyvet készíteni, és az a megrendelőnek is megmutatni, a későbbi konfliktusok elkerülése végett.
+
+A követelménylista az egyik, hanem a legfontosabb eleme a dokumentációnak.  Nagyon fontos, hogy ne tartalmazzon ellentmondást, ne legyen félreérthető. Egy másik komoly problémát jelenthet a fejlesztőknek, ha követelmények már a fejlesztés alatt derülnek ki, vagy menet közben változnak. Törekedni kell arra, hogy ez ne így történjen. Az agilis módszertanok esetén vélhetően kisebb bonyodalmat okoz.
+A követelményeket leginkább a szabad szöveges, az irányított riportokból, a használati esetekből illetve forgatókönyvekből lehet összeállítani. Fontos, hogy minden egyes követelménynek legyen egy egyedi azonosítója, amire a későbbiekben lehet majd hivatkozni. Ezen túl rendelkezzen egy névvel, illetve leírással, opcionálisan verziószámmal, melyben az adott követelménynek legkésőbb meg kell jelennie. A listában szerepelhetnek funkcionális és nem funkcionális követelmények is (\textit{Kusper–Radványi, 2012}).
+
+A képernyőtervek a GUI-t (graphical user interface, grafikus felhasználói felület) modellezik, egy elképzelést adnak a felhasználónak a készítendő szoftverről, megmutatják, mely képernyő után melyik képernyőre juthatunk. A dizájnt tekintve nem muszáj a végleges kinézetet tartalmaznia, inkább a funkciók átlátása és rendszerének modellezése a cél. A képernyőtervek készítésénél \textit{Ian Sommerville: Szoftverrendszerek fejlesztése} című könyvének alapelveit igyekeztem betartani. Ezek a következők:
+
+\begin{itemize}
+
+\item \textit{Felhasználói jártasság:} A felületnek olyan kifejezéseket kell használnia, amelyek megfelelnek 
+a rendszert legtöbbet használók tapasztalatainak.
+
+\item  \textit{Konzisztencia}: A felületnek konzisztensnek kell lennie, azaz lehetőség szerint hasonló 
+műveleteket hasonló módon kell realizálnia.
+\item  \textit{Minimális meglepetés:}  A rendszer soha ne okozzon meglepetést a felhasználóknak.
+\item  \textit{Visszaállíthatóság:} A felületnek rendelkeznie kell olyan mechanizmusokkal, amelyek lehetővé 
+teszik a felhasználók számára a hiba után történő visszaállítást.
+
+\item  \textit{Felhasználói útmutatás:} A felületnek hiba bekövetkezése esetén értelmes visszacsatolást kell 
+biztosítania, és környezet érzékeny felhasználói súgóval is rendelkeznie kell.
+
+\item  \textit{Felhasználói sokféleség:} A felületnek megfelelő interakciós lehetőségekkel kell rendelkeznie a 
+rendszer különféle felhasználói számára.
+\end{itemize}
+
+A képernyőterveket az \textit{Uizard} nevű szoftverrel készítettem.
+
+A használati eset diagram grafikusan ábrázolja egy felhasználó interakcióit a rendszerrel. A rendszert elvárt funkcióit, használatát szeretné modellezni. Kiderül belőle a fejlesztők számára, hogy melyik szereplők mire szeretnék használni a rendszert.
+
+A forgatókönyvek készítésekor tipikus felhasználási eseteket kell felsorolni. Ezekből kiderülnek a szükséges felhasználói funkciók, illetve ezek sorrendje is. Egyszerre több funkció is megjelenik, ennyiben több, mint a használati esetek, de az eseteket nem részletezi. Előnye, hogy a tervezők számára világossá válik, hogy hogyan szeretnék használni a rendszert, és kiderülhetnek esetleges ellentmondások, lyukak a tervben.
+
+A fogalomszótár célja a fejlesztők és tervezők számára megmagyarázni az üzlet által használt speciális kifejezéseket, szakszavakat, melyek megértése fontos a rendszer elkészüléséhez.
+
+\newpage
+\section{Eredmények és azok értékelése}
+
+\subsection{A jelenlegi helyzet leírása}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+\includegraphics[width=0.5\textwidth]{hr}
+\caption{A szervezet organogramja.}
+\end{wrapfigure}
+
+Ebben a dokumentumban a cég jelenlegi állapotát ismertettem. Megtalálható benne a cég alapvető jellemzése, főbb mutatói, szervezeti felépítése és a jelenleg használt megoldások.
+
+ A Cívisagro Kft.-t 2007-ben alapították, fő tevékenysége állatgyógyszer kis- és nagykereskedelme, illetve takarmánykiegészítő nagykereskedelem. Jelenleg 9 fő dolgozik itt főállásban. A cég telephelye Debrecenben található. A telephelyen van egy állatgyógyszertár, ahol a kisker működik, egy raktárépület, illetve egy iroda.
+A 19. ábra a vállalat organogramját ábrázolja. Két ügyvezetője van a cégnek. Ők és a pénzügyes kolléga leginkább az irodában dolgoznak, míg a többiek a patikában illetve raktárban. A patikavezető feladata az operatív célok megvalósulása, az ő tevékenységi köre elég széles. Átlátja és segíti az ügyvezetők munkáját és biztosítja a napi teendők rendjét a patikában. Az ő keze alá tartoznak a patikusok és anyagmozgatók.
+Utóbbiak kivételével minden kolléga jelenleg rendelkezik egy Windows 10 operációs rendszerű számítógéppel. A telephelyen levő összes gép egy privát hálózatra van csatlakoztatva, illetve természetesen interneteléréssel rendelkeznek, így a hálózat fizikai infrastruktúrája adott. A megrendelő jelenleg használ egy vállalatirányítási rendszert, de számos folyamata nincs kellőképp integrálva, néha Excel vagy papír alapú megoldásokhoz kell folyamodniuk, amit szeretnének automatizálni.
+
+\newpage
+\subsection{Vágyálom rendszer leírása}
+
+Ez a rövid rész írja le, hogy mi a legfőbb célja, vágya a megrendelőnek. Nem egy precíz, pontos követelménylista, csak egy benyomást szeretne adni a tervezőknek, hogy mi lenne a végleges szoftver legfőbb feladata.
+
+A cég szeretne egy átfogó vállalatirányítási rendszert, melyet minden kolléga tud használni, nem csak a céges hálózatról és bármikor elérhető. Az összes szükséges funkció ellátására alkalmas, a számlázástól a raktárkészlet kezelésen át a partnerek nyilvántartásáig. Integrálva van a szükséges adatok szolgáltatása az ellenőrző szerv felé, illetve a weboldallal is automatizált a kapcsolat. A felhasználók csak a megfelelő jogosultságokkal rendelkeznek, munkájuk nyomonkövethető.  Maga a grafikus felület modern megjelenésű, intuitív, könnyen el lehet benne igazodni. 
+
+\subsection{A rendszerre vonatkozó  törvények, szabályzatok}
+Mivel a megrendelő cég állatgyógyszereket is forgalmaz, az erre a területre vonatkozó törvényeknek és szabályoknak eleget kell tennie a rendszernek. Bár ezek a szabályok inkább a cég működésére, mintsem a rendszerre vannak kihatással, ebben a részben megkerestem az ide vonatkozható előírásokat, melyekre érdemes lehet odafigyelni.
+
+\subsubsection{Engedélyhez kötött termékek}
+A szervezet tevékenységére vonatkozó egyik legfőbb szabályozás a \textit{128/2009. (X. 6.) FVM rendelet az állatgyógyászati termékekről}. Tartalmazza többek között a forgalomba hozatali engedéllyel kapcsolatos eljárás tudnivalóit, az állatgyógyászati készítmények gyártásához és behozatalához köthető tudnivalókat, mely releváns lehet. A dokumentum megtalálható: \url{https://net.jogtar.hu/jogszabaly?docid=a0900128.fvm}. A specifikációhoz nem csatoltam hozzá, mivel egyrészt nagyon hosszú, másrészt pedig a kevés lényeges elvárást a megrendelő közérthetőbben összefoglalta, mint egy hivatalos jogszabály, ezt a fejlesztőknek nem lenne érdemes bogarászni.
+
+Amit tudni érdemes: 
+\begin{itemize}
+\item \textit{ Állatgyógyászati készítmény (gyógyszer)}: melyet csak állatorvos adhat be, a hatóanyaga gyógyszernek minősül például antibiotikumok, gyulladáscsökkentők, illetve melyeket élelmiszertermelő állatnak adva élelmezés-egészségügyi várakozási idő megállapítása szükséges.
+\item \textit{Gyógyhatású termék}: valamely betegség kiegészítő terméke.
+\item \textit{Biocid termék}: "bármely olyan, egy vagy több hatóanyagból álló, egy vagy több hatóanyagot tartalmazó vagy egy, vagy több hatóanyagot keletkeztető anyag vagy keverék a felhasználóhoz jutó kiszerelésben, amelynek rendeltetése, hogy károsító szervezeteket a tisztán fizikai vagy mechanikai ráhatáson kívüli bármely módon elpusztítson, elriasszon, ártalmatlanná tegyen, hatásuk kifejtésében megakadályozzon vagy azokkal szemben más gátló hatást fejtsen ki." (forrás: Nébih)
+\end{itemize}
+
+A cég termékei alapvetően rendelkeznek a szükséges engedélyekkel, a termékekről is lehet egyértelműen tudni, hogy melyik kategóriába tartoznak. Ezt érdemes lenne mindenképp a szoftvernek tárolni, illetve azt a tényt, hogy érvényes-e a termék engedélye, mivel ritka esetben akár visszavonhatják az engedélyt. A kategória ismerete azért fontos, mert gyógyszert nem lehet a webshopon keresztül árulni.
+
+\subsubsection{Adatszolgáltatás}
+Egy másik, a rendszerre vonatkozó előírás az ellenőrző szerv (NAV) felé történő adatszolgáltatás. A tudnivalók megtalálhatók: \url{https://nav.gov.hu/ado/afa/A_szamlakibocsatok_sz20201231}. Mivel a cég ügyleteinek egy része az adatszolgáltatási kötelezettség alá esik, a rendszernek ennek eleget kell tennie. A szolgáltatandó adatok meghatározó részét 2021. január 4-től is a számla Áfa tv. szerinti kötelező adattartalma alkotja (Áfa tv. 169-172. \S, 176. \S). Az adatszolgáltatásban szerepeltetendő adatok megtalálhatók a fenti url címen.
+
+"A számlázó programnak továbbra is – a gép-gép interfész használatához szükséges azonosító adatok megküldése mellett – a számla kiállításakor azonnal, emberi beavatkozás nélkül, XML-formátumban, a NAV közleményében meghatározott módon és adatszerkezetben, elektronikus úton kell továbbítania az adatokat az Online Számla rendszerbe. Az adatszolgáltatás akkor minősül teljesítettnek, ha az adatszolgáltatás az Online Számla rendszerbe beérkezett és a sikeres feldolgozást a rendszer visszaigazolta." (Áfa tv. 10. számú melléklet 4. pontja és számla és a nyugta adóigazgatási azonosításáról, valamint az elektronikus formában megőrzött számlák adóhatósági ellenőrzéséről szóló 23/2014. (VI. 30.) NGM rendelet 4/A. fejezete.)
+
+\subsection{ Irányított és szabad szöveges riportok}
+
+Elsőként egy szabad riport meghallgatásával kezdtem, az Ügyvezető Asszony számolt be nekem arról, hogy hogyan működjön a rendszer, mit vár el tőle. Igyekeztem nem közbekérdezni, illetve a beszámolót nem túl hosszúra tartani. Közben jegyzőkönyvet készítettem, melyet a végén átolvasott és rendben talált. Ebből e jegyzőkönyvből állítottam össze később a felmerült kérdések alapján az irányított riportot, de kérdéseket nem csak neki, hanem a patikavezetőnek is tettem fel. A későbbiekben leginkább vele, és a rendszert használó patikusokkal konzultáltam.
+
+\textit{Dr. Szabóné Battyányi Ágnes, ügyvezető: }"Egy olyan új, átfogó vállalatirányítási rendszert szeretnénk, mely megkönnyíti és egyszerűsíti a kollégák munkavégzését. Szinte minden kolléga használni fogja a rendszert, de természetesen szeretnénk, hogy a felhasználók különböző jogosultságokkal rendelkezzenek. Windows-os gépeink vannak, és a cég területén hálózatba vannak kötve, de szeretnénk, ha mi vagy a kollégák otthonról is el tudnák érni a rendszert szükség esetén. Ezt a jelenlegi rendszer is tudta, és a pandémia alatt kifejezetten hasznosnak bizonyult. Fontos lenne továbbá, hogy a rendszer ne csak munkaidőben, hanem bármikor elérhető legyen.
+
+Mivel kereskedelmi vállalat vagyunk, az egyik legfontosabb dolog a számlák kiállítása lenne. Szeretnénk, ha a kollégák egyszerűen és gyorsan tudnának szépen összeállított számlákat kiállítani. Szükséges lenne, hogy a szoftver kezelje a beszállítókat, termékeket és vevőket. A raktárkészlet nyilvántartása alapvető fontosságú. Legyen lekérdezhető, hogy elérhető-e egy bizonyos termék, mennyi van belőle raktáron, mennyibe kerül és mikor jár le.
+
+A vevőket is lehessen a szoftverbe felvinni, ugyanis különböző kedvezmény szintek lehetnek bizonyos vevőknek. Az állatorvosok alapvetően 15 százalék kedvezményt kapnak, illetve vannak régi, stabil, vagy nagy tételben vásárlók, akiknek szintén különböző mértékű kedvezményt szeretnénk beállítani. Ez a kedvezmény legyen bármikor változtatható, de csak a patikavezető vagy az ügyvezetőknek legyen jogosultsága a változtatáshoz. 
+
+Továbbá olyan kérdésekre szeretnénk a programtól választ kapni, hogy:
+\begin{itemize}
+\item egy adott időszakban egy vevő mennyit vásárolt?
+\item melyik partnernek mennyi ki nem fizetett, vagy lejárt tartozása van?
+\item egy adott termékből mennyi fogyott adott idő alatt?
+\item ki állított ki egy bizonyos számlát?
+\item kik vannak jelenleg bejelentkezve?
+\item kinek van lejárt tartozása és mennyi?
+\end{itemize}
+
+Amit még nagyon szeretnénk, ha az új szoftver képes lenne a webshop árainak szinkronizálására valamiféle automatizált módon. Jelenleg sajnos a két rendszer nincs összhangban, így meglehetősen munkaigényes a két árlista szinkronban tartása."
+
+Miután meghallgattam, feltettem még néhány kérdést:
+\begin{itemize}
+\item Mik a rendszer fontos tulajdonágai?
+\item Kérem, mondja el forgatókönyv szerűen, hogyan szeretné használni a rendszert a belépéstől 
+a kilépésig!
+\item Milyen kivételes helyzetekre kell felkészülni?
+\end{itemize}
+
+A kérdésekre kapott választ beépítettem a többi dokumentumba.
+
+
+
+\subsection{ Jelenlegi és igényelt üzleti folyamatok modellje}
+%\subsection{ Igényelt üzleti folyamatok modellje}
+Mivel a cég a bevezetést követően nem szeretne a működésén, üzleti modelljein változtatni, nem választottam külön ezt a két részt. Az fejezetben található ábrák az ArisCloud illetve Visual Paradigm Online szoftverrel készültek.
+
+A következő három ábra ugyanazt a folyamatot ábrázolja: egy rendelés feldolgozását. A rendelés valamilyen formában beérkezik, majd a patikusok ezt rögzítik a rendszerbe. Ha a vevő új, regisztrálják, ha van kedvezménye, kaphat kedvezményt, majd  kiállítják a bizonylatot, melynek első példánya a könyvelésre, második példánya a csomagba megy. A raktárban pedig összekészítik a csomagot, amit délután elvisz a fuvarozó cég. Nagy rendelések esetén a cég saját teherautójával szokott kiszállítani, általában több rendelést összevárva.
+
+Ami a három ábra közül elsőre feltűnik, hogy a második kettő nagyon hasonlít, szinte ugyan azok. Ami szembe tűnő különbség lehetne, az a divergáló-konvergáló fekete sávok az UML-ben, de ebben a modellben erre nem volt szükség. A két modell tartalma, kifejezőereje nagyban megegyezik. Ha csak egy folyamatot szeretnénk ábrázolni, erre mindkettő alkalmas, és egyértelmű jelentéssel bíró modelleket lehet velük készíteni.
+
+Az ARIS tőlük nem csak formálisan tér el, de véleményem szerint szemantikai hozzáadott értékkel is rendelkezik. Az eseményeket, tevékenységeket és logikai kapcsolatokat ugyanúgy kezeli, mint a többi, de a plusz felhasználható elemeknek (személy, helyszín, dokumentum, ...) köszönhetően lényeges hozzáadott információtartalommal is rendelkezik. Ami még mellette szól, hogy az ArisCloud szoftverben nem csak egy ábrát tudunk grafikusan összerakni, hanem egy projekten belüli objektumokról felismeri a rendszer, hogy ugyan azok. Ezáltal a modellek egymással össze vannak kapcsolva a rendszerben, megvalósítva az ARIS ház integrációját. Például, amikor a lenti ábrát készítettem, a \textit{Pénzügy} csoportnál a szoftver felismerte az organogramból az objektumot. Ennek köszönhetően a rendszer előállít kimutatásokat (például RACI - felelősségek), plusz információval lát el a modellekkel kapcsolatban. A modellek egy rendezet struktúrában vannak tárolva, a navigáció is logikus közöttük.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.74\textwidth]{m1}
+\caption{Egy rendelés feldolgozásának ARIS eEPC diagramja}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{m3}
+\caption{Egy rendelés feldolgozásának BPMN diagramja}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{m2}
+\caption{Egy rendelés feldolgozásának UML tevékenység diagramja}
+\end{figure}
+
+\newpage
+\begin{figure}
+\includegraphics[width=\textwidth]{proc2}
+\caption{Egy rendelés feldolgozásának ARIS eEPC diagramja}
+\end{figure}
+A fenti kibővített folyamatlánc diagramon a termékek beszerzésének alapvető folyamata látható. Miután felmerül az igény, a cég vagy megrendeli egy beszállítóttól, vagy legyártatja egy erre alkalmas üzemben. A folyamat felelőse a patikavezető. A fizetést valamelyik ügyvezető intézi. A termék megérkezését követően valamelyik raktárba kerül. Az ábrával a hierarchikus modellezést is szerettem volna szemléltetni: a \textit{Rendelés feldolgozása} tevékenység bal felső sarkában látható ikon utal arra, hogy az a tevékenység "kibontható". Ezáltal egy folyamat tetszőleges szintről áttekinthető, nem muszáj egy hatalmas, bonyolult ábrát készíteni. Ami külön tetszett az ArisCloud szoftverben, hogy a navigálás a szintek, vagy még inkább a különböző modellek között nagyon egyszerűen van megoldva, egy kattintással már a másik modellben vagyunk, ha az nem ugyanolyan típusú, akkor is. A rendszer névről felismeri, ha például egy másik folyamatra, vagy bármilyen egyéb már meglévő objektumra szeretnénk hivatkozni. Ezen felül lehetőség van úgynevezett \textit{structuring modell} készítésére is, ami egy rendszerező modellt készít a már meglévő kisebb modellekből.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{bp}
+\caption{Új munkatárs felvételének BPMN diagramja.}
+\end{figure}
+
+A 24. ábra egy új munaktárs felvételének folyamatát ábrázolja. Az ArisCloud szoftverben lehetőség van BPMN diagram készítésére is, az ábrát ezzel készítettem.
+
+A diagramok készítése közben még két ARIS funkció keltette fel a figyelmemet: a rendszer- és adatmodell készítésének a lehetősége. A rendszermodellel rendszerek kapcsolatát vagy részrendszereit modellezhetjük, míg az adatmodell funkció gyakorlatilag adatsémák készítésére is alkalmas. Lehetőség van entitás típusok, attribútumaik és a közöttük lévő kapcsolatok megadására és a kapcsolat jellemzésére (számosság, típus). Egy attribútom lehet elsődleges vagy idegen kulcs is.
+
+
+
+\newpage
+\subsection{ Követelménylista}
+
+A követelmények megírásakor a már meglévő többi dokumentumra alapoztam. Véleményem szerint a követelmények egyértelműek voltak az elkészítés pillanatában. Az igények sem változtak az alatt a kis idő alatt, amíg a dokumentumok elkészültek. A következő két táblázat néhány követelményt tartalmaz:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |p{0.5cm}|p{2.2cm}|p{2.2cm}|p{7cm}| } 
+\hline
+ \textbf{ID} & \textbf{Modul} &\textbf{Név} &\textbf{ Leírás} \\
+\hline
+010 & Felhasználók& Felhasználók kezelése& Az alkalmazásba lehessen bejelentkezni, névvel és jelszóval. Négy típusú felhasználóra van szükség: patikus, patikavezető, pénzügyes és ügyvezető. Az ügyvezetők tudják a többiek profilját módosítani, a műveletekhez jogosultságot adni.\\
+\hline
+011 & Felhasználók& Automatikus kijelentkezés& Minden felhasználó be tudja állítani magának, hogy mennyi idő után jelentkezzen ki a rendszerből.\\
+\hline
+012 & Felhasználók& Bejelentkezés monitorozása& A rendszer nyilvántartja, ki elérhető, illetve egy hónapig tárolja, hogy ki jelentkezett be és mikor. Az ügyvezetők ezt bármikor meg tudják nézni. \\
+\hline
+013 & Felhasználók& Végrehajtó & A rendszer minden műveletnél feljegyzi, ki volt a végrehajtó.\\
+
+\hline
+020 & Raktárkészlet& Raktárkészlet & A rendszer tárolja a jelenlegi raktárkészletet, illetve két évre visszamenően a korábbiakat is. A készleten levő termékeket bárki le tudja kérdezni. \\
+
+\hline
+\end{tabular}
+\caption{Követelménylista részlete.}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |p{0.5cm}|p{2.2cm}|p{2.2cm}|p{7cm}| } 
+\hline
+ \textbf{ID} & \textbf{Modul} &\textbf{Név} &\textbf{ Leírás} \\
+\hline
+031 & Partnerek& Partnerek kezelése& Az alkalmazásban nyilván vannak tartva a cég partnerei. A partnercsoportok: beszállítók, vevők, egyéb. A partnerehez rendelendő tulajdonságok részletei a dokumentum mellékletében találhatók. \\
+\hline
+040 & Számlázás& Számlák kiállítása& A rendszerrel egyszerűen és gyorsan lehessen bizonylatokat kiállítani, mivel ez a mindennapi rutin része. A számlának a jogszabályi követelményeknek eleget kell tennie.\\
+\hline
+078 & & Webshop kompatibilitás& A weboldal árait lehessen a szoftverből egyszerűen frissíteni, aktuailzálni. \\
+\hline
+081 && Platform & A rendszernek Windows 10 Enterprise operációs rendszer alatt, asztali alkalmazásként kell működnie. \\
+
+\hline
+085 & &Felhasználói felület & A felhasználói felület legyen jól áttekinthető, a navigáció és a funkciók intuitívan legyenek használhatók. A betűméret legyen változtatható, hogy ez ne okozzon a kollégáknak gondot. \\
+
+\hline
+\end{tabular}
+\caption{Követelménylista részlete.}
+\end{table}
+
+\subsection{ Használati esetek [Use cases]}
+
+A riportok elkészülte után készítettem el az UML használati eset diagramokat. A jövőbeli felhasználók és a megvalósítani kívánt tevékenységek kerültek rá. Az ábrák a Visual Paradigm Online szoftverrel készültek. A szerkesztő szoftver használatát véleményem szerint az informatikában kevésbé jártas felhasználók is könnyen el tudják sajátítani.
+
+ A 25. ábrán látható az első use case diagram. Nem volt szándékomban minden felhasználó minden akcióját egy diagramra sűríteni, ugyanis akkor teljesen átláthatatlan lett volna, inkább több, de átlátható ábrát készítettem. Az első diagramon a patikai eseményeké a főszerep. A patikusok szeretnének a rendszerrel számlát kiállítani, bevételezni, anyagfelhasználást rögzíteni, illetve árakat lekérdezni. Egy tevékenységhez tartozhat több kisebb résztevékenység is, az ábrán ezt kék ellipszisben ábrázoltam, \textit{<<include>>} nyíl jelöli. Egy tevékenységet gyakran több felhasználó is szeretne végezni, például egy termék árát szeretné a patikavezető, az ügyvezető vagy a patikusok is lekérdezni.
+
+A következő ábrán az ügyvezetők és a pénzügyes kolléga kívánt interakciói szerepelnek. Lekérdezéseket mind szeretnének végrehajtani, illetve az emberi erőforrás kezelésére is mindkettőjüknek szükségük van. Ennek bizonyos alfolyamatait (például fizetések módosítása) viszont csak az ügyvezetők fogják végrehajtani.
+
+ Mivel egy szereplő (az ügyvezető) több diagramban is felbukkant, mindkettőben jelöltem az összes interakciót, csak az egyikben részletesebben, azért, hogy a modellek konzisztensek maradjanak. Ettől el lehet térni, csak akkor jobban kell a későbbiekben figyelni, nehogy kimaradjon egy akció. Ezeknek a diagramoknak a követelmények készítésekor nagy hasznát vettem.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{m4}
+\caption{Használati eset diagram.}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{m5}
+\caption{Használati eset diagram.}
+\end{figure}
+
+
+\newpage
+\subsection{ Képernyő tervek}
+
+A képernyőtervek készítése egy fontos és talán a leglátványosabb része a dokumentumnak. Munkám során a grafikus felhasználói felületről készítettem terveket. Ezeknek az ábráknak nem a végleges dizájn bemutatása a célja, hanem inkább a funkció része, az, hogy melyik ablak után melyikre lehet navigálni. Egy nagyjábóli elképzelést hivatottak nyújtani a későbbi felhasználásról. A képernyőterveket az \textit{Uizard} nevű szoftverrel készítettem. A terveken szereplő adatok kitaláltak.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{k1}
+\caption{Bejelentkezési képernyő.}
+\end{figure}
+
+A 27. ábrán a bejelentkezési képernyő, a 28-adikon pedig a kezdőlap látható. A bejelentkezési képernyőn a megfelelő név és jelszó kombinációval tudunk belépni a szoftverbe. A kezdőképernyőn egy menüsor található, amely az összes funkciót tartalmazza, illetve alatta piktogramok formájában a felhasználó által gyakran használtakat. A képernyő közepén a felhasználó testre szabhatja a felületet az általa gyakran használt funkciók kitűzésével. A 29. és 30. ábra egy-egy funkció képernyőjét ábrázolja.
+
+ A prototípus készítése során Ian Sommerville: Szoftverrendszerek fejlesztése című könyvében foglalt alapelveket igyekeztem betartani, melyeket az előző fejezetben ismertettem. A felületek konzisztensek és a felhasználók ismereteinek megsfelelő kifejezéseket használnak. A 31. ábrán a képernyők közötti navigálás áttekintő modellje látható. Ebből az derül ki, hogy egy adott képernyő melyik gombjával melyik másik képernyőre juthatunk. 
+
+Az általam használt tervező szoftver lehetőséget ad a prototípus automatikus elkészítésére, ezáltal a szoftver "kipróbálására". Persze a funkciók  nem úgy működnek, mint majd az éles rendszerben. A képernyők közötti navigálást ki lehet próbálni, illetve meg lehet a megrendelőnek is mutatni, hogy tetszik-e neki, erre gondolt-e. A véleménye alapján még korai szakaszban lehetőség van a tervek módosítására, amennyiben erre lenne szükség.
+
+ 
+
+
+
+
+\begin{figure}
+\includegraphics[width=\textwidth]{k6}
+\caption{Kezdőlap.}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{k7}
+\caption{Partnerek funkció.}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{k9}
+\caption{Termékek funkció.}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{navi}
+\caption{Képernyők közötti navigálás modellezése.}
+\end{figure}
+
+
+\newpage
+\subsection{ Forgatókönyvek}
+
+A forgatókönyvek készítésekor arra törekedtem, hogy tipikus felhasználási példákat keressek. A példákból kiderül, hogy milyen funkciók szükségesek, és ezeket tipikusan milyen sorrendben hajtaná végre egy felhasználó. A használati eseteknél több funkciót, szélesebb felhasználást illusztrál. Azért szükségesek és hasznosak, mert a rendszer tervezői ezáltal jobban végiggondolják, hogyan is lesz használva a rendszer, és észrevehetnek esetleges problémákat, ellentmondásokat a tervben. Az elkészült forgatókönyvek közül bemutatok néhányat: 
+\begin{itemize}
+\item Egy patikus megnyitja az alkalmazást. Bejelentkezik (névvel és jelszóval). Csomag érkezett, ezért a bevételezést nyitja meg. A termékek adatait (név, mennyiség, lejárat, beszállító...) megadja a felületen. Miután végzett, a bevételezést bezárja. Nem sokkal később érkezik egy vevő, aki szeretné tudni, mennyibe kerül egy bolha elleni nyakörv. A patikus kikeresi a termékek között, és mivel a vevőnek megfelel az ár, ki is állítja a bizonylatot. Az alkalmazás egész munkaidő alatt meg van nyitva, csak záráskor lép ki belőle.
+\item A patikavezető szeretné tudni, hogy a decemberben lejáró 50 kg-os metioninból mennyi van még a raktárban. Megnyitja a raktárkészletet és rákeres, megnézi az árát is. Ezt az ablakot becsukja, majd a tranzakciók között megnézi, kik szoktak ebből a termékből sokat venni, majd egy árajánlatot készít egy nagy tételben vásárló ügyfél számára.
+\item A pénzügyes kolléga meg szeretné nézni, kinek van lejárt határidejű fizetési kötelezettsége a cég felé. Ehhez megnyitja a rendezetlen partnerek funkciót, és ezt a listát exportálja Excelbe, majd kinyomtatja, és odaadja az ügyvezetőnek. 
+\item Az ügyvezető szeretne rendelni egy bizonyos termékből, előtte megnézi a raktárkészletet, mennyi van belőle jelenleg a raktárban. Később szeretné az alkalmazottak fizetését emelni. Ehhez előtte a fizetésmódosítás modellezésére szolgáló felületen megnézi, mekkora terheket jelentene ez a cégnek havonta, évente, mennyi plusz terhet kellene fizetni, ha a kollégák fizetése egy bizonyos összeggel nőne.
+\end{itemize}
+
+\subsection{ Fogalomszótár}
+Mivel a cég alapvetően a kereskedelemben van jelen, nem sok olyan speciális kifejezéssel találkoztam, melyet a tervezőknek és fejlesztőknek érteni kellene a rendszer elkészítéséhez. Néhány példa:
+\begin{itemize}
+
+\item \textit{148-as:}  148/2007. (XII. 8.) FVM rendelet az egyes állatbetegségek megelőzésével, illetve leküzdésével kapcsolatos támogatások igénylésének és kifizetésének rendjéről. A gazdák igényelhetik, és ha sikeres a pályázat, a Magyar Államkincstár finanszírozza az eszközt, neki kell a számlát kiállítani. Kifutóban van, nemrégiben megszűnt. 
+\item \textit{Biocid termék:} vírus, baktérium vagy bármi egyéb kártevő ellen használatos szer.
+\end{itemize}
+
+\newpage
+\section{Következtetések és javaslatok}
+
+%Ebben a fejezetben kell ismertetni a kapott eredmények alapján levont legfontosabb következtetéseket és témától függően javaslatokat kell tenni azok gyakorlati alkalmazására, illetve továbbfejlesztésére. Ennek a fejezetnek az ajánlott terjedelme 2-4 oldal legyen.
+
+A vizsgált és specifikációk készítésekor használt modellezési nyelvek (ARIS, BPMN, UML, Petri-hálók) közül én az ARIS-t találtam jelen feladathoz a legmegfelelőbbnek. A különböző diagramtípusok integrációja és azok rendszerezett kezelése mindenképp kiemeli a többi közül. Ezen felül leginkább a folyamatok leírásakor az általa kínált információtöbbletet is hasznosnak találtam, véleményem szerint a többinél nagyobb kifejezőerővel rendelkezik ez az eszköz. 
+
+Pusztán a folyamatok modellezésére a BPMN-t is megfelelőnek találtam. Az egyszerű szintaktikája miatt a megrendelőnek is egyértelműek voltak a modellek, nem szükségeltetett különösebb előismereteket. Ez a kommunikációt egyrészt megkönnyítette, másrészt pedig a kevésbé kötött struktúrából néhány hátrány is adódott: jobban kellett figyelni, hogy a modellek ne legyenek félreérthetők, és ugyanakkor tartalmazzanak minden szükséges információt. A modellezett cég méreteinél ebből egyébként nem volt probléma.
+
+Az UML tevékenység diagramot a BPMN-nél egy kicsivel nagyobb kifejezőerejűnek találtam, egy tranzíció-szerű elem miatt a megértése is egy nagyon kicsivel bonyolultabb. Az nyelv használata lehetőséget ad a modellek automatikus ellenőrzésére, verifikációjára, melyre a dolgozat készítésekor nem tértem ki. Továbbfejlesztési lehetőség az elkészült modellek automatikus szoftveres ellenőrzése. Bonyolultabb modellek készítésekor (párhuzamosság, konkurrencia) alkalmasabbnak találtam az UML tevékenység diagramot a BPMN-hez képest.
+
+A kiterjesztett Petri-hálókat a cég jellege, tevékenysége miatt kevésbé kellett alkalmazzam, az egyszerű folyamatok modellezésénél szerintem kifejezetten hátrányuk a bonyolult szintaxis, és az a tulajdonság, hogy a kötött formalizmusból adódóan egyszerű tevékenységekhez is tartozhat bonyolult háló, ezért a specifikációba végül nem is kerültek bele. Ennek célja ugyanis a rendszer átlátása, nem túlbonyolítása. Más területeken (hardver rendszerek, elosztott rendszerek, erőforrások) persze ennek a precíz formalizmusnak és automatizálhatóságnak nagy hasznát lehet venni.
+
+Összességében az igényelt üzleti követelményspecifikáció készítéséhez az ARIS-t találtam a legmegfelelőbbnek, hasonló feladatra ezt javasolnám legszívesebben.
+
+Az elkészült üzleti specifikáció véleményem szerint a továbbiakban használható lehet az igényelt üzleti szoftver rendszerterveinek, szoftver követelményspecifikációjának (SRS) elkészítéséhez, majd ezek alapján a szoftver elkészítéséhez.
+
+\newpage
+\section*{Összefoglalás}
+\addcontentsline{toc}{section}{Összefoglalás}
+
+A mai korszerű vállalatoknak versenyképességük megőrzése céljából elengedhetetlenné vált üzleti szoftverek alkalmazása. Dolgozatom célkitűzése egy debreceni kereskedelmi profilú kisvállalkozás folyamatainak, működésének megismerése, modellezése és a számára készülő vállalatirányítási rendszer üzleti követelmény specifikációjának elkészítése volt. 
+
+Célom a vállalat igényeinek megértése és az üzlettel kapcsolatos információk összegyűjtése volt. Ezt az információt az elkészült üzleti követelmény specifikációban foglaltam össze.
+
+Szakmai gyakorlatomat a cégnél végeztem, így már ekkor lehetőségem volt a jelenlegi állapotok, működés megismerésére. Ezt a megszerzett ismereteimet egészítettem ki az ügyvezetőkkel folytatott szabad riportokkal, melyben összefoglalták, magas szinten mit várnak el a későbbi rendszertől. Ezután a patikavezetővel és patikusokkal is konzultáltam az igényeikről és a mindennapi használatról. Igyekeztem minden típusú felhasználó véleményét, nézeteit összegyűjteni.
+
+Miután úgy véltem, elegendő információ áll rendelkezésemre, nekiláttam a specifikáció elkészítéséhez. Persze eközben is merültek fel bennem újabb és újabb kérdések, ekkor kerestem az illetékes személyeket. A jelenlegi helyzet és a vágyálomrendszer leírása volt az első. Ezt követően összegyűjtöttem a rendszerre vonatkozó törvényeket, szabályzásokat, amiknek a készülő rendszernek majd eleget kell, hogy tegyen. Összefoglaltam a riportok szövegét, mind a szabad, mind az irányítottakét.
+
+A dokumentumban ezt követi a jelenlegi és igényelt üzleti folyamatok modellje. Jelen esetben a kettő gyakorlatilag egybeesett, ezért összevontam. Ezután készítettem el a követelménylistát, mely strukturáltan tartalmazza a rendszerre vonatkozó követelményeket. Minden követelményhez egy egyedi azonosítót rendeltem. Használati eseteket gyűjtöttem, és megfeleltettem őket a követelményeknek. Forgatókönyveket készítettem a tipikus felhasználói használat illusztrálására.
+
+A specifikáció végén képernyőterveket készítettem. Ezeknek nem annyira célja a végleges arculat, design bemutatása, inkább a funkciók közti navigációt szerettem volna szemléltetni mind a fejlesztők, mind a megrendelő számára. A dokumentum legvégén a fogalomszótár szerepel. Célja a rendszer fejlesztéséhez szükséges, a programozók számára vélhetően nem ismert fogalmak tisztázása.
+
+Az folyamatok modellezéséhez több modellezési eszközt is használtam (ARIS, BPMN, UML, Petri-háló).  A dolgozatomban az általános üzleti folyamatok modellezésére az ARIS-t találtam a legmegfelelőbbnek. Szerintem a specifikációk készítéséhez ez a modellezési eszköz bír a legnagyobb információtartalommal, a diagramon sok kiegészítő információt lehet ábrázolni. Az objektumok és modellek összekapcsolása szerintem nagy előnye. Pusztán a folyamat menetére a BPMN és az UML tevékenységdiagram is kifejezetten alkalmas, a kettő között gyakorlatilag kevés eltérés van. Az UML többi diagramtípusát is hasznosnak találtam. A kiterjesztett Petri-hálóknak is megvan a maguk előnye, ami a precíz matematikai formalizmusban, ezáltal az automatizált feldolgozásukban rejlik. Bizonyos területeken (például erőforrásokkal tervezés, gyártósorok modellezése) nagy hasznukat lehet venni, de véleményem szerint általános felhasználásra nem minden területen alkalmasak, a háló szigorú struktúrájából adódóan egyszerű feladatokhoz is tartozhat bonyolult háló.
+
+A dolgozatban ismertetett modellezési eszközökről összesítésben elmondható, hogy különböző felhasználási területre különböző eszköz lehet a legmegfelelőbb, egy általános legjobbat nem tudnék kiemelni. Bizonyos felhasználásra az egyik lehet alkalmasabb, mint a másik. Az üzleti folyamatok modellezésére nekem az ARIS tetszett a legjobban.
+
+További cél lehet az üzleti követelményspecifikációból szoftver követelmény specifikáció készítése, majd a szoftver lefejlesztése.
+
+%\newpage
+%\section*{Irodalomjegyzék}
+\addcontentsline{toc}{section}{Irodalomjegyzék}
+%\setlength{\parindent}{0mm}
+
+%\nocite{*}
+%\bibliographystyle{agsm}
+
+\newpage
+\renewcommand{\refname}{Irodalomjegyzék}
+\begin{thebibliography}{99}
+
+\bibitem{AR} M. Araújo, L. Roque. 2009. Modeling Games with Petri Nets. DiGRA Conference, 2009 
+
+\bibitem{BSH}
+C. Brom, V. Šisler, and T. Holan. 2007. Story manager in ‘Europe 2045’ uses Petri nets. 
+Proceedings of the International Conference on Virtual Storytelling (ICVS '07), vol. 4871 of 
+Lecture Notes in Computer Science, pp. 38–50, Strasbourg, 2007, France.
+
+\bibitem{CPN}
+http://cpntools.org/
+
+\bibitem{BME}
+Folyamatmodellezés (BPMN) és alkalmazásai.
+\url{https://inf.mit.bme.hu/sites/default/files/materials/category/kateg%C3%B3ria/oktat%C3%A1s/bsc-t%C3%A1rgyak/rendszermodellez%C3%A9s/17/06-bpmn.pdf}
+
+\bibitem{HA}
+Fonó Gábor. HyperTeam Kft. Bevezetés az ARIS módszertanba, 2005.
+\url{https://docplayer.hu/6089204-Bevezetes-az-aris-modszertanba.html?adlt=strict&toWww=1&redig=57BC6A8726EF4367A9B1C69A3085CA76}
+
+\bibitem{GGA}
+ I. Grobelna, M. Grobelny, M. Adamski, "Model Checking of UML Activity Diagrams in Logic Controllers Design", Proceedings of the Ninth International Conference on Dependability and Complex Systems DepCoS-RELCOMEX, Advances in Intelligent Systems and Computing Volume 286, Springer International Publishing Switzerland, pp. 233-242, 2014
+
+\bibitem {JK} K.Jensen, L.M.Kristensen. 2009. Coloured Petri Nets. Modelling and Validation of Concurrent Systems. Springer-Verlag Berlin Heidelberg
+
+\bibitem{KHE}
+Koc, Hatice  Erdoğan, Ali  Barjakly, Yousef  Peker, Serhat. (2021). UML Diagrams in Software Engineering Research: A Systematic Literature Review. Proceedings. 74. 13. 10.3390/proceedings2021074013. 
+
+\bibitem{KR}
+Dr. Kusper Gábor.  Dr. Radványi Tibor. Jegyzet a projekt labor című tárgyhoz. Eszterházy Károly Főiskola Matematikai és Informatikai Intézet. Eger, 2012.
+
+\bibitem{Mic}
+\url{https://www.microsoft.com/hu-hu/microsoft-365/business-insights-ideas/resources/the-guide-to-using-bpmn-in-your-business}
+
+\bibitem{Maj}
+K. M. Majewski. 2011. Implementing timed extensions of Petri nets in Real-Time Maude. Research Report No. 408. University of Oslo.
+
+\bibitem{Mer}
+P.M. Merlin. A Study of the Recoverability of Computing Systems.
+{\it PhD Thesis}, University of California, Irvine, 1974.
+
+\bibitem{Kov}
+Z. Kovács (2011):  Logisztika és üzleti modellezés, Typotex.
+
+\bibitem{Alb}
+ Albert Pla, Pablo Gay, Joaquim Melléndez, Beatriz López(2012): Petri net-based process monitoring: a 
+workflow management system for process modelling and monitoring, Springer 
+Science+Business Media New York, 2012. 
+
+\bibitem{UMLspec}
+OMG Unified Modeling Language Specification, Version 2.5.1. September, 2022.
+\url{https://www.omg.org/spec/UML/2.5.1/PDF}
+
+\bibitem{UML2}
+\url{https://okt.sed.hu/prog1/gyakorlat/eloadas/OO_tervezes/UML/} (elérve: 2022. 09.18)
+
+\bibitem{POL}
+G. Polancic(2010): Business Process Modeling with BPMN 2.0, 2010. 
+
+\bibitem{Pet} J. L. Peterson. 1981. Petri Net Theory and the Modeling of Systems. Prentice Hall PTR, Upper 
+Saddle River, NJ, USA.
+
+\bibitem{Petri} C. A. Petri: Kommunikation mit Automaten. Schriften des 
+Rheinisch-Westfälischen Institutes für Instrumentelle
+Mathematik an der Universität Bonn Nr. 2, 1962
+
+\bibitem{SB}
+Schmuck Balázs. Üzleti folyamatok modellezése az ARIS folyamatmodellező és tervező szoftver segítségével.
+\url{https://users.nik.uni-obuda.hu/schmuck/ufat/labor/aris_ea.pdf} (elérve: 2022. 09.18)
+
+\bibitem{én}
+Szabó Benedek (2021): Játékok modellezése hagyományos és színezett Petri-hálókkal. Szakdolgozat.
+
+\bibitem{SZ}
+Szalontay Tímea , Szelezsán Mariann , Zakota Dénes: ARIS. Gazdasági információs rendszerek.
+
+\bibitem{IR}
+Dr. Szenteleki Károly, Rózsa Tünde. Információs rendszerek. Egyetemi jegyzet.
+
+\bibitem{Ian}
+Ian Sommerville (2007): Szoftverrendszerek fejlesztése (Software Engineering). Panem, 2007.
+
+\bibitem{SHH}
+Störrle, Harald, and J. H. Hausmann. "semantics of uml 2.0 activities." Proceedings of the IEEE Symposium on Visual Languages and Human-Centric Computing. 2004.
+
+\bibitem{UI}
+\url{https://uizard.io/}
+
+\bibitem{UML} \url{https://www.uml.org/}
+
+\bibitem{VPC}
+\url{https://online.visual-paradigm.com/diagrams/templates/} (elérve: 2022. 09.19)
+
+\bibitem{VPU}
+\url{https://www.visual-paradigm.com/guide/uml-unified-modeling-language/what-is-use-case-diagram/}
+
+\bibitem{VV}
+Vidovic, D.I.; Vuksic, Vesna. (2003). Dynamic business process modelling using ARIS. Proceedings of the International Conference on Information Technology Interfaces, ITI. 607 - 612. 10.1109/ITI.2003.1225410. 
+
+\bibitem{WBPMN}
+\url{https://en.wikipedia.org/wiki/Business_Process_Model_and_Notation}
+
+\bibitem{WARIS}
+\url{https://en.wikipedia.org/wiki/Architecture_of_Integrated_Information_Systems}
+
+\bibitem{WV}
+\url{https://hu.wikipedia.org/wiki/V%C3%A1llalatir%C3%A1ny%C3%ADt%C3%A1si_inform%C3%A1ci%C3%B3s_rendszerek} (elérés: 2022.10.02)
+
+\bibitem{Yas} 
+\url{https://www.yasper.org/}
+\end{thebibliography}
+
+\end{document}

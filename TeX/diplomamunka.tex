@@ -1,0 +1,240 @@
+\documentclass[12pt]{article}
+\title{cím}
+\author{Mezei Botond, Szabó Benedek}
+\date{2023}
+\renewcommand{\contentsname}{Tartalomjegyzék}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage{wrapfig}
+\renewcommand{\figurename}{Ábra}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{amssymb}
+\usepackage[export]{adjustbox}
+\usepackage[magyar]{babel}
+\usepackage[breaklinks]{hyperref}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+%\usepackage{natbib}
+
+\setlength{\arrayrulewidth}{0.5mm}
+\setlength{\tabcolsep}{7pt}
+\renewcommand{\arraystretch}{2.5}
+
+\textwidth=14cm \textheight=20cm
+%\hoffset=-1cm
+%\voffset=-1cm
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definíció}[theorem]{Definíció}
+\newtheorem{discussion}[theorem]{Discussion}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{explanation}[theorem]{Explanation}
+\newtheorem{illustration}[theorem]{Illustration}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+
+\makeatletter
+%\renewcommand*{\@biblabel}[1]{–}
+\makeatother
+
+\begin{document}
+\begin{titlepage}
+
+	\begin{center}
+	\mbox{}\\
+	\vspace{35mm}
+	\huge
+	\textsc{Diplomamunka}
+	\end{center}
+
+	
+	\vspace{55mm}
+	\Large
+	\hspace*{\fill} 
+	\textbf{Mezei Botond, Szabó Benedek}
+	
+	\begin{center}
+	\vspace{55mm}
+	Debrecen\\	
+	2023
+	
+	\end{center}
+\end{titlepage}
+\begin{titlepage}
+
+	\vspace*{-2cm}
+	\hspace*{-1.5cm}
+
+	\begin{center}
+	\large
+	Debreceni Egyetem
+	
+	Informatikai Kar	
+
+	Számítógéptudományi Tanszék
+	
+	\vspace{17mm}
+	\huge
+	\LARGE
+    \textbf{Üzleti folyamatok modellezése és ERP rendszer üzleti követelményspecifikáció készítése a Cívisagro Kft. számára}
+	
+	\vspace{9mm}
+	\large
+	\textsc{Diplomamunka}
+	
+	\normalsize
+	\vspace{15mm}
+	\textsc{Készítette:}
+	
+	\vspace{5mm}
+	\Large
+	\textbf{Mezei Botond és Szabó Benedek}
+	
+	\normalsize
+	programtervező informatika szakos hallgatók
+	
+	\vspace{18mm}
+	\textsc{Témavezető:}\\
+	\vspace{5mm}
+	\large
+	Dr. Battyányi Péter \\
+	\normalsize
+	adjunktus\\
+	
+	\vspace{27mm}
+	Debrecen\\	
+	2023
+	
+	\end{center}
+\end{titlepage}
+\newpage
+\tableofcontents
+\newpage
+\section*{Bevezetés}
+\addcontentsline{toc}{section}{Bevezetés}
+
+A huszonegyedik század harmadik évtizedében minden vállalatnak, cégnek vagy szervezetnek elengedhetetlenül szükségessé vált az informatika bevonása a mindennapi működésbe. A cégek versenyképességük megőrzése, a hatékonyság és profitabilitás növelése érdekében már gyakorlatilag egy mikrovállalkozás méretétől kezdve rászorulnak valamiféle speciális céges szoftver, vállalatirányítási rendszer használatára. Egy kicsit nagyobb vállalatnál pedig már egészen elképzelhetetlen lenne a működés e szoftverek nélkül. A költségcsökkentés és automatizálás mellett meg kell említeni az információ növekvő szerepét, egy vállalatirányítási rendszer biztosíthatja a gyors (valós idejű) információ hozzáférést a munkatársaknak, illetve adatokkal látja el a döntéshozókat.
+
+
+\newpage
+\section{Szakirodalmi áttekintés}
+
+\subsection{Üzleti folyamatok modellezése, modellezési eszközök}
+Ebben a fejezetben először ismertetem a modellezés motivációit, majd áttekintésre kerül néhány lehetséges modellezési eszköz, melyek üzleti folyamatok, workflow-k modellezése esetén szóba jöhetnek. \cite{AR}
+
+\subsubsection{ARIS}
+
+Az ARIS (Architecture of Integrated Information System – Integrált Információs Rendszerek Architektúrája) egy modellező eszközcsaládot jelent, mely számos lehetőséget kínál üzleti folyamatok tervezésére, elemzésére, dokujmentálására, implementálására és optimalizálására (\textit{Vidovic–Vuksic, 2003}). Vállalatok és egyéb intézmények belső működésének és külső kapcsolatainak leírására is alkalmas.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{testimg}
+\caption{Az ARIS objektumai, és az ARIS ház felépítése. A jobb oldali ábra forrása:  \textit{Fonó, 2005}}
+\end{figure}
+
+%******************példa képek:
+
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.7\textwidth]{org}
+%\caption{Organogram.}
+%\end{figure}
+
+%\begin{wrapfigure}{r}{0.4\textwidth}
+%\includegraphics[width=0.4\textwidth]{test1}
+%\caption{Értékteremtő lánc diagram.}
+%\end{wrapfigure}
+
+%\begin{figure}[h]
+%\centering
+%\begin{subfigure}{0.45\textwidth}
+%\includegraphics[width=8cm]{pelda1} 
+%\end{subfigure}
+%\begin{subfigure}{0.4\textwidth}
+%\includegraphics[width=8cm]{pelda2}
+%\end{subfigure}
+%\caption{A háló $t_1$ tüzelése előtt és után}
+%\end{figure}
+
+%******************felsorolas
+%\begin{definíció}
+%A Petri háló ($PN$) egy ($P, T, E, w, m_0$) rendszer, ahol
+%\begin{enumerate}
+%\item $P$ a helyek véges halmaza,
+%\item $T$ a tranzíciók véges halmaza feltéve, hogy $P \cap T = \emptyset$,
+%\item $E \subseteq (P \times T) \cup (T \times P)$ az élek véges halmaza,
+%\item $ w: E\rightarrow N^+$ a súlyfüggvény,
+%\item $ m: P\rightarrow N$ a token-eloszlás függvény,
+%\item $ m_0$ a kezdeti token eloszlás.
+%\end{enumerate}
+%A Petri háló struktúrát $(P, T, E, w)$ módon jelöljük. (\textit{Peterson., 1981})
+%\end{definíció}
+
+\newpage
+\section{Anyag és módszer}
+
+Ebben a fejezetbenaz elkészített anyagokban használt módszereket, a felhasznált technikákat ismertetem. A specifikációk elkészültekor Dr. Kusper Gábor és Dr. Radványi Tibor tananyagára támaszkodtam.
+
+
+\newpage
+\section{Eredmények és azok értékelése}
+
+Ebben a dokumentumban a cég jelenlegi állapotát ismertettem. Megtalálható benne a cég alapvető jellemzése, főbb mutatói, szervezeti felépítése és a jelenleg használt megoldások.
+
+\subsection{ Követelménylista}
+
+A követelmények megírásakor a már meglévő többi dokumentumra alapoztam. Véleményem szerint a követelmények egyértelműek voltak az elkészítés pillanatában. Az igények sem változtak az alatt a kis idő alatt, amíg a dokumentumok elkészültek. A következő két táblázat néhány követelményt tartalmaz:
+
+\newpage
+\section{Következtetések és javaslatok}
+
+A vizsgált és specifikációk készítésekor használt modellezési nyelvek (ARIS, BPMN, UML, Petri-hálók) közül én az ARIS-t találtam jelen feladathoz a legmegfelelőbbnek. A különböző diagramtípusok integrációja és azok rendszerezett kezelése mindenképp kiemeli a többi közül. Ezen felül leginkább a folyamatok leírásakor az általa kínált információtöbbletet is hasznosnak találtam, véleményem szerint a többinél nagyobb kifejezőerővel rendelkezik ez az eszköz. 
+
+\newpage
+\section*{Összefoglalás}
+\addcontentsline{toc}{section}{Összefoglalás}
+
+A mai korszerű vállalatoknak versenyképességük megőrzése céljából elengedhetetlenné vált üzleti szoftverek alkalmazása. Dolgozatom célkitűzése egy debreceni kereskedelmi profilú kisvállalkozás folyamatainak, működésének megismerése, modellezése és a számára készülő vállalatirányítási rendszer üzleti követelmény specifikációjának elkészítése volt. 
+
+
+\addcontentsline{toc}{section}{Irodalomjegyzék}
+%\setlength{\parindent}{0mm}
+
+%\nocite{*}
+%\bibliographystyle{agsm}
+
+\newpage
+\renewcommand{\refname}{Irodalomjegyzék}
+\begin{thebibliography}{99}
+
+\bibitem{AR} M. Araújo, L. Roque. 2009. Modeling Games with Petri Nets. DiGRA Conference, 2009 
+
+\bibitem{BSH}
+C. Brom, V. Šisler, and T. Holan. 2007. Story manager in ‘Europe 2045’ uses Petri nets. 
+Proceedings of the International Conference on Virtual Storytelling (ICVS '07), vol. 4871 of 
+Lecture Notes in Computer Science, pp. 38–50, Strasbourg, 2007, France.
+
+
+\end{thebibliography}
+
+\end{document}
