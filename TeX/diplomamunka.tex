@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-\title{cím}
+\title{Edzőterem működését támogató szoftver PureScript és Vue.js alapokon}
 \author{Mezei Botond, Szabó Benedek}
 \date{2023}
 \renewcommand{\contentsname}{Tartalomjegyzék}
@@ -97,14 +97,14 @@
 	\vspace{17mm}
 	\huge
 	\LARGE
-    \textbf{Üzleti folyamatok modellezése és ERP rendszer üzleti követelményspecifikáció készítése a Cívisagro Kft. számára}
+    \textbf{Edzőterem működését támogató szoftver PureScript és Vue.js alapokon}
 	
-	\vspace{9mm}
+	\vspace{15mm}
 	\large
 	\textsc{Diplomamunka}
 	
 	\normalsize
-	\vspace{15mm}
+	\vspace{17mm}
 	\textsc{Készítette:}
 	
 	\vspace{5mm}
@@ -136,21 +136,24 @@
 
 A huszonegyedik század harmadik évtizedében minden vállalatnak, cégnek vagy szervezetnek elengedhetetlenül szükségessé vált az informatika bevonása a mindennapi működésbe. A cégek versenyképességük megőrzése, a hatékonyság és profitabilitás növelése érdekében már gyakorlatilag egy mikrovállalkozás méretétől kezdve rászorulnak valamiféle speciális céges szoftver, vállalatirányítási rendszer használatára. Egy kicsit nagyobb vállalatnál pedig már egészen elképzelhetetlen lenne a működés e szoftverek nélkül. A költségcsökkentés és automatizálás mellett meg kell említeni az információ növekvő szerepét, egy vállalatirányítási rendszer biztosíthatja a gyors (valós idejű) információ hozzáférést a munkatársaknak, illetve adatokkal látja el a döntéshozókat.
 
-
-\newpage
-\section{Szakirodalmi áttekintés}
-
-\subsection{Üzleti folyamatok modellezése, modellezési eszközök}
-Ebben a fejezetben először ismertetem a modellezés motivációit, majd áttekintésre kerül néhány lehetséges modellezési eszköz, melyek üzleti folyamatok, workflow-k modellezése esetén szóba jöhetnek. \cite{AR}
-
-\subsubsection{ARIS}
-
-Az ARIS (Architecture of Integrated Information System – Integrált Információs Rendszerek Architektúrája) egy modellező eszközcsaládot jelent, mely számos lehetőséget kínál üzleti folyamatok tervezésére, elemzésére, dokujmentálására, implementálására és optimalizálására (\textit{Vidovic–Vuksic, 2003}). Vállalatok és egyéb intézmények belső működésének és külső kapcsolatainak leírására is alkalmas.
-
 \begin{figure}
 \includegraphics[width=\textwidth]{testimg}
 \caption{Az ARIS objektumai, és az ARIS ház felépítése. A jobb oldali ábra forrása:  \textit{Fonó, 2005}}
 \end{figure}
+
+\newpage
+\section{Szakirodalmi áttekintés}
+
+\subsection{Funkcionális programozás}
+Ebben a fejezetben először ismertetem a modellezés motivációit, majd áttekintésre kerül néhány lehetséges modellezési eszköz, melyek üzleti folyamatok, workflow-k modellezése esetén szóba jöhetnek. \cite{AR}
+
+\subsubsection{A funkcionális programozás előnyei}
+
+\subsubsection{A funkcionális programozás nehézségei}
+
+\subsection{PureScript}
+
+\subsection{Vue.js}
 
 %******************példa képek:
 
@@ -191,22 +194,10 @@ Az ARIS (Architecture of Integrated Information System – Integrált Informáci
 %\end{definíció}
 
 \newpage
-\section{Anyag és módszer}
-
-Ebben a fejezetbenaz elkészített anyagokban használt módszereket, a felhasznált technikákat ismertetem. A specifikációk elkészültekor Dr. Kusper Gábor és Dr. Radványi Tibor tananyagára támaszkodtam.
-
-
-\newpage
 \section{Eredmények és azok értékelése}
 
-Ebben a dokumentumban a cég jelenlegi állapotát ismertettem. Megtalálható benne a cég alapvető jellemzése, főbb mutatói, szervezeti felépítése és a jelenleg használt megoldások.
-
-\subsection{ Követelménylista}
-
-A követelmények megírásakor a már meglévő többi dokumentumra alapoztam. Véleményem szerint a követelmények egyértelműek voltak az elkészítés pillanatában. Az igények sem változtak az alatt a kis idő alatt, amíg a dokumentumok elkészültek. A következő két táblázat néhány követelményt tartalmaz:
-
 \newpage
-\section{Következtetések és javaslatok}
+\section{Továbbfejlesztési lehetőségek}
 
 A vizsgált és specifikációk készítésekor használt modellezési nyelvek (ARIS, BPMN, UML, Petri-hálók) közül én az ARIS-t találtam jelen feladathoz a legmegfelelőbbnek. A különböző diagramtípusok integrációja és azok rendszerezett kezelése mindenképp kiemeli a többi közül. Ezen felül leginkább a folyamatok leírásakor az általa kínált információtöbbletet is hasznosnak találtam, véleményem szerint a többinél nagyobb kifejezőerővel rendelkezik ez az eszköz. 
 
@@ -227,13 +218,12 @@ A mai korszerű vállalatoknak versenyképességük megőrzése céljából elen
 \renewcommand{\refname}{Irodalomjegyzék}
 \begin{thebibliography}{99}
 
-\bibitem{AR} M. Araújo, L. Roque. 2009. Modeling Games with Petri Nets. DiGRA Conference, 2009 
+\bibitem{CS}
+C. Scalfani. Functional Programming Made Easier: A Step-by-Step Guide. 2021.
 
-\bibitem{BSH}
-C. Brom, V. Šisler, and T. Holan. 2007. Story manager in ‘Europe 2045’ uses Petri nets. 
-Proceedings of the International Conference on Virtual Storytelling (ICVS '07), vol. 4871 of 
-Lecture Notes in Computer Science, pp. 38–50, Strasbourg, 2007, France.
-
+\bibitem{PE}
+P. Freeman. PureScript by Example. 2014 -2017.
+\url{https://book.purescript.org/}
 
 \end{thebibliography}
 
