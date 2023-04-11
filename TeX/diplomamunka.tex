@@ -104,7 +104,7 @@
 	\textsc{Diplomamunka}
 	
 	\normalsize
-	\vspace{17mm}
+	\vspace{20mm}
 	\textsc{Készítette:}
 	
 	\vspace{5mm}
@@ -122,7 +122,7 @@
 	\normalsize
 	adjunktus\\
 	
-	\vspace{27mm}
+	\vspace{32mm}
 	Debrecen\\	
 	2023
 	
@@ -145,9 +145,20 @@ A huszonegyedik század harmadik évtizedében minden vállalatnak, cégnek vagy
 \section{Szakirodalmi áttekintés}
 
 \subsection{Funkcionális programozás}
-Ebben a fejezetben először ismertetem a modellezés motivációit, majd áttekintésre kerül néhány lehetséges modellezési eszköz, melyek üzleti folyamatok, workflow-k modellezése esetén szóba jöhetnek. \cite{AR}
+A funkcionális programozás egy programozási paradigma. Több programozási nyelv is tartozik ide, melyeket bizonyos tulajdonságok, módszereik, lehetőségeik, gondolkodási logikájuk köti össze. Az egyik korai funkcionális nyelv a Lisp, melyet John McCarthy alkotott meg az 1950-es évek végén \cite{JM}. Ismertebb funkcionális nyelvek például Haskell, Elm, Erlang, Scala vagy a PureScript. 
+A funkcionális programozás során a fejlesztő azt specifikálja a programban, hogy mit kell kiszámítani, és nem azt, hogy hogyan, milyen lépésekben \cite{VD}. A program függvények hívásából és ezek kiértékeléséből áll, nincs értékadás, csak érték kiszámítás \cite{VD}. A függvényt leginkább úgy értjük, hogy egy leképezés egy adott halmazról egy másik halmazra\cite{sy}. A listák (vagy halmazok) kezelésének ezért kiemelt szerep jut a funkcionális nyelvekben.
+
+Az előbbi tulajdonságok nem teljesülnek a (tisztán) imperatív paradigmát követő nyelvek esetében. Az imperatív nyelvek lényege, hogy a programozó a lépéseket definiálja a kódban, melyet a számítógépnek el kell végeznie (utasítások). A legismertebb imperatív nyelv a C.
+
+A logikai programozási paradigma lényege, hogy a programozó állításokat, szabályokat rögzít, melyek használatával a gép automatikusan kikövetkezteti, hogy egy kérdéses állítás igaz, vagy sem. Ilyen nyelv például a Prolog.
+
+Manapság az egyik legelterjedtebb paradigma az objektumorientált programozás. Ez egy gondolkodásmód, tervezési módszer is egyben. A valós világot osztályok formájára képezi le, melynek egyedeit objektumok személyesítenek meg. Legfőbb elvei az egységbezárás (encapsulation: az adatmodell és az eljárásmodell szétválaszthatatlansága), öröklődés (újrafelhasználhatóság kiterjesztése), hozzáférés-szabályozás és többalakúság (polimorphism: lehetővé teszi, hogy ugyanarra az üzenetre különböző objektumok a saját módjukon válaszoljanak) \cite{VD}.
+
+A ma leginkább használatos nyelvekre általánosságban igaz az, hogy nem csupán egyetlen paradigmát követnek tisztán, hanem többet vegyítenek. Ennek az az oka, hogy minden paradigmának megvan a maga előnye (és persze hátránya is), és ezeket az előnyöket érdemes kihasználni. Például a Java (2023. áprilisában a harmadik legtöbbet használt nyelv \cite{TIO}) alapjaiban imperatív, objektumorientált, de a nyolcas verziótól kezdve \cite{Java} megjelennek benne funkcionális elemek, például a lambda kifejezések. A nyelv hivatalos oldala \cite{Java} "erőteljes kiterjesztés"-nek nevezi ezt lépést.
 
 \subsubsection{A funkcionális programozás előnyei}
+A funkcionális programozás, mint paradigma, számos előnnyel rendelkezik.
+
 
 \subsubsection{A funkcionális programozás nehézségei}
 
@@ -222,9 +233,29 @@ A mai korszerű vállalatoknak versenyképességük megőrzése céljából elen
 C. Scalfani. Functional Programming Made Easier: A Step-by-Step Guide. 2021.
 
 \bibitem{PE}
-P. Freeman. PureScript by Example. 2014 -2017.
+P. Freeman. PureScript by Example. 2014 - 2017.
 \url{https://book.purescript.org/}
 
-\end{thebibliography}
+\bibitem{VD}
+Dr. Vadász Dénes: Programozási paradigmák, programozási nyelvek (letölthető egyetemi oktatási anyag)
+\url{https://web.archive.org/web/20150501083657/http://www.iit.uni-miskolc.hu/iitweb/export/sites/default/users/DVadasz/GEIAL401/Progpar-4-fejezet.pdf#}
+Hozzáférés dátuma: 2023.04.11.
 
+\bibitem{JM}
+John McCarthy: The implementation of LISP. 1996.
+http://www-formal.stanford.edu/jmc/history/lisp/node3.html
+
+\bibitem{Sz}
+Szuromi Zs.: Programozási paradigmák, kézirat. ME, 1996.
+
+\bibitem{TIO}
+The TIOBE Programming Community index. \url{https://www.tiobe.com/tiobe-index/} Hozzáférés dátuma: 2023.04.11.
+
+\bibitem{Java}
+A Java nyelv hivatalos honlapja. \url{https://dev.java/learn/lambdas/}  Hozzáférés dátuma: 2023.04.11.
+
+\bibitem{sy}
+\url{https://symphony.is/blog/imperative-to-functional-programming-in-java} Hozzáférés dátuma: 2023.04.11.
+
+\end{thebibliography}
 \end{document}
