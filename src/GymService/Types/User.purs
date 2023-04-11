@@ -4,10 +4,8 @@ import Prelude
 
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
-import Data.Argonaut.Decode.Class (class DecodeJson)
-import Data.Argonaut.Decode.Generic (genericDecodeJson)
-import Data.Argonaut.Encode.Class (class EncodeJson)
-import Data.Argonaut.Encode.Generic (genericEncodeJson)
+import Yoga.JSON (readJSON_, writeJSON, class WriteForeign, class ReadForeign)
+import Data.Maybe (Maybe, fromJust)
 
 newtype User = User
     { id   :: Int
@@ -15,12 +13,14 @@ newtype User = User
     }
 
 derive instance genericUser :: Generic User _
+derive newtype instance readForeignUser :: ReadForeign User
+derive newtype instance writeForeignUser :: WriteForeign User
 
 instance showUser :: Show User where
     show = genericShow
 
-instance decodeJson :: DecodeJson User where
-    decodeJson = genericDecodeJson
+writeUserJson :: User -> String
+writeUserJson = writeJSON
 
-instance encodeJson :: EncodeJson User where
-    encodeJson = genericEncodeJson
+readUserJson :: String -> Maybe User
+readUserJson = readJSON_
