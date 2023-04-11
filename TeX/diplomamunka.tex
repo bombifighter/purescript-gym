@@ -134,6 +134,10 @@
 \section*{Bevezetés}
 \addcontentsline{toc}{section}{Bevezetés}
 
+miert ezt valasztottuk
+
+mi a munkánk és a dolgozat célja
+
 A huszonegyedik század harmadik évtizedében minden vállalatnak, cégnek vagy szervezetnek elengedhetetlenül szükségessé vált az informatika bevonása a mindennapi működésbe. A cégek versenyképességük megőrzése, a hatékonyság és profitabilitás növelése érdekében már gyakorlatilag egy mikrovállalkozás méretétől kezdve rászorulnak valamiféle speciális céges szoftver, vállalatirányítási rendszer használatára. Egy kicsit nagyobb vállalatnál pedig már egészen elképzelhetetlen lenne a működés e szoftverek nélkül. A költségcsökkentés és automatizálás mellett meg kell említeni az információ növekvő szerepét, egy vállalatirányítási rendszer biztosíthatja a gyors (valós idejű) információ hozzáférést a munkatársaknak, illetve adatokkal látja el a döntéshozókat.
 
 \begin{figure}
@@ -146,20 +150,54 @@ A huszonegyedik század harmadik évtizedében minden vállalatnak, cégnek vagy
 
 \subsection{Funkcionális programozás}
 A funkcionális programozás egy programozási paradigma. Több programozási nyelv is tartozik ide, melyeket bizonyos tulajdonságok, módszereik, lehetőségeik, gondolkodási logikájuk köti össze. Az egyik korai funkcionális nyelv a Lisp, melyet John McCarthy alkotott meg az 1950-es évek végén \cite{JM}. Ismertebb funkcionális nyelvek például Haskell, Elm, Erlang, Scala vagy a PureScript. 
-A funkcionális programozás során a fejlesztő azt specifikálja a programban, hogy mit kell kiszámítani, és nem azt, hogy hogyan, milyen lépésekben \cite{VD}. A program függvények hívásából és ezek kiértékeléséből áll, nincs értékadás, csak érték kiszámítás \cite{VD}. A függvényt leginkább úgy értjük, hogy egy leképezés egy adott halmazról egy másik halmazra\cite{sy}. A listák (vagy halmazok) kezelésének ezért kiemelt szerep jut a funkcionális nyelvekben.
+A funkcionális programozás során a fejlesztő azt specifikálja a programban, hogy mit kell kiszámítani, és nem azt, hogy hogyan, milyen lépésekben \cite{VD}. A program függvények hívásából és ezek kiértékeléséből áll, nincs értékadás, csak érték kiszámítás \cite{VD}. A függvényt leginkább úgy értjük, hogy egy leképezés egy adott halmazról egy másik halmazra\cite{sy}. A listák (vagy halmazok) kezelésének ezért kiemelt szerep jut a funkcionális nyelvekben. A program tartalmazhat a nyelvben előre definiált, és a programozó által definiált függvényeket. A függvények névvel és opcionálisan argumentumokkal rendelkeznek. Az előállított érték(ek) megegyező paraméterekkel mindig ugyanaz. A rekurzió egy nagyon gyakori koncepció funkcionális nyelvekben.
 
-Az előbbi tulajdonságok nem teljesülnek a (tisztán) imperatív paradigmát követő nyelvek esetében. Az imperatív nyelvek lényege, hogy a programozó a lépéseket definiálja a kódban, melyet a számítógépnek el kell végeznie (utasítások). A legismertebb imperatív nyelv a C.
+Egy másik nagy paradigma az imperatív programozás. Az imperatív nyelvek lényege, hogy a programozó a lépéseket definiálja a kódban, melyet a számítógépnek el kell végeznie (utasítások). A legismertebb imperatív nyelv a C.
 
 A logikai programozási paradigma lényege, hogy a programozó állításokat, szabályokat rögzít, melyek használatával a gép automatikusan kikövetkezteti, hogy egy kérdéses állítás igaz, vagy sem. Ilyen nyelv például a Prolog.
 
 Manapság az egyik legelterjedtebb paradigma az objektumorientált programozás. Ez egy gondolkodásmód, tervezési módszer is egyben. A valós világot osztályok formájára képezi le, melynek egyedeit objektumok személyesítenek meg. Legfőbb elvei az egységbezárás (encapsulation: az adatmodell és az eljárásmodell szétválaszthatatlansága), öröklődés (újrafelhasználhatóság kiterjesztése), hozzáférés-szabályozás és többalakúság (polimorphism: lehetővé teszi, hogy ugyanarra az üzenetre különböző objektumok a saját módjukon válaszoljanak) \cite{VD}.
 
-A ma leginkább használatos nyelvekre általánosságban igaz az, hogy nem csupán egyetlen paradigmát követnek tisztán, hanem többet vegyítenek. Ennek az az oka, hogy minden paradigmának megvan a maga előnye (és persze hátránya is), és ezeket az előnyöket érdemes kihasználni. Például a Java (2023. áprilisában a harmadik legtöbbet használt nyelv \cite{TIO}) alapjaiban imperatív, objektumorientált, de a nyolcas verziótól kezdve \cite{Java} megjelennek benne funkcionális elemek, például a lambda kifejezések. A nyelv hivatalos oldala \cite{Java} "erőteljes kiterjesztés"-nek nevezi ezt lépést.
+A ma leginkább használatos nyelvekre általánosságban igaz az, hogy nem csupán egyetlen paradigmát követnek tisztán, hanem többet vegyítenek. Ennek az az oka, hogy minden paradigmának megvan a maga előnye (és persze hátránya is), és ezeket az előnyöket érdemes kihasználni. Például a Java (2023. áprilisában a harmadik legtöbbet használt nyelv \cite{TIO}) alapjaiban imperatív, objektumorientált, de a nyolcas verziótól kezdve \cite{Java} megjelennek benne funkcionális elemek, például a lambda kifejezések. A nyelv hivatalos oldala \cite{Java} "erőteljes kiterjesztés"-nek nevezi ezt a lépést.
 
 \subsubsection{A funkcionális programozás előnyei}
-A funkcionális programozás, mint paradigma, számos előnnyel rendelkezik.
+A funkcionális programozás, mint paradigma, számos előnnyel rendelkezik. Az imperatív gondolkodás kötöttségét egy másfajta megközelítéssel oldja fel. A lényeg, hogy \textit{mit} csináljon a program, és nem az, hogy \textit{hogyan}. Ez az ötlet a programozótól is  másfajta megközelítést, gondolkodásmódot kíván, és máshogy strukturált kódot is fog eredményezni. 
 
+Ránézésre jobban érthető, átláthatóbb, esztétikusabb kód. A szoftver "viselkedése" jobban olvasható \cite{CS}. Ez az előny egyszerűen a funkcionális szintaktikából és gondolkodásmódból adódik. A következő Java kódrészletek Boris Radojicic 2022-es cikkéből \cite{sy} származnak. Az elsőn az iteratív megközelítés látható:
 
+\begin{verbatim}
+public List<String> getAddresses(List<Person> persons) {
+    List<String> addresses = new ArrayList<>();
+    for (int i = 0; i < persons.size(); i++) {
+        Person person = persons.get(i);
+        if (person.hasValidData()) {
+            String address = person.getAddress();
+            addresses.add(address.trim());
+        }
+    }
+    return addresses;
+}
+\end{verbatim}
+A következő kódrészlet pedig a funkcionális megközelítést alkalmazza:
+\begin{verbatim}
+public List<String> getAddresses(List<Person> persons) {
+    return persons.stream()
+            .filter(person -> person.hasValidData())
+            .map(person -> person.getAddress())
+            .map(address -> address.trim())
+            .collect(Collectors.toList());
+}
+\end{verbatim}
+Míg a két kód ugyanazt a viselkedést eredményezi, a kettőre ránézve elmondható, hogy a második olvashatóbb és tömörebb.
+
+Nagy fokú újrafelhasználhatóság.
+
+Könnyebb tesztelhetőség.
+
+párhuzamosság, konkurrencia megvalósítása könnyebb
+
+-farokrekurzió, sebesség
+%https://alvinalexander.com/scala/fp-book/benefits-of-functional-programming/#programs-are-more-bulletproof
 \subsubsection{A funkcionális programozás nehézségei}
 
 \subsection{PureScript}
@@ -255,6 +293,7 @@ The TIOBE Programming Community index. \url{https://www.tiobe.com/tiobe-index/} 
 A Java nyelv hivatalos honlapja. \url{https://dev.java/learn/lambdas/}  Hozzáférés dátuma: 2023.04.11.
 
 \bibitem{sy}
+B. Radojicic.: Imperative to Functional Programming in Java. 2022
 \url{https://symphony.is/blog/imperative-to-functional-programming-in-java} Hozzáférés dátuma: 2023.04.11.
 
 \end{thebibliography}
