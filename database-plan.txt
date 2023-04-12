@@ -1,0 +1,43 @@
+Guest
+ - id
+ - name
+ - gender
+ - bdate
+ - phone
+ - email
+ 
+ 
+membership-types
+ - id
+ - name
+ - isPass
+ - occasions (0-pass; 1,2,3... number of occasions)
+ - fullPrice
+ - studentPrice
+ - clubPrice
+ 
+ 
+memberships
+ - id
+ - guest id
+ - membership-type id
+ - end-date
+ - occasionsLeft
+
+club-members
+ - id
+ - guest-id
+ - end-date
+ 
+lockers
+ - id
+ - gender
+ - isFree
+ 
+guest-lockers
+ - id
+ - guest-id
+ - locker-id
+ - locker-gender
+ - start-time
+ - end-time
