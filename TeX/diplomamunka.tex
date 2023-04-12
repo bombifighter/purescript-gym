@@ -190,15 +190,19 @@ public List<String> getAddresses(List<Person> persons) {
 \end{verbatim}
 Míg a két kód ugyanazt a viselkedést eredményezi, a kettőre ránézve elmondható, hogy a második olvashatóbb és tömörebb.
 
-Nagy fokú újrafelhasználhatóság.
+Nagy fokú újrafelhasználhatóság. Mivel egy funkcionális program gyakorlatilag függvények deklarálásából és függvényhívásokból áll, ezeket a függvényeket nagy mértékben újra lehet hasznosítani, elkerülve a feleslegesen duplikált kódrészleteket. A felesleges kód rontja az átláthatóságot és több erőforrást is igényel.
 
-Könnyebb tesztelhetőség.
+Könnyebb tesztelhetőség. Mivel a funkcionális programban nincsenek állapotok és mellékhatások, így könnyebb lefedni az összes esetet. Illetve ebből kifolyóan, a függvénynek bizonyos bemenő paraméterekre mindig ugyanazt az egyértelmű kimenetet kell előállítania.
 
-párhuzamosság, konkurrencia megvalósítása könnyebb
+A rekurzió hatékony használata. A rekurzió a funkcionális nyelvek gyakori eleme. Átláthatóvá és egyértelművé teszi a kódot teszi a kódot bizonyos problémák esetében, ahol a rekurzív definiálás a természetesebb megoldás. A rekurziónak egy speciális esete a farokrekurzió. Ez azt jelenti, hogy a rekurzív hívás a legutolsó művelet, amit a függvény végrehajt. Nagy előnye, hogy idő és erőforrás takarékos a nem farokrekurzív függvényekkel szemben, ugyanis a fordító kevesebb információt kell, hogy tároljon ilyen módon a veremben.
 
--farokrekurzió, sebesség
-%https://alvinalexander.com/scala/fp-book/benefits-of-functional-programming/#programs-are-more-bulletproof
 \subsubsection{A funkcionális programozás nehézségei}
+
+Az előnyök között első helyen állt az átláthatóság és érthetőség. Ehhez viszont hozzátartozik az, hogy a fejlesztő előtte megismerje és elsajátítsa a funkcionális programozás gondolkodásmódját, ami néha bizony nem egyszerű és nem a legtermészetesebb megoldásnak tűnhet.
+
+Memóriahasználat és teljesítmény. Mivel a funkcionális nyelvek nem használnak érték-átadást, sokszor egy változó értékének megváltozása helyett létrejön egy újabb, ami így több erőforrást igényel \cite{JN}. A legtöbb funkcionális nyelv ennek ellenére számos módon ígyekszik ezt kompenzálni: farokrekurzió, lusta kiértékelés, "smart linking". A több paradigmát támogató vagy OOP nyelvek nem feltétlen implementálják ezeket az optimalizációkat \cite{JN}.
+
+Mivel a funkcionális nyelvek használata kevésbé elterjedt, kevesebb eszköz, keretrendszer áll rendelkezésre és kevesebb a felhasználók, szakértők száma.
 
 \subsection{PureScript}
 
@@ -295,6 +299,11 @@ A Java nyelv hivatalos honlapja. \url{https://dev.java/learn/lambdas/}  Hozzáf�
 \bibitem{sy}
 B. Radojicic.: Imperative to Functional Programming in Java. 2022
 \url{https://symphony.is/blog/imperative-to-functional-programming-in-java} Hozzáférés dátuma: 2023.04.11.
+
+\bibitem{JN}
+J. Neumann.: Advantages and disadvantages of functional programming. 2022.
+\url{https://medium.com/twodigits/advantages-and-disadvantages-of-functional-programming-52a81c8bf446}
+Hozzáférés dátuma: 2023.04.12.
 
 \end{thebibliography}
 \end{document}
