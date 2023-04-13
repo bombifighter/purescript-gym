@@ -1,14 +1,13 @@
 { name = "purescript-gym"
 , dependencies =
-  [ "console"
+  [ "aff"
+  , "console"
+  , "datetime"
   , "effect"
-  , "either"
-  , "foreign"
+  , "maybe"
+  , "mysql"
   , "prelude"
   , "yoga-json"
-  , "integers"
-  , "numbers"
-  , "maybe"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]

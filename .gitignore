@@ -2,6 +2,7 @@
 .psci_modules
 node_modules
 .spago
+package-lock.json
 
 # Generated files
 .psci

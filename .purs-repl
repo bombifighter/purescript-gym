@@ -1,4 +1,4 @@
 import Prelude
-import GymService.Types.User
+import GymService.Types.Guest
 import Yoga.JSON
 import Data.Maybe
