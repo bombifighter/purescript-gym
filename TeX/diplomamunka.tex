@@ -140,11 +140,6 @@ mi a munkánk és a dolgozat célja
 
 A huszonegyedik század harmadik évtizedében minden vállalatnak, cégnek vagy szervezetnek elengedhetetlenül szükségessé vált az informatika bevonása a mindennapi működésbe. A cégek versenyképességük megőrzése, a hatékonyság és profitabilitás növelése érdekében már gyakorlatilag egy mikrovállalkozás méretétől kezdve rászorulnak valamiféle speciális céges szoftver, vállalatirányítási rendszer használatára. Egy kicsit nagyobb vállalatnál pedig már egészen elképzelhetetlen lenne a működés e szoftverek nélkül. A költségcsökkentés és automatizálás mellett meg kell említeni az információ növekvő szerepét, egy vállalatirányítási rendszer biztosíthatja a gyors (valós idejű) információ hozzáférést a munkatársaknak, illetve adatokkal látja el a döntéshozókat.
 
-\begin{figure}
-\includegraphics[width=\textwidth]{testimg}
-\caption{Az ARIS objektumai, és az ARIS ház felépítése. A jobb oldali ábra forrása:  \textit{Fonó, 2005}}
-\end{figure}
-
 \newpage
 \section{Szakirodalmi áttekintés}
 
@@ -206,7 +201,29 @@ Mivel a funkcionális nyelvek használata kevésbé elterjedt, kevesebb eszköz,
 
 \subsection{PureScript}
 
+A PureScript egy erősen típusos, tisztán funkcionális nyelv. Javascript kódra fordul. Amit Javascriptben meg lehet írni, azt nagyjából PureScriptben is \cite{CS}. A böngészőben és  a szerveren egyaránt futtatható. A Haskell az alapja, sokban hasonlít rá. Charles Scalfani \cite{CS} szerint erősebb, de egyben könnyebben is használható.
+Frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
+
 \subsection{Vue.js}
+
+\newpage
+\section{Eredmények és azok értékelése}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{database}
+\caption{A szoftver adatbázis modellje.}
+\end{figure}
+
+\newpage
+\section{Továbbfejlesztési lehetőségek}
+
+A vizsgált és specifikációk készítésekor használt modellezési nyelvek (ARIS, BPMN, UML, Petri-hálók) közül én az ARIS-t találtam jelen feladathoz a legmegfelelőbbnek. A különböző diagramtípusok integrációja és azok rendszerezett kezelése mindenképp kiemeli a többi közül. Ezen felül leginkább a folyamatok leírásakor az általa kínált információtöbbletet is hasznosnak találtam, véleményem szerint a többinél nagyobb kifejezőerővel rendelkezik ez az eszköz. 
+
+\newpage
+\section*{Összefoglalás}
+\addcontentsline{toc}{section}{Összefoglalás}
+
+A mai korszerű vállalatoknak versenyképességük megőrzése céljából elengedhetetlenné vált üzleti szoftverek alkalmazása. Dolgozatom célkitűzése egy debreceni kereskedelmi profilú kisvállalkozás folyamatainak, működésének megismerése, modellezése és a számára készülő vállalatirányítási rendszer üzleti követelmény specifikációjának elkészítése volt. 
 
 %******************példa képek:
 
@@ -246,26 +263,7 @@ Mivel a funkcionális nyelvek használata kevésbé elterjedt, kevesebb eszköz,
 %A Petri háló struktúrát $(P, T, E, w)$ módon jelöljük. (\textit{Peterson., 1981})
 %\end{definíció}
 
-\newpage
-\section{Eredmények és azok értékelése}
-
-\newpage
-\section{Továbbfejlesztési lehetőségek}
-
-A vizsgált és specifikációk készítésekor használt modellezési nyelvek (ARIS, BPMN, UML, Petri-hálók) közül én az ARIS-t találtam jelen feladathoz a legmegfelelőbbnek. A különböző diagramtípusok integrációja és azok rendszerezett kezelése mindenképp kiemeli a többi közül. Ezen felül leginkább a folyamatok leírásakor az általa kínált információtöbbletet is hasznosnak találtam, véleményem szerint a többinél nagyobb kifejezőerővel rendelkezik ez az eszköz. 
-
-\newpage
-\section*{Összefoglalás}
-\addcontentsline{toc}{section}{Összefoglalás}
-
-A mai korszerű vállalatoknak versenyképességük megőrzése céljából elengedhetetlenné vált üzleti szoftverek alkalmazása. Dolgozatom célkitűzése egy debreceni kereskedelmi profilú kisvállalkozás folyamatainak, működésének megismerése, modellezése és a számára készülő vállalatirányítási rendszer üzleti követelmény specifikációjának elkészítése volt. 
-
-
 \addcontentsline{toc}{section}{Irodalomjegyzék}
-%\setlength{\parindent}{0mm}
-
-%\nocite{*}
-%\bibliographystyle{agsm}
 
 \newpage
 \renewcommand{\refname}{Irodalomjegyzék}
@@ -304,6 +302,12 @@ B. Radojicic.: Imperative to Functional Programming in Java. 2022
 J. Neumann.: Advantages and disadvantages of functional programming. 2022.
 \url{https://medium.com/twodigits/advantages-and-disadvantages-of-functional-programming-52a81c8bf446}
 Hozzáférés dátuma: 2023.04.12.
+
+\bibitem{PS}
+\url{https://www.purescript.org/}
+
+\bibitem{vue}
+\url{https://vuejs.org/guide/introduction.html}
 
 \end{thebibliography}
 \end{document}
