@@ -50,4 +50,17 @@ getGuestEmail (Guest guest) = guest.email
 setGuestName :: String -> Guest -> Guest
 setGuestName newName (Guest guest) = Guest {id:guest.id, name:newName, gender:guest.gender, bdate:guest.bdate, phone:guest.phone, email:guest.email}
 
--- TODO GETTERS AND SETTERS
+setGuestId :: Int -> Guest -> Guest
+setGuestId s (Guest guest) = Guest {id:s, name:guest.name, gender:guest.gender, bdate:guest.bdate, phone:guest.phone, email:guest.email}
+
+setGuestGender :: String -> Guest -> Guest
+setGuestGender s (Guest guest) = Guest {id:guest.id, name:guest.name, gender:s, bdate:guest.bdate, phone:guest.phone, email:guest.email}
+
+setGuestBdate :: String -> Guest -> Guest
+setGuestBdate s (Guest guest) = Guest {id:guest.id, name:guest.name, gender:guest.gender, bdate:s, phone:guest.phone, email:guest.email}
+
+setGuestPhone :: String -> Guest -> Guest
+setGuestPhone s (Guest guest) = Guest {id:guest.id, name:guest.name, gender:guest.gender, bdate:guest.bdate, phone:s, email:guest.email}
+
+setGuestEmail :: String -> Guest -> Guest
+setGuestEmail s (Guest guest) = Guest {id:guest.id, name:guest.name, gender:guest.gender, bdate:guest.bdate, phone:guest.phone, email:s}
