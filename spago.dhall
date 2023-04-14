@@ -4,10 +4,11 @@
   , "console"
   , "datetime"
   , "effect"
+  , "httpure"
   , "maybe"
   , "mysql"
   , "prelude"
-  , "yoga-json"
+  , "simple-json"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]

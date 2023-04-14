@@ -4,7 +4,7 @@ import Prelude
 
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
-import Yoga.JSON (readJSON_, writeJSON, class WriteForeign, class ReadForeign)
+import Simple.JSON (readJSON_, writeJSON, class WriteForeign, class ReadForeign)
 import Data.Maybe (Maybe)
 
 newtype Guest = Guest
