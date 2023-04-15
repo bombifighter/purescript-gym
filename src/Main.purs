@@ -7,10 +7,11 @@ import Prelude
 import Data.Show (show)
 import Data.Time.Duration (Milliseconds(..))
 import Effect (Effect)
-import Effect.Aff (Aff, launchAff, launchAff_, makeAff)
+import Effect.Aff (Aff, launchAff, launchAff_, makeAff, suspendAff)
+import Effect.Aff.Class (liftAff)
 import Effect.Class (liftEffect)
 import Effect.Class.Console (log)
-import HTTPure (Method(Post), Method(Get), Request, ResponseM, ServerM, notFound, ok, serve, toString)
+import HTTPure (Method(Get), Method(Post), Request, ResponseM, ServerM, notFound, ok, serve, toString)
 import MySQL.Connection (execute, ConnectionInfo, Connection)
 import MySQL.Pool (withPool, closePool, createPool, defaultPoolInfo, Pool)
 import MySQL.QueryValue (toQueryValue)
@@ -34,30 +35,44 @@ connectionInfo =
     }
 
 router :: Request -> ResponseM
-router { method: Get, path: [ "guests/getAll" ] } = ok "valami"--do
-  --guests <- getGuests conn
-  --ok $ writeJSON guests
+router { method: Get, path: [ "guests" ] } = do --hosszabb útvonalra valamiert nem jó
+  pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+  guests <- flip withPool pool \conn -> getGuests conn
+  liftEffect $ closePool pool
+  ok $ writeJSON guests
+
 router { path: [ "goodbye" ] } = ok "valami"
 router _ = notFound
 
 port :: Int
 port = 3000
 
-main :: Effect Unit
+main :: ServerM
 main = do
-  launchAff_ do
-    pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
-    router :: Request -> ResponseM
-    router { method: Get, path: [ "guests/getAll" ] } = ok "valami"--do
-    router { path: [ "goodbye" ] } = ok "valami"
-    router _ = notFound
-    liftEffect $ serve port router $ log $ "Server up running on port: " <> show port
-    -- TODO router helyett inline függvény megadása
-    flip withPool pool \conn -> do
-      --let guest = Guest { bdate: "2004/11/22", email: "valami2@valid.email", gender: "male", id: 1, name: "Bence", phone: "+36301234567" }
-      --insertGuest guest conn
-      --guests <- getGuests conn
-      --updateGuest id guest conn
-      --deleteGuest id conn
-      --log $ writeJSON guests
-    liftEffect $ closePool pool
+
+  serve port router $ log $ "Server up running on port: " <> show port
+  
+    --launchAff_ do
+
+      --pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+
+      --flip withPool pool \conn -> do
+
+        {-liftEffect $ serve port router $ log $ "Server up running on port: " <> show port
+          where
+            router :: Request -> ResponseM
+            router { method: Get, path: [ "guests/getAll" ] } = ok "valami" do
+              guests <- getGuests conn
+              ok $ writeJSON guests
+            router { path: [ "goodbye" ] } = ok "valami"
+            router _ = notFound-}
+        
+        --makeAff
+        --let guest = Guest { bdate: "2004/11/22", email: "valami2@valid.email", gender: "male", id: 1, name: "Bence", phone: "+36301234567" }
+        --insertGuest guest conn
+        --guests <- getGuests conn
+        --updateGuest 5 guest conn
+        --deleteGuest id conn
+        --log $ writeJSON guests
+
+      --liftEffect $ closePool pool
