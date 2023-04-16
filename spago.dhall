@@ -1,12 +1,16 @@
 { name = "purescript-gym"
 , dependencies =
   [ "aff"
+  , "arrays"
   , "console"
   , "datetime"
   , "effect"
   , "httpure"
+  , "integers"
+  , "node-process"
   , "maybe"
   , "mysql"
+  , "posix-types"
   , "prelude"
   , "simple-json"
   ]
