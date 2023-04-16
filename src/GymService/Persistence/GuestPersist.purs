@@ -4,7 +4,7 @@ import Prelude
 
 import GymService.Types.Guest
 import MySQL.Connection (execute, query, query_, Connection)
-import MySQL.QueryValue (toQueryValue, QueryValue)
+import MySQL.QueryValue (toQueryValue)
 import Effect.Aff (Aff)
 
 
@@ -37,5 +37,3 @@ deleteGuestQuery = "delete from guest where id = ?"
 
 deleteGuest :: Int -> Connection -> Aff Unit
 deleteGuest id conn = execute deleteGuestQuery [toQueryValue id] conn
-
--- TODO more query
