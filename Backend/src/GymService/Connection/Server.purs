@@ -1,39 +1,18 @@
-module Main where
+module GymService.Connection.Server where
 
 import GymService.Persistence.GuestPersist
+import GymService.Connection.DB
 import GymService.Types.Guest
 import Prelude
 
+import HTTPure (Method(Get, Post, Put, Delete), Request, ResponseM, badRequest, notFound, ok, (!!), (!@), toString)
+import MySQL.Connection (ConnectionInfo)
+import MySQL.Pool (withPool, closePool, createPool, defaultPoolInfo)
+import Simple.JSON (writeJSON)
 import Data.Array (length)
 import Data.Int (fromString)
 import Data.Maybe (Maybe(Nothing, Just))
-import Data.Posix.Signal (Signal(SIGINT, SIGTERM))
-import Data.Time.Duration (Milliseconds(..))
-import Effect (Effect)
 import Effect.Class (liftEffect)
-import Effect.Class.Console (log)
-import HTTPure (Method(Get, Post, Put, Delete), Request, ResponseM, badRequest, notFound, ok, serve, (!!), (!@), toString)
-import MySQL.Connection (ConnectionInfo)
-import MySQL.Pool (withPool, closePool, createPool, defaultPoolInfo)
-import Node.Process (onSignal)
-import Simple.JSON (writeJSON)
-
-connectionInfo :: ConnectionInfo
-connectionInfo =
-    { host: "localhost"
-    , port: 3306
-    , socketPath: ""
-    , user: "root"
-    , password: "alma"
-    , database: "mydb"
-    , charset: "UTF8_GENERAL_CI"
-    , timezone: "Z"
-    , connectTimeout: Milliseconds 10000.0
-    , dateStrings: true
-    , debug: false
-    , trace: true
-    , multipleStatements : false
-    }
 
 router :: Request -> ResponseM
 router { method: Get, path: [ "guest", "getAll" ] } = do
@@ -108,38 +87,3 @@ router _ = notFound
 
 port :: Int
 port = 3000
-
-main :: Effect Unit
-main = do
-
-  shutdown <- serve port router $ log $ "Server up running on port: " <> show port
-  let shutdownServer = do
-        log "Shutting down server..."
-        shutdown $ log "Server shutdown."
-  onSignal SIGINT shutdownServer
-  onSignal SIGTERM shutdownServer
-  
-    --launchAff_ do
-
-      --pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
-
-      --flip withPool pool \conn -> do
-
-        {-liftEffect $ serve port router $ log $ "Server up running on port: " <> show port
-          where
-            router :: Request -> ResponseM
-            router { method: Get, path: [ "guests/getAll" ] } = ok "valami" do
-              guests <- getGuests conn
-              ok $ writeJSON guests
-            router { path: [ "goodbye" ] } = ok "valami"
-            router _ = notFound-}
-        
-        --makeAff
-        --let guest = Guest { bdate: "2004/11/22", email: "valami2@valid.email", gender: "male", id: 1, name: "Bence", phone: "+36301234567" }
-        --insertGuest guest conn
-        --guests <- getGuests conn
-        --updateGuest 5 guest conn
-        --deleteGuest id conn
-        --log $ writeJSON guests
-
-      --liftEffect $ closePool pool
