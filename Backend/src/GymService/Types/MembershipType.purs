@@ -9,7 +9,7 @@ import Data.Maybe (Maybe)
 newtype MembershipType = MembershipType
     { id   :: Int
     , name :: String
-    , isPass :: Boolean
+    , isPass :: String
     , occasions :: Int
     , fullPrice :: Int
     , studentPrice :: Int
@@ -35,7 +35,7 @@ getMTId (MembershipType mt) = mt.id
 getMTName :: MembershipType -> String
 getMTName (MembershipType mt) = mt.name
 
-getMTType :: MembershipType -> Boolean
+getMTType :: MembershipType -> String
 getMTType (MembershipType mt) = mt.isPass
 
 getMTOccasions :: MembershipType -> Int
@@ -56,7 +56,7 @@ setMTId s (MembershipType mt) = MembershipType {id:s, name:mt.name, isPass:mt.is
 setMTName :: String -> MembershipType -> MembershipType
 setMTName s (MembershipType mt) = MembershipType {id:mt.id, name:s, isPass:mt.isPass, occasions: mt.occasions, fullPrice: mt.fullPrice, studentPrice:mt.studentPrice, clubPrice:mt.clubPrice}
 
-setMTType :: Boolean -> MembershipType -> MembershipType
+setMTType :: String -> MembershipType -> MembershipType
 setMTType s (MembershipType mt) = MembershipType {id:mt.id, name:mt.name, isPass:s, occasions: mt.occasions, fullPrice: mt.fullPrice, studentPrice:mt.studentPrice, clubPrice:mt.clubPrice}
 
 setMTOccasions :: Int -> MembershipType -> MembershipType
