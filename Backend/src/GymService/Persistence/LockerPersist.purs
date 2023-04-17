@@ -2,7 +2,7 @@ module GymService.Persistence.LockerPersist where
 
 import Prelude
 import GymService.Types.Locker
-import MySQL.Connection (execute, query, query_, Connection)
+import MySQL.Connection (execute, execute_, query, query_, Connection)
 import MySQL.QueryValue (toQueryValue)
 import Effect.Aff (Aff)
 
@@ -28,7 +28,7 @@ updateLockerQuery :: String
 updateLockerQuery = "update locker set gender = ?, isFree = ? where id = ?"
 
 updateLocker :: Int -> Locker -> Connection -> Aff Unit
-updateLocker id (Locker locker) conn = execute updateLockerQuery [toQueryValue locker.gender, toQueryValue locker.isFree, toQueryValue locker.id] conn
+updateLocker id (Locker locker) conn = execute updateLockerQuery [toQueryValue locker.gender, toQueryValue locker.isFree, toQueryValue id] conn
 
 deleteLockerQuery :: String
 deleteLockerQuery = "delete from locker where id = ?"
@@ -40,13 +40,13 @@ getMaleOccupiedLockerNumberQuery :: String
 getMaleOccupiedLockerNumberQuery = "select count(*) from locker where gender = 'male'"
 
 getMaleOccupiedLocker :: Connection -> Aff Unit
-getMaleOccupiedLockerNumber conn = execute getMaleOccupiedLockerNumberQuery conn
+getMaleOccupiedLocker conn = execute_ getMaleOccupiedLockerNumberQuery conn
 
 getFemaleOccupiedLockerNumberQuery :: String
 getFemaleOccupiedLockerNumberQuery = "select count(*) from locker where gender = 'female'"
 
 getFemaleOccupiedLocker :: Connection -> Aff Unit
-getFemaleOccupiedLockerNumber conn = execute getFemaleOccupiedLockerNumberQuery conn
+getFemaleOccupiedLocker conn = execute_ getFemaleOccupiedLockerNumberQuery conn
 
-//esetleg a kettő helyett egy fgv és paraméterként a gender
+--esetleg a kettő helyett egy fgv és paraméterként a gender
 

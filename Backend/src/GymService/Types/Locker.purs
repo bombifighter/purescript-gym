@@ -9,7 +9,7 @@ import Data.Maybe (Maybe)
 newtype Locker = Locker
     { id   :: Int
     , gender :: String
-    , isFree :: Boolean
+    , isFree :: String
     }
 
 derive instance genericLocker :: Generic Locker _
@@ -31,7 +31,7 @@ getLockerId (Locker locker) = locker.id
 getLockerGender :: Locker -> String
 getLockerGender (Locker locker) = locker.gender
 
-getLockerStatus :: Locker -> Boolean
+getLockerStatus :: Locker -> String
 getLockerStatus (Locker locker) = locker.isFree
 
 setLockerId :: Int -> Locker -> Locker
@@ -40,5 +40,5 @@ setLockerId s (Locker locker) = Locker {id:s, gender:locker.gender, isFree:locke
 setLockerGender :: String -> Locker -> Locker
 setLockerGender s (Locker locker) = Locker {id:locker.id, gender:s, isFree:locker.isFree}
 
-setLockerStatus :: Boolean -> Locker -> Locker
+setLockerStatus :: String -> Locker -> Locker
 setLockerStatus s (Locker locker) = Locker {id:locker.id, gender:locker.gender, isFree:s}

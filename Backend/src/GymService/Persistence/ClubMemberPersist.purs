@@ -1,7 +1,6 @@
 module GymService.Persistence.ClubMember where
 
 import Prelude
-import Prelude
 import GymService.Types.ClubMember
 import MySQL.Connection (execute, query, query_, Connection)
 import MySQL.QueryValue (toQueryValue)
@@ -29,7 +28,7 @@ updateClubMemberQuery :: String
 updateClubMemberQuery = "update clubMember set guestId = ?, endDate = ? where id = ?"
 
 updateClubMember :: Int -> ClubMember -> Connection -> Aff Unit
-updateClubMember (ClubMember clubMember) conn = execute updateClubMemberQuery [toQueryValue clubMember.guestId, toQueryValue clubMember.endDate, toQueryValue clubMember.id] conn
+updateClubMember id (ClubMember clubMember) conn = execute updateClubMemberQuery [toQueryValue clubMember.guestId, toQueryValue clubMember.endDate, toQueryValue id] conn
 
 deleteClubMemberQuery :: String
 deleteClubMemberQuery = "delete from clubMember where id = ?"
