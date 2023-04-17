@@ -13,6 +13,7 @@
   , "posix-types"
   , "prelude"
   , "simple-json"
+  , "tuples"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
