@@ -1,6 +1,5 @@
-export default {
-    data() {
-        return { count: 0 }
-    },
-    template: `<div>count is {{ count }}</div>`
-}
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './routes.js'
+
+createApp(App).use(router).mount('#app')
