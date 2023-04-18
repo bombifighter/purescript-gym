@@ -1,0 +1,83 @@
+CREATE TABLE `guest` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `gender` varchar(45) NOT NULL,
+  `bdate` varchar(45) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
+  `email` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+
+CREATE TABLE `mydb`.`locker` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `gender` VARCHAR(6) NOT NULL,
+  `isFree` TINYINT NULL,
+  PRIMARY KEY (`id`));
+
+
+CREATE TABLE `mydb`.`membershiptype` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `isPass` TINYINT NOT NULL,
+  `occasions` INT NULL,
+  `fullPrice` INT NULL,
+  `studentPrice` INT NULL,
+  `clubPrice` INT NULL,
+  PRIMARY KEY (`id`));
+
+
+CREATE TABLE `mydb`.`clubmember` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `guestId` INT NULL,
+  `endDate` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `guestId_idx` (`guestId` ASC) VISIBLE,
+  CONSTRAINT `guestId`
+    FOREIGN KEY (`guestId`)
+    REFERENCES `mydb`.`guest` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+	
+	
+CREATE TABLE `mydb`.`guestlocker` (
+  `id` INT NOT NULL,
+  `guestId` INT NULL,
+  `lockerId` INT NULL,
+  `lockerGender` VARCHAR(45) NULL,
+  `startTime` VARCHAR(45) NULL,
+  `endTime` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `guestId_idx` (`guestId` ASC) VISIBLE,
+  INDEX `lockerId_idx` (`lockerId` ASC) VISIBLE,
+  CONSTRAINT `guestIdlocker`
+    FOREIGN KEY (`guestId`)
+    REFERENCES `mydb`.`guest` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `lockerIdlocker`
+    FOREIGN KEY (`lockerId`)
+    REFERENCES `mydb`.`locker` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE `mydb`.`membership` (
+  `id` INT NOT NULL,
+  `guestId` INT NULL,
+  `membershipTypeId` INT NULL,
+  `endDate` VARCHAR(45) NULL,
+  `occasionsLeft` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `guestIdmembership_idx` (`guestId` ASC) VISIBLE,
+  INDEX `membershipTypeIdmembership_idx` (`membershipTypeId` ASC) VISIBLE,
+  CONSTRAINT `guestIdmembership`
+    FOREIGN KEY (`guestId`)
+    REFERENCES `mydb`.`guest` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `membershipTypeIdmembership`
+    FOREIGN KEY (`membershipTypeId`)
+    REFERENCES `mydb`.`membershiptype` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
