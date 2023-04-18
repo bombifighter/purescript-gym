@@ -36,3 +36,9 @@ deleteMembershipQuery = "delete from membership where id = ?"
 
 deleteMembership :: Int -> Connection -> Aff Unit
 deleteMembership id conn = execute deleteMembershipQuery [toQueryValue id] conn
+
+getLastMemberIdQuery :: String
+getLastMemberIdQuery = "select ifnull(max(id),0) as lastId from membership"
+
+getLastMemberId :: Connection -> Aff (Array {lastId :: Int})
+getLastMemberId conn = query_ getLastMemberIdQuery conn

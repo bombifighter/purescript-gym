@@ -36,3 +36,9 @@ deleteGuestLockerQuery = "delete from guestlocker where id = ?"
 
 deleteGuestLocker :: Int -> Connection -> Aff Unit
 deleteGuestLocker id conn = execute deleteGuestLockerQuery [toQueryValue id] conn
+
+getUsedGuestLockersQuery :: String
+getUsedGuestLockersQuery = "select id, guestId, lockerId, lockerGender, startTime, endTime from guestlocker where endTime = 0"
+
+getUsedGuestLockers :: Connection -> Aff (Array GuestLocker)
+getUsedGuestLockers conn = query_ getUsedGuestLockersQuery conn

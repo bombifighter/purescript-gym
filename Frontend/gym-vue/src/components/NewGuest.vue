@@ -7,11 +7,14 @@
             </div>
             <div>
                 <label for="validationCustom02" class="form-label">Gender</label>
-                <input type="text" class="form-control" id="validationCustom02" v-model="guest.gender" required>
+                <select class="form-select" v-model="guest.gender">
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                </select>
             </div>
             <div>
                 <label for="validationCustomUsername" class="form-label">Birthdate</label>
-                <input type="text" class="form-control" id="validationCustomUsername" v-model="guest.bdate" required>
+                <VueDatePicker v-model="guest.bdate" :enable-time-picker="false" :format="'yyyy/MM/dd'"></VueDatePicker>
             </div>
             <div>
                 <label for="validationCustom03" class="form-label">Phone number</label>
@@ -32,7 +35,13 @@
 </template>
 
 <script>
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
 export default {
+    components: {
+        VueDatePicker
+    },
     data() {
         return {
             guest: { id: '', name: '', gender: '', bdate: '', phone: '', email: '' }

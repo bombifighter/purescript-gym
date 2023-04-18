@@ -9,11 +9,12 @@ CREATE TABLE `guest` (
 );
 
 
-CREATE TABLE `mydb`.`locker` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `gender` VARCHAR(6) NOT NULL,
-  `isFree` TINYINT NULL,
-  PRIMARY KEY (`id`));
+CREATE TABLE `locker` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `gender` varchar(6) NOT NULL,
+  `isFree` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`,`gender`)
+);
 
 
 CREATE TABLE `mydb`.`membershiptype` (
@@ -81,3 +82,105 @@ CREATE TABLE `mydb`.`membership` (
     REFERENCES `mydb`.`membershiptype` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('1', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('1', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('2', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('2', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('3', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('3', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('4', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('4', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('5', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('5', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('6', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('6', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('7', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('7', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('8', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('8', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('9', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('9', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('10', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('10', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('11', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('11', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('12', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('12', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('13', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('13', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('14', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('14', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('15', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('15', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('16', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('16', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('17', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('17', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('18', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('18', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('19', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('19', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('20', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('20', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('21', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('21', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('22', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('22', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('23', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('23', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('24', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('24', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('25', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('25', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('26', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('26', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('27', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('27', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('28', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('28', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('29', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('29', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('30', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('30', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('31', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('31', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('32', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('32', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('33', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('33', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('34', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('34', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('35', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('35', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('36', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('36', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('37', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('37', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('38', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('38', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('39', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('39', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('40', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('40', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('41', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('41', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('42', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('42', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('43', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('43', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('44', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('44', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('45', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('45', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('46', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('46', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('47', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('47', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('48', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('48', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('49', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('49', 'male', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('50', 'female', 'true');
+INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('50', 'male', 'true');

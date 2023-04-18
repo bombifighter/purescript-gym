@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^4.4.0",
+    "moment": "^2.29.4",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },

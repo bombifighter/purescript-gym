@@ -5,10 +5,14 @@ import GymService.Persistence.GuestPersist
 import GymService.Persistence.ClubMemberPersist
 import GymService.Persistence.MembershipPersist
 import GymService.Persistence.MembershipTypePersist
+import GymService.Persistence.LockerPersist
+import GymService.Persistence.GuestLockerPersist
 import GymService.Types.Guest
 import GymService.Types.ClubMember
 import GymService.Types.Membership
 import GymService.Types.MembershipType
+import GymService.Types.Locker
+import GymService.Types.GuestLocker
 import Prelude
 
 import HTTPure (Method(Get, Post, Put, Delete, Options), Request, ResponseM, badRequest', notFound', ok',(!!), (!@), toString)
@@ -137,6 +141,12 @@ router { method: Get, path }
               liftEffect $ closePool pool
               ok' corsHeader $ writeJSON memberships
 
+router { method: Get, path: [ "member", "getLastId" ] } = do
+  pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+  lastId <- flip withPool pool \conn -> getLastMemberId conn
+  liftEffect $ closePool pool
+  ok' corsHeader $ writeJSON lastId
+
 router { method: Get, path }
   | path !@ 0 == "membershipType" && path !@ 1 == "getMembershipById" && length path == 3 = do
       pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
@@ -169,6 +179,36 @@ router { body, method: Post, path }
           flip withPool pool \conn -> insertClubMember clubMember conn
           liftEffect $ closePool pool
           ok' corsHeader $ wrapMessageinJSON "Clubmember added"
+
+router { method: Get, path: [ "membershipTypes", "getAll" ] } = do
+  pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+  membershipTypes <- flip withPool pool \conn -> getMembershipTypes conn
+  liftEffect $ closePool pool
+  ok' corsHeader $ writeJSON membershipTypes
+
+router { body, method: Post, path }
+  | path !@ 0 == "membership" && path !@ 1 == "insertMembership" = do
+      pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+      requestBody <- toString body
+      let parsedBody = readMembershipJson requestBody
+      case parsedBody of
+        Nothing -> badRequest' corsHeader $ wrapMessageinJSON "The request body is not a valid membership"
+        Just membership -> do
+          flip withPool pool \conn -> insertMembership membership conn
+          liftEffect $ closePool pool
+          ok' corsHeader $ wrapMessageinJSON "Membership added"
+
+router { method: Get, path: [ "lockers", "getAll" ] } = do
+  pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+  lockers <- flip withPool pool \conn -> getLockers conn
+  liftEffect $ closePool pool
+  ok' corsHeader $ writeJSON lockers
+
+router { method: Get, path: [ "guestlocker", "getUsedGuestLockers" ] } = do
+  pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+  usedGuestLockers <- flip withPool pool \conn -> getUsedGuestLockers conn
+  liftEffect $ closePool pool
+  ok' corsHeader $ writeJSON usedGuestLockers
 
 router { method: Options } = do
   ok' corsMethodsHeaders "ok"
