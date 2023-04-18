@@ -5,6 +5,7 @@ import LockersPage from './pages/LockersPage.vue'
 import DashboardPage from './pages/DashboardPage.vue'
 import GuestDetailPage from './pages/GuestDetailPage.vue'
 import NewGuestPage from './pages/NewGuestPage.vue'
+import GuestMembershipPage from './pages/GuestMembershipPage.vue'
 
 
 const router = createRouter({
@@ -15,7 +16,8 @@ const router = createRouter({
         { path: '/guests', component: GuestsPage },
         { path: '/lockers', component: LockersPage },
         { path: '/guests/details/:id', component: GuestDetailPage },
-        { path: '/guests/newGuest', component: NewGuestPage }
+        { path: '/guests/newGuest', component: NewGuestPage },
+        { path: '/guests/guestMembership/:id', component: GuestMembershipPage }
     ]
 });
 

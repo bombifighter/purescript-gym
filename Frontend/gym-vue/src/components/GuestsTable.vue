@@ -23,6 +23,9 @@
                     <td>{{ guest.phone }}</td>
                     <td>{{ guest.email }}</td>
                     <td>
+                        <a id="passButton" :href="'/guests/guestMembership/' + guest.id"><i class="bi bi-journal"></i></a>
+                    </td>
+                    <td>
                         <a :href="'/guests/details/' + guest.id"><i class="bi bi-gear"></i></a>
                     </td>
                     <td><a id="deleteButton" @click="deleteUser(guest.id)"><i class="bi bi-trash"></i></a></td>
@@ -65,6 +68,10 @@ export default {
 #deleteButton {
     color: red;
     cursor: pointer;
+}
+
+#passButton {
+    color: green;
 }
 
 .buttonContainer a {

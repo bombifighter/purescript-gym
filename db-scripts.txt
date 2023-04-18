@@ -19,7 +19,7 @@ CREATE TABLE `mydb`.`locker` (
 CREATE TABLE `mydb`.`membershiptype` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `isPass` TINYINT NOT NULL,
+  `isPass` VARCHAR(10) NOT NULL,
   `occasions` INT NULL,
   `fullPrice` INT NULL,
   `studentPrice` INT NULL,

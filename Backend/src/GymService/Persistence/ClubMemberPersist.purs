@@ -1,4 +1,4 @@
-module GymService.Persistence.ClubMember where
+module GymService.Persistence.ClubMemberPersist where
 
 import Prelude
 import GymService.Types.ClubMember
@@ -7,7 +7,7 @@ import MySQL.QueryValue (toQueryValue)
 import Effect.Aff (Aff)
 
 findClubMemberQuery :: String
-findClubMemberQuery = "select id, guestId, endDate from clubmember where id = ?"
+findClubMemberQuery = "select id, guestId, endDate from clubmember where guestId = ?"
 
 findClubMember :: Int -> Connection -> Aff (Array ClubMember)
 findClubMember id conn = query findClubMemberQuery [toQueryValue id] conn
@@ -35,3 +35,9 @@ deleteClubMemberQuery = "delete from clubmember where id = ?"
 
 deleteClubMember :: Int -> Connection -> Aff Unit
 deleteClubMember id conn = execute deleteClubMemberQuery [toQueryValue id] conn
+
+getLastClubMemberIdQuery :: String
+getLastClubMemberIdQuery = "select max(id) as lastId from clubmember"
+
+getLastClubMemberId :: Connection -> Aff (Array {lastId :: Int})
+getLastClubMemberId conn = query_ getLastClubMemberIdQuery conn

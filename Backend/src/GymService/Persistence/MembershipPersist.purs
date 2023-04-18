@@ -8,7 +8,7 @@ import Effect.Aff (Aff)
 
 
 findMembershipQuery :: String
-findMembershipQuery = "select id, guestId, membershipTypeId, endDate, occasionsLeft from membership where id = ?"
+findMembershipQuery = "select id, guestId, membershipTypeId, endDate, occasionsLeft from membership where guestId = ?"
 
 findMembership :: Int -> Connection -> Aff (Array Membership)
 findMembership id conn = query findMembershipQuery [toQueryValue id] conn
