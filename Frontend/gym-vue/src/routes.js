@@ -4,6 +4,7 @@ import GuestsPage from './pages/GuestsPage.vue'
 import LockersPage from './pages/LockersPage.vue'
 import DashboardPage from './pages/DashboardPage.vue'
 import GuestDetailPage from './pages/GuestDetailPage.vue'
+import NewGuestPage from './pages/NewGuestPage.vue'
 
 
 const router = createRouter({
@@ -13,7 +14,8 @@ const router = createRouter({
         { path: '/dashboard', component: DashboardPage },
         { path: '/guests', component: GuestsPage },
         { path: '/lockers', component: LockersPage },
-        { path: '/guests/details/:id', component: GuestDetailPage }
+        { path: '/guests/details/:id', component: GuestDetailPage },
+        { path: '/guests/newGuest', component: NewGuestPage }
     ]
 });
 

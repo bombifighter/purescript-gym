@@ -37,3 +37,9 @@ deleteGuestQuery = "delete from guest where id = ?"
 
 deleteGuest :: Int -> Connection -> Aff Unit
 deleteGuest id conn = execute deleteGuestQuery [toQueryValue id] conn
+
+getLastGuestIdQuery :: String
+getLastGuestIdQuery = "select max(id) as lastId from guest"
+
+getLastGuestId :: Connection -> Aff (Array {lastId :: Int})
+getLastGuestId conn = query_ getLastGuestIdQuery conn

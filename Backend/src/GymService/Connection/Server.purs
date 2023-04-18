@@ -58,7 +58,7 @@ router { body, method: Post, path }
         Just guest -> do
           flip withPool pool \conn -> insertGuest guest conn
           liftEffect $ closePool pool
-          ok' corsHeader "Guest added"
+          ok' corsHeader $ wrapMessageinJSON "Guest added"
 
 router { body, method: Put, path }
   | path !@ 0 == "guest" && path !@ 1 == "updateGuest" && length path == 3 = do
@@ -94,6 +94,12 @@ router { method: Delete, path }
               flip withPool pool \conn -> deleteGuest id conn
               liftEffect $ closePool pool
               ok' corsHeader $ wrapMessageinJSON $ "Guest with id: " <> show id <> " deleted"
+
+router { method: Get, path: [ "guest", "getLastId" ] } = do
+  pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+  guestId <- flip withPool pool \conn -> getLastGuestId conn
+  liftEffect $ closePool pool
+  ok' corsHeader $ writeJSON guestId
 
 router { method: Options } = do
   ok' corsMethodsHeaders "ok"
