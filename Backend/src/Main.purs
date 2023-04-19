@@ -1,6 +1,8 @@
 module Main where
 
 import GymService.Connection.Server
+import GymService.Connection.DB
+import GymService.Persistence.LockerPersist
 import Prelude
 
 import Data.Array (length)
@@ -14,13 +16,20 @@ import HTTPure (Method(Get, Post, Put, Delete), Request, ResponseM, badRequest, 
 import MySQL.Pool (withPool, closePool, createPool, defaultPoolInfo)
 import Node.Process (onSignal)
 import Simple.JSON (writeJSON)
+import Effect.Aff
 
 
 main :: Effect Unit
 main = do
-  shutdown <- serve port router $ log $ "Server up running on port: " <> show port
-  let shutdownServer = do
+      {-shutdown <- serve port router $ log $ "Server up running on port: " <> show port
+      let shutdownServer = do
         log "Shutting down server..."
         shutdown $ log "Server shutdown."
-  onSignal SIGINT shutdownServer
-  onSignal SIGTERM shutdownServer
+      onSignal SIGINT shutdownServer
+      onSignal SIGTERM shutdownServer-}
+      launchAff_ do
+            pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+            flip withPool pool \conn -> do
+                  result <- getFreeGenderLocker "female" conn
+                  log $ show result
+            liftEffect $ closePool pool

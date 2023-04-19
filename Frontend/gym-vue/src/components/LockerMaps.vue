@@ -3,15 +3,17 @@
         <div class="femalesLockers">
             <h2>Females</h2>
             <div class="lockerIcons">
-                <a href="" v-for="locker in femaleLockers" :style="{ backgroundColor: calculateColor(locker.isFree) }">{{
-                    locker.id }}</a>
+                <a :href="'/lockers/history/female/' + locker.id" v-for="locker in femaleLockers"
+                    :style="{ backgroundColor: calculateColor(locker.isFree) }">{{
+                        locker.id }}</a>
             </div>
         </div>
         <div class="maleLockers">
             <h2>Males</h2>
             <div class="lockerIcons">
-                <a href="" v-for="locker in maleLockers" :style="{ backgroundColor: calculateColor(locker.isFree) }">{{
-                    locker.id }}</a>
+                <a :href="'/lockers/history/male/' + locker.id" v-for="locker in maleLockers"
+                    :style="{ backgroundColor: calculateColor(locker.isFree) }">{{
+                        locker.id }}</a>
             </div>
         </div>
     </div>

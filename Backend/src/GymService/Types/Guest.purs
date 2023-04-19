@@ -29,6 +29,9 @@ writeGuestJson = writeJSON
 readGuestJson :: String -> Maybe Guest
 readGuestJson = readJSON_
 
+readCheckinJson :: String -> Maybe { guestId :: Int, gender :: String, time :: String }
+readCheckinJson = readJSON_
+
 getGuestId :: Guest -> Int
 getGuestId (Guest guest) = guest.id
 

@@ -6,6 +6,7 @@ import DashboardPage from './pages/DashboardPage.vue'
 import GuestDetailPage from './pages/GuestDetailPage.vue'
 import NewGuestPage from './pages/NewGuestPage.vue'
 import GuestMembershipPage from './pages/GuestMembershipPage.vue'
+import LockerHistoryPage from './pages/LockerHistoryPage.vue'
 
 
 const router = createRouter({
@@ -17,7 +18,8 @@ const router = createRouter({
         { path: '/lockers', component: LockersPage },
         { path: '/guests/details/:id', component: GuestDetailPage },
         { path: '/guests/newGuest', component: NewGuestPage },
-        { path: '/guests/guestMembership/:id', component: GuestMembershipPage }
+        { path: '/guests/guestMembership/:id', component: GuestMembershipPage },
+        { path: '/lockers/history/:gender/:id', component: LockerHistoryPage }
     ]
 });
 

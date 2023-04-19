@@ -8,10 +8,10 @@ import Effect.Aff (Aff)
 
 
 findGuestLockerQuery :: String
-findGuestLockerQuery = "select id, guestId, lockerId, lockerGender, startTime, endTime from guestlocker where id = ?"
+findGuestLockerQuery = "select id, guestId, lockerId, lockerGender, startTime, endTime from guestlocker where lockerGender = ? and lockerId = ?"
 
-findGuestLocker :: Int -> Connection -> Aff (Array GuestLocker)
-findGuestLocker id conn = query findGuestLockerQuery [toQueryValue id] conn
+findGuestLocker :: String -> Int -> Connection -> Aff (Array GuestLocker)
+findGuestLocker gender id conn = query findGuestLockerQuery [toQueryValue gender, toQueryValue id] conn
 
 getGuestLockersQuery :: String
 getGuestLockersQuery = "select id, guestId, lockerId, lockerGender, startTime, endTime from guestlocker "
@@ -42,3 +42,9 @@ getUsedGuestLockersQuery = "select id, guestId, lockerId, lockerGender, startTim
 
 getUsedGuestLockers :: Connection -> Aff (Array GuestLocker)
 getUsedGuestLockers conn = query_ getUsedGuestLockersQuery conn
+
+getLastGuestLockerIdQuery :: String
+getLastGuestLockerIdQuery = "select ifnull(max(id),0) as lastId from guestlocker"
+
+getLastGuestLockerId :: Connection -> Aff (Array Int)
+getLastGuestLockerId conn = query_ getLastGuestLockerIdQuery conn

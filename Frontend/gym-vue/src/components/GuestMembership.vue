@@ -28,7 +28,7 @@
             <button class="btn btn-danger" @click.prevent="exit">Exit</button>
         </div>
         <div class="pageOverlay" :class="tableClasses">
-            <div class="membershipTable" :class="tableClasses">
+            <div class="membershipTable">
                 <a class="closeButton" @click="closeMembershipSelector"><i class="bi bi-x-circle"></i></a>
                 <table class="table">
                     <thead>
@@ -60,7 +60,6 @@
                 </table>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -108,7 +107,7 @@ export default {
             const memberships = await res.json()
             console.log(memberships);
             for (let membership of memberships) {
-                if (Date.parse(membership.endDate) >= Date.now()) {
+                if (Date.parse(membership.endDate) >= Date.now() && membership.occasionsLeft != 0) {
                     this.membershipStatus = 'active'
                     this.membershipEndDate = membership.endDate
                     const typeRes = await fetch(`http://localhost:3000/membershipType/getMembershipById/${membership.membershipTypeId}`)

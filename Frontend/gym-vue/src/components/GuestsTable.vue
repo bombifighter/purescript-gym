@@ -28,10 +28,17 @@
                     <td>
                         <a :href="'/guests/details/' + guest.id"><i class="bi bi-gear"></i></a>
                     </td>
-                    <td><a id="deleteButton" @click="deleteUser(guest.id)"><i class="bi bi-trash"></i></a></td>
+                    <td><a id="deleteButton" @click="openOverlay(guest.id)"><i class="bi bi-trash"></i></a></td>
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="pageOverlay" :class="confirmClasses">
+        <div class="confirmContainer">
+            <div>Are you sure you want to delete this user?</div>
+            <a @click="closeOverlay()">Cancel</a>
+            <a @click="deleteUser(userIdToDelete)">Confrim delete</a>
+        </div>
     </div>
 </template>
 
@@ -39,7 +46,9 @@
 export default {
     data() {
         return {
-            guests: []
+            guests: [],
+            userIdToDelete: 0,
+            confirmClasses: 'invisible'
         }
     },
     methods: {
@@ -56,6 +65,13 @@ export default {
             const data = await response.json()
             console.log(data)
             this.$router.go()
+        },
+        openOverlay(idToDelete) {
+            this.confirmClasses = 'visible'
+            this.userIdToDelete = idToDelete
+        },
+        closeOverlay() {
+            this.confirmClasses = 'invisible'
         }
     },
     created() {
@@ -83,5 +99,39 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.confirmContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 700px;
+    height: 600px;
+    margin-top: -300px;
+    margin-left: -350px;
+    background-color: whitesmoke;
+    padding: 30px;
+    border-radius: 30px;
+}
+
+.invisible {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.pageOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.confirmContainer a {
+    cursor: pointer;
 }
 </style>

@@ -7,10 +7,10 @@ import MySQL.QueryValue (toQueryValue)
 import Effect.Aff (Aff)
 
 findLockerQuery :: String
-findLockerQuery = "select id, gender, isFree from locker where id = ?"
+findLockerQuery = "select id, gender, isFree from locker where gender = ? and id = ?"
 
-findLocker :: Int -> Connection -> Aff (Array Locker)
-findLocker id conn = query findLockerQuery [toQueryValue id] conn
+findLocker ::  String -> Int -> Connection -> Aff (Array Locker)
+findLocker gender id conn = query findLockerQuery [toQueryValue gender, toQueryValue id] conn
 
 getLockersQuery :: String
 getLockersQuery = "select id, gender, isFree from locker"
@@ -48,5 +48,14 @@ getFemaleOccupiedLockerNumberQuery = "select count(*) from locker where gender =
 getFemaleOccupiedLocker :: Connection -> Aff Unit
 getFemaleOccupiedLocker conn = execute_ getFemaleOccupiedLockerNumberQuery conn
 
---esetleg a kettő helyett egy fgv és paraméterként a gender
+getFreeGenderLockerQuery :: String
+getFreeGenderLockerQuery = "SELECT id FROM locker WHERE gender = ? AND isFree = 'true' LIMIT 1"
 
+getFreeGenderLocker :: String -> Connection -> Aff (Array Int)
+getFreeGenderLocker gender conn = query getFreeGenderLockerQuery [toQueryValue gender] conn
+
+occupyLockerQuery :: String
+occupyLockerQuery = "UPDATE mydb.locker SET isFree = 'false' WHERE id = ? AND gender = ?"
+
+occupyLocker :: Int -> String -> Connection-> Aff Unit
+occupyLocker id gender conn = execute occupyLockerQuery [toQueryValue id, toQueryValue gender] conn

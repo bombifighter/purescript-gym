@@ -42,3 +42,15 @@ getLastMemberIdQuery = "select ifnull(max(id),0) as lastId from membership"
 
 getLastMemberId :: Connection -> Aff (Array {lastId :: Int})
 getLastMemberId conn = query_ getLastMemberIdQuery conn
+
+getOccasionsLeftQuery :: String
+getOccasionsLeftQuery = "select id, occasionsLeft from membership where guestId = ? and endDate >= ?"
+
+getOccasionsLeft :: Int -> String -> Connection -> Aff (Array { id :: Int, occasionsLeft :: Int})
+getOccasionsLeft guestId endDate conn = query getOccasionsLeftQuery [toQueryValue guestId, toQueryValue endDate] conn
+
+setOccasionsQuery :: String
+setOccasionsQuery = "update membership set occasionsLeft = ? where id = ?"
+
+setOccasions :: Int -> Int -> Connection -> Aff Unit
+setOccasions newOccasions id conn = execute setOccasionsQuery [toQueryValue newOccasions, toQueryValue id] conn
