@@ -73,4 +73,8 @@ export default {
     cursor: pointer;
     text-decoration: none;
 }
+
+.lockerIcons a:hover {
+    border: 3px solid black;
+}
 </style>

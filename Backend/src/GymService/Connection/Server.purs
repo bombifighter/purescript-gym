@@ -33,26 +33,13 @@ import Data.Formatter.DateTime (formatDateTime)
 import Partial.Unsafe (unsafePartial)
 import Effect.Now (nowDateTime)
 import Effect.Aff
+import Effect.Aff.Class
 import Effect
 import Effect.Unsafe
 import Effect.Class.Console (log)
+import Data.Maybe (Maybe(..))
 
-calculateTodayDate :: String
-calculateTodayDate = do
-  let date = unsafePerformEffect nowDateTime
-  let formatted = formatDateTime "YYYY/MM/DD" date
-  case formatted of
-    Left e -> e
-    Right d -> d
-
-calculateTodayDateWithTime :: String
-calculateTodayDateWithTime = do
-  let date = unsafePerformEffect nowDateTime
-  let formatted = formatDateTime "YYYY/MM/DD HH:mm" date
-  case formatted of
-    Left e -> e
-    Right d -> d
-
+  
 corsHeader :: Headers
 corsHeader = header "Access-Control-Allow-Origin" "*"
 
@@ -137,12 +124,16 @@ router { method: Get, path: [ "guest", "getActive" ] } = do
   liftEffect $ closePool pool
   ok' corsHeader $ writeJSON activeGuests
 
-router { method: Get, path: [ "guest", "getInactive" ] } = do
-  pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
-  let date = calculateTodayDate
-  inactiveGuests <- flip withPool pool \conn -> getInactiveGuests date conn
-  liftEffect $ closePool pool
-  ok' corsHeader $ writeJSON inactiveGuests
+router { method: Get, path } 
+  | path !@ 0 == "guest" && path !@ 1 == "getInactive" && length path == 3 = do
+      pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+      let lastParam = path !! 2
+      case lastParam of
+        Nothing -> badRequest' corsHeader $ wrapMessageinJSON "Missing date parameter"
+        Just date -> do
+          inactiveGuests <- flip withPool pool \conn -> getInactiveGuests date conn
+          liftEffect $ closePool pool
+          ok' corsHeader $ writeJSON inactiveGuests
 
 router { method: Get, path: [ "guest", "getLastId" ] } = do
   pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
@@ -306,10 +297,11 @@ router { body, method: Post, path: ["guest", "checkin"]} = do
               Nothing -> badRequest' corsHeader $ wrapMessageinJSON "Cannot get guestlocker ID"
               Just id -> do
                 let targetId = id.id + 1
-                let guestLocker = GuestLocker { id: targetId, guestId: checkin.guestId, lockerId: freeLocker.id, lockerGender: checkin.gender, startTime: calculateTodayDateWithTime, endTime: "0"}
+                let start = checkin.date <> " " <> checkin.time
+                let guestLocker = GuestLocker { id: targetId, guestId: checkin.guestId, lockerId: freeLocker.id, lockerGender: checkin.gender, startTime: start, endTime: "0"}
                 insertGuestLocker guestLocker conn
                 occupyLocker freeLocker.id checkin.gender conn
-                remainingOccasionsArray <- getOccasionsLeft checkin.guestId calculateTodayDate conn
+                remainingOccasionsArray <- getOccasionsLeft checkin.guestId checkin.date conn
                 let remainingOccasionsCandidate = index remainingOccasionsArray 0
                 case remainingOccasionsCandidate of
                   Nothing -> badRequest' corsHeader $ wrapMessageinJSON "Cannot get guestlocker remaining occasions"
@@ -328,8 +320,7 @@ router { body, method: Post, path: ["guest", "checkout"]} = do
     Nothing -> badRequest' corsHeader $ wrapMessageinJSON "The request body is not a valid checkout object"
     Just checkout -> do
       flip withPool pool \conn -> do
-        let endTime = calculateTodayDateWithTime
-        endGuestLocker endTime checkout.guestId checkout.lockerId checkout.gender conn
+        endGuestLocker checkout.dateTime checkout.guestId checkout.lockerId checkout.gender conn
         freeupLocker checkout.lockerId checkout.gender conn
         liftEffect $ closePool pool
         ok' corsHeader $ wrapMessageinJSON "Check-out successful"

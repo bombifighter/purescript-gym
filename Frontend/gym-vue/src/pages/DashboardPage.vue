@@ -59,12 +59,15 @@ export default {
     },
     methods: {
         async getInactiveGuests() {
-            const res = await fetch("http://localhost:3000/guest/getInactive");
+            const date = encodeURIComponent(moment().format("YYYY/MM/DD"))
+            const res = await fetch(`http://localhost:3000/guest/getInactive/${date}`);
             const data = await res.json();
             this.inactiveGuests = data;
         },
         async checkinGuest(guestId, gender) {
-            const checkin = { guestId: guestId, gender: gender }
+            const date = moment().format("YYYY/MM/DD")
+            const time = moment().format("HH:mm")
+            const checkin = { guestId: guestId, gender: gender, date: date, time: time }
             const options = {
                 method: "POST",
                 header: { "Content-Type": "application/json" },

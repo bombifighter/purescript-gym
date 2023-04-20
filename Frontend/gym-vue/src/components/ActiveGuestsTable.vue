@@ -38,7 +38,8 @@ export default {
             this.activeGuests = data;
         },
         async checkoutGuest(guestId, gender, lockerId) {
-            const checkout = { guestId: guestId, gender: gender, lockerId: lockerId }
+            const dateTime = moment().format("YYYY/MM/DD HH:mm")
+            const checkout = { guestId: guestId, gender: gender, lockerId: lockerId, dateTime: dateTime }
             const options = {
                 method: "POST",
                 header: { "Content-Type": "application/json" },
