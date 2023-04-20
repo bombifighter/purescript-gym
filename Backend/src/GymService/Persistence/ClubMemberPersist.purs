@@ -37,7 +37,7 @@ deleteClubMember :: Int -> Connection -> Aff Unit
 deleteClubMember guestId conn = execute deleteClubMemberQuery [toQueryValue guestId] conn
 
 getLastClubMemberIdQuery :: String
-getLastClubMemberIdQuery = "select max(id) as lastId from clubmember"
+getLastClubMemberIdQuery = "select ifnull(max(id),0) as lastId from clubmember"
 
 getLastClubMemberId :: Connection -> Aff (Array {lastId :: Int})
 getLastClubMemberId conn = query_ getLastClubMemberIdQuery conn
