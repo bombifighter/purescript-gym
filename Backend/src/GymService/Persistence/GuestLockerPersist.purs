@@ -8,7 +8,7 @@ import Effect.Aff (Aff)
 
 
 findGuestLockerQuery :: String
-findGuestLockerQuery = "select id, guestId, lockerId, lockerGender, startTime, endTime from guestlocker where lockerGender = ? and lockerId = ?"
+findGuestLockerQuery = "select id, guestId, lockerId, lockerGender, startTime, endTime from guestlocker where lockerGender = ? and lockerId = ? order by startTime desc"
 
 findGuestLocker :: String -> Int -> Connection -> Aff (Array GuestLocker)
 findGuestLocker gender id conn = query findGuestLockerQuery [toQueryValue gender, toQueryValue id] conn
@@ -38,13 +38,19 @@ deleteGuestLocker :: Int -> Connection -> Aff Unit
 deleteGuestLocker id conn = execute deleteGuestLockerQuery [toQueryValue id] conn
 
 getUsedGuestLockersQuery :: String
-getUsedGuestLockersQuery = "select id, guestId, lockerId, lockerGender, startTime, endTime from guestlocker where endTime = 0"
+getUsedGuestLockersQuery = "select id, guestId, lockerId, lockerGender, startTime, endTime from guestlocker where endTime = '0'"
 
 getUsedGuestLockers :: Connection -> Aff (Array GuestLocker)
 getUsedGuestLockers conn = query_ getUsedGuestLockersQuery conn
 
 getLastGuestLockerIdQuery :: String
-getLastGuestLockerIdQuery = "select ifnull(max(id),0) as lastId from guestlocker"
+getLastGuestLockerIdQuery = "select ifnull(max(id),0) as id from guestlocker"
 
-getLastGuestLockerId :: Connection -> Aff (Array Int)
+getLastGuestLockerId :: Connection -> Aff (Array { id :: Int })
 getLastGuestLockerId conn = query_ getLastGuestLockerIdQuery conn
+
+endGuestLockerQuery :: String
+endGuestLockerQuery = "update guestlocker set endTime = ? where guestId = ? and lockerId = ? and lockerGender = ? and endTime = '0'"
+
+endGuestLocker :: String -> Int -> Int -> String -> Connection -> Aff Unit
+endGuestLocker newEndTime guestId lockerId lockerGender conn = execute endGuestLockerQuery [toQueryValue newEndTime, toQueryValue guestId, toQueryValue lockerId, toQueryValue lockerGender] conn

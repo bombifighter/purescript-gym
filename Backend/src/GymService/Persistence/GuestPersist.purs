@@ -51,7 +51,7 @@ getActiveGuests :: Connection -> Aff (Array {guestId :: Int, guestName :: String
 getActiveGuests conn = query_ getActiveGuestsQuery conn
 
 getInactiveGuestsQuery :: String
-getInactiveGuestsQuery = "SELECT g.id as guestId, g.name as guestName, g.gender as gender, g.bdate as bdate FROM guest as g INNER JOIN membership as m ON g.id = m.guestId WHERE m.endDate >= ? AND NOT m.occasionsLeft = 0;"
+getInactiveGuestsQuery = "SELECT g.id as guestId, g.name as guestName, g.gender as gender, g.bdate as bdate FROM guest as g INNER JOIN membership as m ON g.id = m.guestId WHERE m.endDate >= ? AND NOT m.occasionsLeft = 0 AND NOT g.id IN (SELECT distinct guestId FROM mydb.guestlocker WHERE endTime = '0')"
 
 getInactiveGuests :: String -> Connection -> Aff (Array {guestId :: Int, guestName :: String, gender :: String, bdate :: String})
 getInactiveGuests dateToCheck conn = query getInactiveGuestsQuery [toQueryValue dateToCheck] conn

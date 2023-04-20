@@ -30,7 +30,8 @@
                         <td>{{ guest.guestName }}</td>
                         <td>{{ guest.gender }}</td>
                         <td>{{ guest.bdate }}</td>
-                        <td><button class="btn btn-success" @click.prevent="checkinGuest(guest.guestId)">Check-in</button>
+                        <td><button class="btn btn-success"
+                                @click.prevent="checkinGuest(guest.guestId, guest.gender)">Check-in</button>
                         </td>
                     </tr>
                 </tbody>
@@ -58,12 +59,20 @@ export default {
     },
     methods: {
         async getInactiveGuests() {
-            const date = encodeURIComponent(moment().format("YYYY/MM/DD"))
-            const res = await fetch(`http://localhost:3000/guest/getInactive/${date}`);
+            const res = await fetch("http://localhost:3000/guest/getInactive");
             const data = await res.json();
             this.inactiveGuests = data;
         },
-        async checkinGuest(guestId) {
+        async checkinGuest(guestId, gender) {
+            const checkin = { guestId: guestId, gender: gender }
+            const options = {
+                method: "POST",
+                header: { "Content-Type": "application/json" },
+                body: JSON.stringify(checkin)
+            }
+            const res = await fetch("http://localhost:3000/guest/checkin", options)
+            const data = await res.json()
+            console.log(data);
             this.$router.go()
         },
         openOverlay() {

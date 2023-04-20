@@ -51,11 +51,17 @@ getFemaleOccupiedLocker conn = execute_ getFemaleOccupiedLockerNumberQuery conn
 getFreeGenderLockerQuery :: String
 getFreeGenderLockerQuery = "SELECT id FROM locker WHERE gender = ? AND isFree = 'true' LIMIT 1"
 
-getFreeGenderLocker :: String -> Connection -> Aff (Array Int)
+getFreeGenderLocker :: String -> Connection -> Aff (Array { id :: Int })
 getFreeGenderLocker gender conn = query getFreeGenderLockerQuery [toQueryValue gender] conn
 
 occupyLockerQuery :: String
-occupyLockerQuery = "UPDATE mydb.locker SET isFree = 'false' WHERE id = ? AND gender = ?"
+occupyLockerQuery = "UPDATE locker SET isFree = 'false' WHERE id = ? AND gender = ?"
 
 occupyLocker :: Int -> String -> Connection-> Aff Unit
 occupyLocker id gender conn = execute occupyLockerQuery [toQueryValue id, toQueryValue gender] conn
+
+freeupLockerQuery :: String
+freeupLockerQuery = "UPDATE locker SET isFree = 'true' WHERE id = ? AND gender = ?"
+
+freeupLocker :: Int -> String -> Connection -> Aff Unit
+freeupLocker id gender conn = execute freeupLockerQuery [toQueryValue id, toQueryValue gender] conn

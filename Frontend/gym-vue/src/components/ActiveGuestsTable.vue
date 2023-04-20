@@ -17,7 +17,8 @@
                 <td>{{ guest.gender }}</td>
                 <td>{{ guest.lockerId }}</td>
                 <td>{{ guest.startTime }}</td>
-                <td><button class="btn btn-danger" @click.prevent="checkoutGuest">Check-out</button></td>
+                <td><button class="btn btn-danger"
+                        @click.prevent="checkoutGuest(guest.guestId, guest.gender, guest.lockerId)">Check-out</button></td>
             </tr>
         </tbody>
     </table>
@@ -27,18 +28,26 @@
 export default {
     data() {
         return {
-            activeGuests: [],
-            inactiveGuests: []
+            activeGuests: []
         }
     },
     methods: {
         async getActiveGuests() {
-            const res = await fetch("http://localhost:3000/guest/getActive");
-            const data = await res.json();
+            const res = await fetch("http://localhost:3000/guest/getActive")
+            const data = await res.json()
             this.activeGuests = data;
         },
-        async checkoutGuest() {
-
+        async checkoutGuest(guestId, gender, lockerId) {
+            const checkout = { guestId: guestId, gender: gender, lockerId: lockerId }
+            const options = {
+                method: "POST",
+                header: { "Content-Type": "application/json" },
+                body: JSON.stringify(checkout)
+            }
+            const res = await fetch("http://localhost:3000/guest/checkout", options)
+            const data = await res.json()
+            console.log(data);
+            this.$router.go()
         }
     },
     created() {

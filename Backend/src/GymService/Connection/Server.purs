@@ -45,6 +45,14 @@ calculateTodayDate = do
     Left e -> e
     Right d -> d
 
+calculateTodayDateWithTime :: String
+calculateTodayDateWithTime = do
+  let date = unsafePerformEffect nowDateTime
+  let formatted = formatDateTime "YYYY/MM/DD HH:mm" date
+  case formatted of
+    Left e -> e
+    Right d -> d
+
 corsHeader :: Headers
 corsHeader = header "Access-Control-Allow-Origin" "*"
 
@@ -129,16 +137,12 @@ router { method: Get, path: [ "guest", "getActive" ] } = do
   liftEffect $ closePool pool
   ok' corsHeader $ writeJSON activeGuests
 
-router { method: Get, path }
-  | path !@ 0 == "guest" && path !@ 1 == "getInactive" && length path == 3 = do
-      pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
-      let dateParam = path !! 2
-      case dateParam of
-        Nothing -> badRequest' corsHeader $ wrapMessageinJSON "Missing date parameter"
-        Just date -> do
-          inactiveGuests <- flip withPool pool \conn -> getInactiveGuests date conn
-          liftEffect $ closePool pool
-          ok' corsHeader $ writeJSON inactiveGuests
+router { method: Get, path: [ "guest", "getInactive" ] } = do
+  pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+  let date = calculateTodayDate
+  inactiveGuests <- flip withPool pool \conn -> getInactiveGuests date conn
+  liftEffect $ closePool pool
+  ok' corsHeader $ writeJSON inactiveGuests
 
 router { method: Get, path: [ "guest", "getLastId" ] } = do
   pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
@@ -291,27 +295,21 @@ router { body, method: Post, path: ["guest", "checkin"]} = do
     Nothing -> badRequest' corsHeader $ wrapMessageinJSON "The request body is not a valid checkin object"
     Just checkin -> do
       flip withPool pool \conn -> do
-        log $ "Checkin gender: " <> show checkin.gender -- EDDIG JÓ
         result <- getFreeGenderLocker checkin.gender conn
-        log $ "Result: " <> show result
         let singleResult = index result 0
-        log $ "Single result: " <> show singleResult
         case singleResult of
           Nothing -> badRequest' corsHeader $ wrapMessageinJSON "No free locker left"
           Just freeLocker -> do
-            lastId <- getLastGuestLockerId conn
-            log $ "Last guestlocker ID: " <> show lastId
-            let newId = index lastId 0
-            log $ "Single guestlocker ID: " <> show newId
+            lastGuestLocker <- getLastGuestLockerId conn
+            let newId = index lastGuestLocker 0
             case newId of
               Nothing -> badRequest' corsHeader $ wrapMessageinJSON "Cannot get guestlocker ID"
               Just id -> do
-                let targetId = id + 1
-                let guestLocker = GuestLocker { id: targetId, guestId: checkin.guestId, lockerId: freeLocker, lockerGender: checkin.gender, startTime: checkin.time, endTime: "0"}
+                let targetId = id.id + 1
+                let guestLocker = GuestLocker { id: targetId, guestId: checkin.guestId, lockerId: freeLocker.id, lockerGender: checkin.gender, startTime: calculateTodayDateWithTime, endTime: "0"}
                 insertGuestLocker guestLocker conn
-                occupyLocker freeLocker checkin.gender conn
-                let now = calculateTodayDate
-                remainingOccasionsArray <- getOccasionsLeft checkin.guestId now conn
+                occupyLocker freeLocker.id checkin.gender conn
+                remainingOccasionsArray <- getOccasionsLeft checkin.guestId calculateTodayDate conn
                 let remainingOccasionsCandidate = index remainingOccasionsArray 0
                 case remainingOccasionsCandidate of
                   Nothing -> badRequest' corsHeader $ wrapMessageinJSON "Cannot get guestlocker remaining occasions"
@@ -320,8 +318,21 @@ router { body, method: Post, path: ["guest", "checkin"]} = do
                     then setOccasions (remainingOccasions.occasionsLeft - 1) remainingOccasions.id conn
                     else pure unit
                     liftEffect $ closePool pool
-                    ok' corsHeader "Checkin successful"
+                    ok' corsHeader $ wrapMessageinJSON "Check-in successful"
 
+router { body, method: Post, path: ["guest", "checkout"]} = do
+  pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+  requestBody <- toString body
+  let parsedBody = readCheckoutJson requestBody
+  case parsedBody of
+    Nothing -> badRequest' corsHeader $ wrapMessageinJSON "The request body is not a valid checkout object"
+    Just checkout -> do
+      flip withPool pool \conn -> do
+        let endTime = calculateTodayDateWithTime
+        endGuestLocker endTime checkout.guestId checkout.lockerId checkout.gender conn
+        freeupLocker checkout.lockerId checkout.gender conn
+        liftEffect $ closePool pool
+        ok' corsHeader $ wrapMessageinJSON "Check-out successful"
 
 router { method: Options } = do
   ok' corsMethodsHeaders "ok"
