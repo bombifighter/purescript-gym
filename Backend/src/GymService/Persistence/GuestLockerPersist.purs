@@ -1,7 +1,7 @@
 module GymService.Persistence.GuestLockerPersist where
 
-import Prelude
-import GymService.Types.GuestLocker
+import Prelude (Unit)
+import GymService.Types.GuestLocker (GuestLocker(..))
 import MySQL.Connection (execute, query, query_, Connection)
 import MySQL.QueryValue (toQueryValue)
 import Effect.Aff (Aff)
@@ -29,13 +29,13 @@ updateGuestLockerQuery :: String
 updateGuestLockerQuery = "update guestlocker set guestId = ?, lockerId = ?, lockerGender = ?, startTime = ?, endTime = ? where id = ?"
 
 updateGuestLocker :: Int -> GuestLocker -> Connection -> Aff Unit
-updateGuestLocker id (GuestLocker guestLocker) conn = execute updateGuestLockerQuery [toQueryValue guestLocker.id, toQueryValue guestLocker.guestId, toQueryValue guestLocker.lockerId, toQueryValue guestLocker.lockerGender, toQueryValue guestLocker.startTime, toQueryValue guestLocker.endTime] conn
+updateGuestLocker id (GuestLocker guestLocker) conn = execute updateGuestLockerQuery [toQueryValue guestLocker.id, toQueryValue guestLocker.guestId, toQueryValue guestLocker.lockerId, toQueryValue guestLocker.lockerGender, toQueryValue guestLocker.startTime, toQueryValue guestLocker.endTime, toQueryValue id] conn
 
 deleteGuestLockerQuery :: String
-deleteGuestLockerQuery = "delete from guestlocker where id = ?"
+deleteGuestLockerQuery = "delete from guestlocker where guestId = ?"
 
 deleteGuestLocker :: Int -> Connection -> Aff Unit
-deleteGuestLocker id conn = execute deleteGuestLockerQuery [toQueryValue id] conn
+deleteGuestLocker guestId conn = execute deleteGuestLockerQuery [toQueryValue guestId] conn
 
 getUsedGuestLockersQuery :: String
 getUsedGuestLockersQuery = "select id, guestId, lockerId, lockerGender, startTime, endTime from guestlocker where endTime = '0'"

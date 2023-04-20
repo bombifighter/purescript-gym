@@ -1,20 +1,13 @@
 module Main where
 
-import GymService.Connection.Server
-import Prelude
+import GymService.Connection.Server (port, router)
+import Prelude (Unit, bind, discard, show, ($), (<>))
 
-import Data.Array (length)
-import Data.Int (fromString)
-import Data.Maybe (Maybe(Nothing, Just))
 import Data.Posix.Signal (Signal(SIGINT, SIGTERM))
 import Effect (Effect)
-import Effect.Class (liftEffect)
 import Effect.Class.Console (log)
-import HTTPure (Method(Get, Post, Put, Delete), Request, ResponseM, badRequest, notFound, ok, serve, (!!), (!@), toString)
-import MySQL.Pool (withPool, closePool, createPool, defaultPoolInfo)
+import HTTPure (serve)
 import Node.Process (onSignal)
-import Simple.JSON (writeJSON)
-import Effect.Aff
 
 
 main :: Effect Unit

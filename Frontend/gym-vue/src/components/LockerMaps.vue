@@ -4,7 +4,7 @@
             <h2>Females</h2>
             <div class="lockerIcons">
                 <a :href="'/lockers/history/female/' + locker.id" v-for="locker in femaleLockers"
-                    :style="{ backgroundColor: calculateColor(locker.isFree) }">{{
+                    :class="calculateColor(locker.isFree)">{{
                         locker.id }}</a>
             </div>
         </div>
@@ -12,7 +12,7 @@
             <h2>Males</h2>
             <div class="lockerIcons">
                 <a :href="'/lockers/history/male/' + locker.id" v-for="locker in maleLockers"
-                    :style="{ backgroundColor: calculateColor(locker.isFree) }">{{
+                    :class="calculateColor(locker.isFree)">{{
                         locker.id }}</a>
             </div>
         </div>
@@ -35,7 +35,7 @@ export default {
             this.maleLockers = data.filter(locker => locker.gender == 'male');
         },
         calculateColor(isFree) {
-            return isFree == 'true' ? "green" : "red"
+            return isFree == 'true' ? "freeLocker" : "occupiedLocker"
         }
     },
     created() {
@@ -53,11 +53,19 @@ export default {
 .femalesLockers,
 .maleLockers {
     width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.maleLockers {
+    border-left: 2px solid #354649;
 }
 
 .lockerIcons {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .lockerIcons a {
@@ -72,9 +80,22 @@ export default {
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
+    border: 2px solid #354649;
 }
 
-.lockerIcons a:hover {
-    border: 3px solid black;
+.lockerIcons a.freeLocker {
+    background-color: #A3C6C4;
+}
+
+.lockerIcons a.occupiedLocker {
+    background-color: #b98585;
+}
+
+.lockerIcons a.freeLocker:hover {
+    background-color: #799997;
+}
+
+.lockerIcons a.occupiedLocker:hover {
+    background-color: #8d6565;
 }
 </style>

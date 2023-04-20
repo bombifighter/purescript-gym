@@ -1,7 +1,7 @@
 module GymService.Persistence.MembershipPersist where
 
-import Prelude
-import GymService.Types.Membership
+import Prelude (Unit)
+import GymService.Types.Membership (Membership(..))
 import MySQL.Connection (execute, query, query_, Connection)
 import MySQL.QueryValue (toQueryValue)
 import Effect.Aff (Aff)
@@ -29,13 +29,13 @@ updateMembershipQuery :: String
 updateMembershipQuery = "update membership set guestId = ?, membershipTypeId = ?, endDate = ?, occasionsLeft = ? where id = ?"
 
 updateMembership :: Int -> Membership -> Connection -> Aff Unit
-updateMembership id (Membership membership) conn = execute updateMembershipQuery [toQueryValue membership.id, toQueryValue membership.guestId, toQueryValue membership.membershipTypeId, toQueryValue membership.endDate, toQueryValue membership.occasionsLeft] conn
+updateMembership id (Membership membership) conn = execute updateMembershipQuery [toQueryValue membership.id, toQueryValue membership.guestId, toQueryValue membership.membershipTypeId, toQueryValue membership.endDate, toQueryValue membership.occasionsLeft, toQueryValue id] conn
 
 deleteMembershipQuery :: String
-deleteMembershipQuery = "delete from membership where id = ?"
+deleteMembershipQuery = "delete from membership where guestId = ?"
 
 deleteMembership :: Int -> Connection -> Aff Unit
-deleteMembership id conn = execute deleteMembershipQuery [toQueryValue id] conn
+deleteMembership guestId conn = execute deleteMembershipQuery [toQueryValue guestId] conn
 
 getLastMemberIdQuery :: String
 getLastMemberIdQuery = "select ifnull(max(id),0) as lastId from membership"

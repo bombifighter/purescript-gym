@@ -1,7 +1,7 @@
 module GymService.Persistence.ClubMemberPersist where
 
-import Prelude
-import GymService.Types.ClubMember
+import Prelude (Unit)
+import GymService.Types.ClubMember (ClubMember(..))
 import MySQL.Connection (execute, query, query_, Connection)
 import MySQL.QueryValue (toQueryValue)
 import Effect.Aff (Aff)
@@ -31,10 +31,10 @@ updateClubMember :: Int -> ClubMember -> Connection -> Aff Unit
 updateClubMember id (ClubMember clubMember) conn = execute updateClubMemberQuery [toQueryValue clubMember.guestId, toQueryValue clubMember.endDate, toQueryValue id] conn
 
 deleteClubMemberQuery :: String
-deleteClubMemberQuery = "delete from clubmember where id = ?"
+deleteClubMemberQuery = "delete from clubmember where guestId = ?"
 
 deleteClubMember :: Int -> Connection -> Aff Unit
-deleteClubMember id conn = execute deleteClubMemberQuery [toQueryValue id] conn
+deleteClubMember guestId conn = execute deleteClubMemberQuery [toQueryValue guestId] conn
 
 getLastClubMemberIdQuery :: String
 getLastClubMemberIdQuery = "select max(id) as lastId from clubmember"

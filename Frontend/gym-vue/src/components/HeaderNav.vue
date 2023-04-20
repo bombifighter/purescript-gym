@@ -12,3 +12,19 @@
         </div>
     </nav>
 </template>
+
+<style scoped>
+nav {
+    background-color: #6C7A89 !important;
+    position: sticky;
+}
+
+.nav-link {
+    color: #E0E7E9;
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: #A3C6C4;
+}
+</style>

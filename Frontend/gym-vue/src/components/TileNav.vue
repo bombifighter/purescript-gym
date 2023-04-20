@@ -16,7 +16,7 @@
 .container {
     width: 50vw;
     display: flex;
-    gap: 20px;
+    gap: 50px;
     justify-content: space-between;
 }
 
@@ -27,13 +27,19 @@
 }
 
 .container a {
-    width: 100%;
+    width: 20vh;
     height: 20vh;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    color: white;
-    background-color: green;
+    color: #E0E7E9;
+    background-color: #6C7A89;
+    font-size: large;
+    border: 3px solid #354649;
+}
+
+.container a:hover {
+    background-color: #354649;
 }
 </style>

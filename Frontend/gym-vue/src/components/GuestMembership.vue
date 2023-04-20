@@ -1,41 +1,65 @@
 <template>
-    <div class="container">
+    <div class="statusContainer">
         <h2>{{ guest.name }}</h2>
-        <div class="clubContainer">
-            <p>Club Membership Status</p>
-            <p>{{ clubStatus }}</p>
-            <p v-if="clubStatusEnd">End date: {{ clubStatusEnd }}</p>
-            <div v-if="clubStatus == 'inactive'">
-                <button class="btn btn-success" @click.prevent="addClubMemberShip"><i class="bi bi-plus-circle"></i>Add Club
-                    Membership</button>
-            </div>
-        </div>
-        <div class="membershipContainer">
-            <p>Membership Status</p>
-            <p>{{ membershipStatus }}</p>
-            <div v-if="membershipStatus == 'active'" class="membershipData">
-                <p>Name: {{ membershipName }}</p>
-                <p>Type: {{ membershipType }}</p>
-                <p>End Date: {{ membershipEndDate }}</p>
-                <p v-if="membershipType == 'occasional'"> Occasions left: {{ occasionsLeft }}</p>
-            </div>
-            <div v-if="membershipStatus == 'inactive'">
-                <button class="btn btn-success" @click.prevent="openMembershipSelector"><i class="bi bi-plus-circle"></i>Add
-                    Membership</button>
-            </div>
+        <div class="statusTableWrapper">
+            <table class="statusTable">
+                <tbody>
+                    <tr>
+                        <td>Club Membership Status:</td>
+                        <td>{{ clubStatus }}</td>
+                    </tr>
+                    <tr v-if="clubStatusEnd">
+                        <td>End date:</td>
+                        <td>{{ clubStatusEnd }}</td>
+                    </tr>
+                    <tr v-if="clubStatus == 'inactive'">
+                        <td colspan="2" class="buttonCell"><button class="btn btnAdd" @click.prevent="addClubMemberShip"><i
+                                    class="bi bi-plus-circle"></i> Add
+                                Club
+                                Membership</button></td>
+                    </tr>
+                    <tr class="dividerRow">
+                        <td>Membership Status:</td>
+                        <td>{{ clubStatus }}</td>
+                    </tr>
+                    <tr v-if="membershipStatus == 'active'">
+                        <td>Name:</td>
+                        <td>{{ membershipName }}</td>
+                    </tr>
+                    <tr v-if="membershipStatus == 'active'">
+                        <td>Type:</td>
+                        <td>{{ membershipType }}</td>
+                    </tr>
+                    <tr v-if="membershipStatus == 'active'">
+                        <td>End Date:</td>
+                        <td>{{ membershipEndDate }}</td>
+                    </tr>
+                    <tr v-if="membershipType == 'occasional' && membershipStatus == 'active'">
+                        <td>Occasions left:</td>
+                        <td>{{ occasionsLeft }}</td>
+                    </tr>
+                    <tr v-if="membershipStatus == 'inactive'">
+                        <td colspan="2" class="buttonCell"><button class="btn btnAdd"
+                                @click.prevent="openMembershipSelector"><i class="bi bi-plus-circle"></i> Add
+                                Membership</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div>
-            <button class="btn btn-danger" @click.prevent="exit">Exit</button>
+            <button class="btn btnExit" @click.prevent="exit">Exit</button>
         </div>
         <div class="pageOverlay" :class="tableClasses">
             <div class="membershipTable">
-                <a class="closeButton" @click="closeMembershipSelector"><i class="bi bi-x-circle"></i></a>
-                <table class="table">
+                <div class="closeButtonContainer">
+                    <a class="closeButton" @click="closeMembershipSelector"><i class="bi bi-x-circle"></i></a>
+                </div>
+                <table class="table priceTable">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Type</th>
-                            <th v-if="membershipType.isPass == 'false'" scope="col">Occasions</th>
+                            <th scope="col">Occasions</th>
                             <th v-if="clubStatus == 'inactive'" scope="col">Full price</th>
                             <th v-if="clubStatus == 'inactive'" scope="col">Student price</th>
                             <th v-if="clubStatus == 'active'" scope="col">Club price</th>
@@ -45,16 +69,16 @@
                         <tr v-for="membershipType in membershipTypes">
                             <td>{{ membershipType.name }}</td>
                             <td>{{ calculatePasstype(membershipType.isPass) }}</td>
-                            <td v-if="membershipType.isPass == 'false'">{{ membershipType.occasions }}</td>
-                            <td v-if="clubStatus == 'inactive'"><a class="priceButton"
-                                    @click="addMembership(membershipType.id, membershipType.occasions, 30)">{{
-                                        membershipType.fullPrice }}</a></td>
-                            <td v-if="clubStatus == 'inactive'"><a class="priceButton"
-                                    @click="addMembership(membershipType.id, membershipType.occasions, 30)">{{
-                                        membershipType.studentPrice }}</a></td>
-                            <td v-if="clubStatus == 'active'"><a class="priceButton"
-                                    @click="addMembership(membershipType.id, membershipType.occasions, 30)">{{
-                                        membershipType.clubPrice }}</a></td>
+                            <td>{{ getOccasions(membershipType.isPass, membershipType.occasions) }}</td>
+                            <td v-if="clubStatus == 'inactive'"><button class="btn btnAdd"
+                                    @click.prevent="addMembership(membershipType.id, membershipType.occasions, 30)">{{
+                                        membershipType.fullPrice }}</button></td>
+                            <td v-if="clubStatus == 'inactive'"><button class="btn btnAdd"
+                                    @click.prevent="addMembership(membershipType.id, membershipType.occasions, 30)">{{
+                                        membershipType.studentPrice }}</button></td>
+                            <td v-if="clubStatus == 'active'"><button class="btn btnAdd"
+                                    @click.prevent="addMembership(membershipType.id, membershipType.occasions, 30)">{{
+                                        membershipType.clubPrice }}</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -94,7 +118,6 @@ export default {
         async getClubStatus() {
             const res = await fetch(`http://localhost:3000/clubmember/findMembershipsById/${this.selectedGuestId}`)
             const clubMemberships = await res.json()
-            console.log(clubMemberships);
             for (let clubMembership of clubMemberships) {
                 if (Date.parse(clubMembership.endDate) >= Date.now()) {
                     this.clubStatus = 'active'
@@ -105,7 +128,6 @@ export default {
         async getMembershipStatus() {
             const res = await fetch(`http://localhost:3000/member/findMembershipsById/${this.selectedGuestId}`)
             const memberships = await res.json()
-            console.log(memberships);
             for (let membership of memberships) {
                 if (Date.parse(membership.endDate) >= Date.now() && membership.occasionsLeft != 0) {
                     this.membershipStatus = 'active'
@@ -133,8 +155,6 @@ export default {
             }
             const response = await fetch("http://localhost:3000/membership/insertMembership", options)
             const data = await response.json()
-            console.log(data)
-            // TODO - close dialog
             this.$router.go()
         },
         async addClubMemberShip() {
@@ -142,7 +162,6 @@ export default {
             const newEndDate = await this.calculateEndDate(30)
 
             const newClubmembership = { id: newId, guestId: this.guest.id, endDate: newEndDate }
-            console.log(newClubmembership);
             const options = {
                 method: "POST",
                 header: { "Content-Type": "application/json" },
@@ -150,7 +169,6 @@ export default {
             }
             const response = await fetch("http://localhost:3000/clubmember/insertClubMember", options)
             const data = await response.json()
-            console.log(data)
             this.$router.go()
         },
         async getLastClubMemberId() {
@@ -174,6 +192,9 @@ export default {
         },
         closeMembershipSelector() {
             this.tableClasses = 'invisible'
+        },
+        getOccasions(isPass, occasions) {
+            return isPass == 'true' ? 'unlimited' : occasions
         }
     },
     created() {
@@ -186,14 +207,47 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    width: 50vw;
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.priceButton {
+.statusContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.statusTableWrapper {
+    width: 40%;
+    margin-bottom: 40px;
+    border: 2px solid #354649;
+    border-radius: 20px;
+    padding: 10px 40px;
+}
+
+.statusTable {
+    width: 100%;
+}
+
+.statusTable tr {
+    height: 60px;
+}
+
+.statusTable tr td:first-of-type {
+    font-weight: bold;
+}
+
+table .priceButton {
     background-color: aqua;
     border-radius: 10px;
     cursor: pointer;
+}
+
+.priceTable td,
+.priceTable th {
+    vertical-align: middle;
+    border-color: #354649;
 }
 
 .invisible {
@@ -212,9 +266,11 @@ export default {
     height: 600px;
     margin-top: -300px;
     margin-left: -350px;
-    background-color: whitesmoke;
+    background-color: #E0E7E9;
+    color: #354649;
     padding: 30px;
     border-radius: 30px;
+    border: 3px solid #354649;
 }
 
 .pageOverlay {
@@ -226,8 +282,48 @@ export default {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
+.btnAdd {
+    background-color: #6C7A89;
+    border-color: #354649;
+    color: #E0E7E9;
+    font-weight: 600;
+}
+
+.btnAdd:hover {
+    background-color: #354649;
+}
+
+.btnExit {
+    background-color: #ab7575;
+    color: #E0E7E9;
+    font-weight: 600;
+    border-color: #354649;
+    margin-bottom: 50px;
+}
+
+.btnExit:hover {
+    background-color: #583a3a;
+}
+
+.buttonCell {
+    text-align: center;
+}
+
+.dividerRow {
+    border-top: 1px solid #354649;
+}
+
 .closeButton {
-    color: red;
+    color: #ab7575;
     cursor: pointer;
+}
+
+.closeButton:hover {
+    color: #583a3a;
+}
+
+.closeButtonContainer {
+    display: flex;
+    justify-content: flex-end;
 }
 </style>

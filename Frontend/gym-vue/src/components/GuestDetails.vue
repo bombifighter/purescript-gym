@@ -24,11 +24,11 @@
                 <label for="validationCustom05" class="form-label">Email adress</label>
                 <input type="text" class="form-control" id="validationCustom05" v-model="guest.email" required>
             </div>
-            <div>
-                <button class="btn btn-primary" @click.prevent="submit">Save changes</button>
+            <div class="buttonContainer">
+                <button class="btn btnAdd" @click.prevent="submit">Save changes</button>
             </div>
-            <div>
-                <button class="btn btn-danger" @click.prevent="exit">Exit</button>
+            <div class="buttonContainer">
+                <button class="btn btnExit" @click.prevent="exit">Exit</button>
             </div>
         </form>
     </div>
@@ -78,5 +78,33 @@ export default {
 <style scoped>
 .container {
     width: 50vw;
+}
+
+.btnAdd {
+    background-color: #6C7A89;
+    border-color: #354649;
+    color: #E0E7E9;
+    font-weight: 600;
+}
+
+.btnAdd:hover {
+    background-color: #354649;
+}
+
+.btnExit {
+    background-color: #ab7575;
+    color: #E0E7E9;
+    font-weight: 600;
+    border-color: #354649;
+    margin-bottom: 50px;
+}
+
+.btnExit:hover {
+    background-color: #583a3a;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
 }
 </style>

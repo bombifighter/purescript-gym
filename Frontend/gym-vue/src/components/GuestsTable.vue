@@ -1,9 +1,11 @@
 <template>
     <div class="myContainer">
         <div class="buttonContainer">
-            <a href="/guests/newGuest"><i class="bi bi-person-plus"></i></a>
+            <button class="btn btnAdd" @click.prevent="goToNewGuestPage"><i class="bi bi-person-plus"></i> Add
+                Guest</button>
         </div>
-        <table class="table table-striped-columns">
+        <div v-if="guests.length == 0" class="noGuests">There are no guests in the database.</div>
+        <table v-if="guests.length != 0" class="table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -12,6 +14,9 @@
                     <th scope="col">Birthdate</th>
                     <th scope="col">Phone</th>
                     <th scope="col">Email</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -35,9 +40,11 @@
     </div>
     <div class="pageOverlay" :class="confirmClasses">
         <div class="confirmContainer">
-            <div>Are you sure you want to delete this user?</div>
-            <a @click="closeOverlay()">Cancel</a>
-            <a @click="deleteUser(userIdToDelete)">Confrim delete</a>
+            <div class="question">Are you sure you want to delete this user?</div>
+            <div class="confirmButtonContainer">
+                <button class="btn btnAdd" @click.prevent="closeOverlay()">Cancel</button>
+                <button class="btn btnExit" @click.prevent="deleteUser(userIdToDelete)">Confrim delete</button>
+            </div>
         </div>
     </div>
 </template>
@@ -72,6 +79,9 @@ export default {
         },
         closeOverlay() {
             this.confirmClasses = 'invisible'
+        },
+        goToNewGuestPage() {
+            this.$router.push({ path: "/guests/newGuest" })
         }
     },
     created() {
@@ -81,6 +91,23 @@ export default {
 </script>
 
 <style scoped>
+table {
+    width: 70%;
+    margin-top: 50px;
+}
+
+th,
+td {
+    vertical-align: middle;
+    border-color: #354649;
+}
+
+.myContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #deleteButton {
     color: red;
     cursor: pointer;
@@ -109,9 +136,26 @@ export default {
     height: 600px;
     margin-top: -300px;
     margin-left: -350px;
-    background-color: whitesmoke;
+    background-color: #E0E7E9;
+    color: #354649;
     padding: 30px;
     border-radius: 30px;
+    border: 3px solid #354649;
+    display: flex;
+    flex-direction: column;
+    padding: 200px 100px;
+}
+
+.confirmContainer .question {
+    text-align: center;
+    margin-bottom: 50px;
+    font-weight: bold;
+}
+
+.confirmButtonContainer {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
 }
 
 .invisible {
@@ -133,5 +177,33 @@ export default {
 
 .confirmContainer a {
     cursor: pointer;
+}
+
+.btnAdd {
+    background-color: #6C7A89;
+    border-color: #354649;
+    color: #E0E7E9;
+    font-weight: 600;
+}
+
+.btnAdd:hover {
+    background-color: #354649;
+}
+
+.btnExit {
+    background-color: #ab7575;
+    color: #E0E7E9;
+    font-weight: 600;
+    border-color: #354649;
+}
+
+.btnExit:hover {
+    background-color: #583a3a;
+}
+
+.noGuests {
+    text-align: center;
+    margin: 30px;
+    font-weight: bold;
 }
 </style>

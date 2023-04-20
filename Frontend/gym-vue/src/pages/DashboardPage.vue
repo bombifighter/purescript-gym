@@ -2,26 +2,29 @@
     <HeaderNav></HeaderNav>
     <PageTitle title="Dashboard"></PageTitle>
     <div class="pageContainer">
+        <div class="addButtonContainer">
+            <button class="btn btnAdd" @click.prevent="openOverlay"><i class="bi bi-plus-circle"></i> Check-in
+                Guest</button>
+        </div>
         <div class="activeGuests">
             <h3>Active guests</h3>
             <ActiveGuestsTable></ActiveGuestsTable>
         </div>
-        <div class="stats">
-            <button class="btn btn-success" @click.prevent="openOverlay"><i class="bi bi-plus-circle"></i> Check-in
-                Guest</button>
-        </div>
     </div>
     <div class="pageOverlay" :class="tableClasses">
         <div class="inactiveGuestsTable">
-            <a class="closeButton" @click="closeOverlay"><i class="bi bi-x-circle"></i></a>
-            <table class="table">
+            <div class="closeButtonContainer">
+                <a class="closeButton" @click="closeOverlay"><i class="bi bi-x-circle"></i></a>
+            </div>
+            <div v-if="inactiveGuests.length == 0" class="noInactiveGuests">There are no inactive guests left.</div>
+            <table v-if="inactiveGuests.length != 0" class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Gender</th>
                         <th scope="col">Birthdate</th>
-                        <th scope="col">Check-in</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,8 +33,8 @@
                         <td>{{ guest.guestName }}</td>
                         <td>{{ guest.gender }}</td>
                         <td>{{ guest.bdate }}</td>
-                        <td><button class="btn btn-success"
-                                @click.prevent="checkinGuest(guest.guestId, guest.gender)">Check-in</button>
+                        <td><button class="btn btnAdd" @click.prevent="checkinGuest(guest.guestId, guest.gender)"><i
+                                    class="bi bi-plus-circle"></i> Check-in</button>
                         </td>
                     </tr>
                 </tbody>
@@ -92,8 +95,23 @@ export default {
 </script>
 
 <style scoped>
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .activeGuests {
     width: 60%;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h3 {
+    text-decoration: underline;
+    margin-bottom: 20px;
 }
 
 .invisible {
@@ -112,9 +130,17 @@ export default {
     height: 600px;
     margin-top: -300px;
     margin-left: -350px;
-    background-color: whitesmoke;
+    background-color: #E0E7E9;
+    color: #354649;
     padding: 30px;
     border-radius: 30px;
+    border: 3px solid #354649;
+}
+
+td,
+th {
+    vertical-align: middle;
+    border-color: #354649;
 }
 
 .pageOverlay {
@@ -127,7 +153,33 @@ export default {
 }
 
 .closeButton {
-    color: red;
+    color: #ab7575;
     cursor: pointer;
+}
+
+.closeButton:hover {
+    color: #583a3a;
+}
+
+.closeButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btnAdd {
+    background-color: #6C7A89;
+    border-color: #354649;
+    color: #E0E7E9;
+    font-weight: 600;
+}
+
+.btnAdd:hover {
+    background-color: #354649;
+}
+
+.noInactiveGuests {
+    text-align: center;
+    margin-top: 50px;
+    font-weight: bold;
 }
 </style>

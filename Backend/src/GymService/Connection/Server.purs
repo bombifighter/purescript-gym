@@ -1,44 +1,28 @@
 module GymService.Connection.Server where
 
-import GymService.Connection.DB
-import GymService.Persistence.GuestPersist
-import GymService.Persistence.ClubMemberPersist
-import GymService.Persistence.MembershipPersist
-import GymService.Persistence.MembershipTypePersist
-import GymService.Persistence.LockerPersist
-import GymService.Persistence.GuestLockerPersist
-import GymService.Types.Guest
-import GymService.Types.ClubMember
-import GymService.Types.Membership
-import GymService.Types.MembershipType
-import GymService.Types.Locker
-import GymService.Types.GuestLocker
-import Prelude
+import Prelude (bind, discard, flip, pure, show, unit, ($), (&&), (+), (-), (<>), (==), (>))
+
+import GymService.Connection.DB (connectionInfo)
+import GymService.Persistence.GuestPersist (deleteGuest, findGuest, getActiveGuests, getGuests, getInactiveGuests, getLastGuestId, insertGuest, updateGuest)
+import GymService.Persistence.ClubMemberPersist (deleteClubMember, findClubMember, getLastClubMemberId, insertClubMember)
+import GymService.Persistence.MembershipPersist (deleteMembership, findMembership, getLastMemberId, getOccasionsLeft, insertMembership, setOccasions)
+import GymService.Persistence.MembershipTypePersist (findMembershipType, getMembershipTypes)
+import GymService.Persistence.LockerPersist (findLocker, freeupLocker, getFreeGenderLocker, getLockers, occupyLocker)
+import GymService.Persistence.GuestLockerPersist (deleteGuestLocker, endGuestLocker, findGuestLocker, getLastGuestLockerId, getUsedGuestLockers, insertGuestLocker)
+import GymService.Types.Guest (readGuestJson, readCheckinJson, readCheckoutJson)
+import GymService.Types.ClubMember (readClubMemberJson)
+import GymService.Types.Membership (readMembershipJson)
+import GymService.Types.GuestLocker (GuestLocker(..))
 
 import HTTPure (Method(Get, Post, Put, Delete, Options), Request, ResponseM, badRequest', notFound', ok',(!!), (!@), toString)
 import HTTPure.Headers (Headers, header, headers)
-import MySQL.Connection (ConnectionInfo)
 import MySQL.Pool (withPool, closePool, createPool, defaultPoolInfo)
-import Simple.JSON (writeJSON)
 import Data.Array (length, index)
 import Data.Int (fromString)
 import Data.Tuple (Tuple(..))
 import Data.Maybe (Maybe(Nothing, Just))
 import Effect.Class (liftEffect)
-import Data.Either (Either(Left, Right), either, fromRight)
-import Data.String as String
-import Data.DateTime
-import Data.DateTime.Instant
-import Data.Formatter.DateTime (formatDateTime)
-import Partial.Unsafe (unsafePartial)
-import Effect.Now (nowDateTime)
-import Effect.Aff
-import Effect.Aff.Class
-import Effect
-import Effect.Unsafe
-import Effect.Class.Console (log)
-import Data.Maybe (Maybe(..))
-
+import Simple.JSON (writeJSON)
   
 corsHeader :: Headers
 corsHeader = header "Access-Control-Allow-Origin" "*"
@@ -114,9 +98,13 @@ router { method: Delete, path }
           case idValue of
             Nothing -> badRequest' corsHeader $ wrapMessageinJSON "Last parameter is not a valid id (not an integer)"
             Just id -> do
-              flip withPool pool \conn -> deleteGuest id conn
-              liftEffect $ closePool pool
-              ok' corsHeader $ wrapMessageinJSON $ "Guest with id: " <> show id <> " deleted"
+              flip withPool pool \conn -> do
+                deleteGuest id conn
+                deleteGuestLocker id conn
+                deleteClubMember id conn
+                deleteMembership id conn
+                liftEffect $ closePool pool
+                ok' corsHeader $ wrapMessageinJSON $ "Guest with id: " <> show id <> " deleted"
 
 router { method: Get, path: [ "guest", "getActive" ] } = do
   pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
