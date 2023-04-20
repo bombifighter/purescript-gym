@@ -20,7 +20,7 @@
                     </tr>
                     <tr class="dividerRow">
                         <td>Membership Status:</td>
-                        <td>{{ clubStatus }}</td>
+                        <td>{{ membershipStatus }}</td>
                     </tr>
                     <tr v-if="membershipStatus == 'active'">
                         <td>Name:</td>

@@ -272,7 +272,7 @@ router { body, method: Post, path: ["guest", "checkin"]} = do
   let parsedBody = readCheckinJson requestBody
   case parsedBody of
     Nothing -> badRequest' corsHeader $ wrapMessageinJSON "The request body is not a valid checkin object"
-    Just checkin -> do
+    Just checkin -> do  -- checkin: { guestId: 1, gender: female, date: '2023/04/21', time: '00:40' }
       flip withPool pool \conn -> do
         result <- getFreeGenderLocker checkin.gender conn
         let singleResult = index result 0

@@ -44,7 +44,7 @@ getLastMemberId :: Connection -> Aff (Array {lastId :: Int})
 getLastMemberId conn = query_ getLastMemberIdQuery conn
 
 getOccasionsLeftQuery :: String
-getOccasionsLeftQuery = "select id, occasionsLeft from membership where guestId = ? and endDate >= ?"
+getOccasionsLeftQuery = "select id, occasionsLeft from membership where guestId = ? and endDate >= ? and not occasionsLeft = 0"
 
 getOccasionsLeft :: Int -> String -> Connection -> Aff (Array { id :: Int, occasionsLeft :: Int})
 getOccasionsLeft guestId endDate conn = query getOccasionsLeftQuery [toQueryValue guestId, toQueryValue endDate] conn
