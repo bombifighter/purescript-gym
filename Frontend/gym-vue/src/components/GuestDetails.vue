@@ -14,7 +14,8 @@
             </div>
             <div>
                 <label for="validationCustomUsername" class="form-label">Birthdate</label>
-                <VueDatePicker v-model="guest.bdate" :enable-time-picker="false" :format="'yyyy/MM/dd'"></VueDatePicker>
+                <VueDatePicker v-model="guest.bdate" :enable-time-picker="false" :format="'yyyy/MM/dd'"
+                    model-type="yyyy/MM/dd"></VueDatePicker>
             </div>
             <div>
                 <label for="validationCustom03" class="form-label">Phone number</label>
@@ -62,7 +63,6 @@ export default {
             }
             const response = await fetch(`http://localhost:3000/guest/updateGuest/${this.guest.id}`, options)
             const data = await response.json()
-            console.log(data)
             this.$router.push({ path: '/guests' })
         },
         exit() {

@@ -70,7 +70,6 @@ export default {
             }
             const response = await fetch(`http://localhost:3000/guest/deleteGuest/${id}`, options)
             const data = await response.json()
-            console.log(data)
             this.$router.go()
         },
         openOverlay(idToDelete) {

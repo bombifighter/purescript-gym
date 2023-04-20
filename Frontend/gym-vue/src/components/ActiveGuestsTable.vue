@@ -48,7 +48,6 @@ export default {
             }
             const res = await fetch("http://localhost:3000/guest/checkout", options)
             const data = await res.json()
-            console.log(data);
             this.$router.go()
         }
     },
