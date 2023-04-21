@@ -6,6 +6,8 @@ import com.puregym.puregymbackend.repository.ClubMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +21,14 @@ public class ClubMemberService {
         return new ArrayList<>(clubMemberRepository.getClubMembershipsById(guestId));
     }
 
-    public List<LastIdWrapper> getLastId() {
-        return new ArrayList<>(clubMemberRepository.getLastId());
+    public List<LastIdWrapper> getLastId(EntityManager entityManager) {
+        String queryString = "SELECT ifnull(max(id),0) as lastId FROM clubmember";
+        Query query = entityManager.createNativeQuery(queryString);
+        List<LastIdWrapper> list = new ArrayList<>();
+        LastIdWrapper lastId = new LastIdWrapper((Object[]) query.getSingleResult());
+        list.add(lastId);
+        return list;
+        //return new ArrayList<>(clubMemberRepository.getLastId());
     }
 
     public void insertClubMember(ClubMember clubMember) {

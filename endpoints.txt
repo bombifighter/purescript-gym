@@ -1,0 +1,21 @@
+GET /guest/getAll
+GET /guest/getById/{id}
+POST /guest/insertGuest - body: {id, name, gender, bdate, phone, email}
+PUT /guest/updateGuest/{id} - body: {id, name, gender, bdate, phone, email}
+DELETE /guest/deleteGuest/{id}
+GET /guest/getActive
+GET /guest/getInactive/{date}
+GET /guest/getLastId
+POST /guest/checkin - body: {guestId, gender, date, time}
+POST /guest/checkout - body: {guestId, lockerId, gender, dateTime}
+GET /clubmember/findMembershipsById/{id}
+GET /clubmember/getLastId
+POST /clubmember/insertClubMember - body: {id, guest:id, endDate}
+GET /membership/findMembershipsById/{id}
+GET /membership/getLastId
+GET /membershipType/getMembershipById/{id}
+GET /membershipType/getAll
+POST /membership/insertMembership - body: {id, guestId, membershipTypeId, endDate, occasionsLeft}
+GET /locker/getAll
+GET /locker/get/{gender}/{id}
+GET /guestLocker/getHistory/{gender}/{id}

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -18,6 +20,9 @@ public class ClubMemberController {
     @Autowired
     ClubMemberService clubMemberService;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @GetMapping(path = "/findMembershipsById/{id}")
     List<ClubMember> getMembershipsById(@PathVariable Long id) {
         return clubMemberService.findClubMembershipByGuestId(id);
@@ -25,7 +30,7 @@ public class ClubMemberController {
 
     @GetMapping(path = "/getLastId")
     List<LastIdWrapper> getLastClubMemberId() {
-        return clubMemberService.getLastId();
+        return clubMemberService.getLastId(entityManager);
     }
 
     @PostMapping(path = "/insertClubMember")
