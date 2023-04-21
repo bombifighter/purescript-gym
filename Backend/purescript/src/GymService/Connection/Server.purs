@@ -99,10 +99,10 @@ router { method: Delete, path }
             Nothing -> badRequest' corsHeader $ wrapMessageinJSON "Last parameter is not a valid id (not an integer)"
             Just id -> do
               flip withPool pool \conn -> do
-                deleteGuest id conn
                 deleteGuestLocker id conn
                 deleteClubMember id conn
                 deleteMembership id conn
+                deleteGuest id conn
                 liftEffect $ closePool pool
                 ok' corsHeader $ wrapMessageinJSON $ "Guest with id: " <> show id <> " deleted"
 
@@ -145,7 +145,7 @@ router { method: Get, path }
               ok' corsHeader $ writeJSON clubMemberships
 
 router { method: Get, path }
-  | path !@ 0 == "member" && path !@ 1 == "findMembershipsById" && length path == 3 = do
+  | path !@ 0 == "membership" && path !@ 1 == "findMembershipsById" && length path == 3 = do
       pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
       let lastParam = path !! 2
       case lastParam of
@@ -159,7 +159,7 @@ router { method: Get, path }
               liftEffect $ closePool pool
               ok' corsHeader $ writeJSON memberships
 
-router { method: Get, path: [ "member", "getLastId" ] } = do
+router { method: Get, path: [ "membership", "getLastId" ] } = do
   pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
   lastId <- flip withPool pool \conn -> getLastMemberId conn
   liftEffect $ closePool pool
@@ -198,7 +198,7 @@ router { body, method: Post, path }
           liftEffect $ closePool pool
           ok' corsHeader $ wrapMessageinJSON "Clubmember added"
 
-router { method: Get, path: [ "membershipTypes", "getAll" ] } = do
+router { method: Get, path: [ "membershipType", "getAll" ] } = do
   pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
   membershipTypes <- flip withPool pool \conn -> getMembershipTypes conn
   liftEffect $ closePool pool
@@ -216,14 +216,14 @@ router { body, method: Post, path }
           liftEffect $ closePool pool
           ok' corsHeader $ wrapMessageinJSON "Membership added"
 
-router { method: Get, path: [ "lockers", "getAll" ] } = do
+router { method: Get, path: [ "locker", "getAll" ] } = do
   pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
   lockers <- flip withPool pool \conn -> getLockers conn
   liftEffect $ closePool pool
   ok' corsHeader $ writeJSON lockers
 
 router { method: Get, path }
-  | path !@ 0 == "lockers" && path !@ 1 == "get" && length path == 4 = do
+  | path !@ 0 == "locker" && path !@ 1 == "get" && length path == 4 = do
       pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
       let thirdParam = path !! 2
       case thirdParam of
@@ -272,7 +272,7 @@ router { body, method: Post, path: ["guest", "checkin"]} = do
   let parsedBody = readCheckinJson requestBody
   case parsedBody of
     Nothing -> badRequest' corsHeader $ wrapMessageinJSON "The request body is not a valid checkin object"
-    Just checkin -> do  -- checkin: { guestId: 1, gender: female, date: '2023/04/21', time: '00:40' }
+    Just checkin -> do
       flip withPool pool \conn -> do
         result <- getFreeGenderLocker checkin.gender conn
         let singleResult = index result 0

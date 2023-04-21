@@ -18,6 +18,6 @@ public class Locker {
     @Column
     private String gender;
 
-    @Column
+    @Column(name = "isFree")
     private String isFree;
 }

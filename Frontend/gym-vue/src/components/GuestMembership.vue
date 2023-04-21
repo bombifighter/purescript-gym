@@ -111,7 +111,7 @@ export default {
             this.guest = data[0]
         },
         async getMembershipTypes() {
-            const res = await fetch("http://localhost:3000/membershipTypes/getAll")
+            const res = await fetch("http://localhost:3000/membershipType/getAll")
             const data = await res.json()
             this.membershipTypes = data
         },
@@ -126,7 +126,7 @@ export default {
             }
         },
         async getMembershipStatus() {
-            const res = await fetch(`http://localhost:3000/member/findMembershipsById/${this.selectedGuestId}`)
+            const res = await fetch(`http://localhost:3000/membership/findMembershipsById/${this.selectedGuestId}`)
             const memberships = await res.json()
             for (let membership of memberships) {
                 if (Date.parse(membership.endDate) >= Date.now() && membership.occasionsLeft != 0) {
@@ -150,11 +150,10 @@ export default {
             const newMembership = { id: newId, guestId: this.guest.id, membershipTypeId: typeId, endDate: newEndDate, occasionsLeft: occasions }
             const options = {
                 method: "POST",
-                header: { "Content-Type": "application/json" },
+                headers: new Headers({ "Content-Type": "application/json" }),
                 body: JSON.stringify(newMembership)
             }
-            const response = await fetch("http://localhost:3000/membership/insertMembership", options)
-            const data = await response.json()
+            await fetch("http://localhost:3000/membership/insertMembership", options)
             this.$router.go()
         },
         async addClubMemberShip() {
@@ -164,11 +163,10 @@ export default {
             const newClubmembership = { id: newId, guestId: this.guest.id, endDate: newEndDate }
             const options = {
                 method: "POST",
-                header: { "Content-Type": "application/json" },
+                headers: new Headers({ "Content-Type": "application/json" }),
                 body: JSON.stringify(newClubmembership)
             }
-            const response = await fetch("http://localhost:3000/clubmember/insertClubMember", options)
-            const data = await response.json()
+            await fetch("http://localhost:3000/clubmember/insertClubMember", options)
             this.$router.go()
         },
         async getLastClubMemberId() {
@@ -177,7 +175,7 @@ export default {
             return data[0].lastId
         },
         async getLastMemberId() {
-            const response = await fetch("http://localhost:3000/member/getLastId")
+            const response = await fetch("http://localhost:3000/membership/getLastId")
             const data = await response.json()
             return data[0].lastId
         },

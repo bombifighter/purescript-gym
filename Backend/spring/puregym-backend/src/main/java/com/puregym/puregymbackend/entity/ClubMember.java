@@ -15,9 +15,9 @@ public class ClubMember {
     @Id
     private Long id;
 
-    @Column
+    @Column(name = "guestId")
     private Long guestId;
 
-    @Column
+    @Column(name = "endDate")
     private String endDate;
 }

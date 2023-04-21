@@ -58,11 +58,10 @@ export default {
         async submit() {
             const options = {
                 method: "PUT",
-                header: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(this.guest)
             }
-            const response = await fetch(`http://localhost:3000/guest/updateGuest/${this.guest.id}`, options)
-            const data = await response.json()
+            await fetch(`http://localhost:3000/guest/updateGuest/${this.guest.id}`, options)
             this.$router.push({ path: '/guests' })
         },
         exit() {

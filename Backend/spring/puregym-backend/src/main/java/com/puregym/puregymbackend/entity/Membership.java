@@ -15,15 +15,15 @@ public class Membership {
     @Id
     private Long id;
 
-    @Column
+    @Column(name = "guestId")
     private Long guestId;
 
-    @Column
+    @Column(name = "membershipTypeId")
     private Long membershipTypeId;
 
-    @Column
+    @Column(name = "endDate")
     private String endDate;
 
-    @Column
+    @Column(name = "occasionsLeft")
     private Long occasionsLeft;
 }

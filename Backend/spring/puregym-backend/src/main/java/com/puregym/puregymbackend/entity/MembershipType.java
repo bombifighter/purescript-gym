@@ -18,18 +18,18 @@ public class MembershipType {
     @Column
     private String name;
 
-    @Column
+    @Column(name = "isPass")
     private String isPass;
 
     @Column
     private Long occasions;
 
-    @Column
+    @Column(name = "fullPrice")
     private Long fullPrice;
 
-    @Column
+    @Column(name = "studentPrice")
     private Long studentPrice;
 
-    @Column
+    @Column(name = "clubPrice")
     private Long clubPrice;
 }

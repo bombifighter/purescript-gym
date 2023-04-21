@@ -73,11 +73,10 @@ export default {
             const checkin = { guestId: guestId, gender: gender, date: date, time: time }
             const options = {
                 method: "POST",
-                header: { "Content-Type": "application/json" },
+                headers: new Headers({ "Content-Type": "application/json" }),
                 body: JSON.stringify(checkin)
             }
-            const res = await fetch("http://localhost:3000/guest/checkin", options)
-            const data = await res.json()
+            await fetch("http://localhost:3000/guest/checkin", options)
             this.$router.go()
         },
         openOverlay() {

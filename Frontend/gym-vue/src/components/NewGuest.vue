@@ -57,11 +57,10 @@ export default {
         async submit() {
             const options = {
                 method: "POST",
-                header: { "Content-Type": "application/json" },
+                headers: new Headers({ "Content-Type": "application/json" }),
                 body: JSON.stringify(this.guest)
             }
-            const response = await fetch(`http://localhost:3000/guest/insertGuest`, options)
-            const data = await response.json()
+            await fetch(`http://localhost:3000/guest/insertGuest`, options)
             this.$router.push({ path: '/guests' })
         },
         exit() {

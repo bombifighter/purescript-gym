@@ -1,5 +1,7 @@
 package com.puregym.puregymbackend.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -8,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Data
+@AllArgsConstructor
 @Entity
 @Table(name = "guestlocker")
 public class GuestLocker {
@@ -15,18 +18,18 @@ public class GuestLocker {
     @Id
     private Long id;
 
-    @Column
+    @Column(name = "guestId")
     private Long guestId;
 
-    @Column
+    @Column(name = "lockerId")
     private Long lockerId;
 
-    @Column
+    @Column(name = "lockerGender")
     private String lockerGender;
 
-    @Column
+    @Column(name = "startTime")
     private String startTime;
 
-    @Column
+    @Column(name = "endTime")
     private String endTime;
 }

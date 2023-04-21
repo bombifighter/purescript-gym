@@ -29,7 +29,7 @@ export default {
     },
     methods: {
         async getData() {
-            const res = await fetch("http://localhost:3000/lockers/getAll");
+            const res = await fetch("http://localhost:3000/locker/getAll");
             const data = await res.json();
             this.femaleLockers = data.filter(locker => locker.gender == 'female')
             this.maleLockers = data.filter(locker => locker.gender == 'male');

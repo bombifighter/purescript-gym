@@ -46,7 +46,7 @@ export default {
     },
     methods: {
         async checkStatus() {
-            const res = await fetch(`http://localhost:3000/lockers/get/${this.gender}/${this.lockerId}`)
+            const res = await fetch(`http://localhost:3000/locker/get/${this.gender}/${this.lockerId}`)
             const data = await res.json()
             this.status = data[0].isFree == 'true' ? 'free' : 'occupied'
         },

@@ -1,8 +1,8 @@
 package com.puregym.puregymbackend.error;
 
-public class GuestNotFoundExcepton extends RuntimeException{
+public class GuestNotFoundException extends RuntimeException{
 
-    public GuestNotFoundExcepton(Long Id) {
+    public GuestNotFoundException(Long Id) {
         super("Guest with '" + Id + "' ID not found");
     }
 }
