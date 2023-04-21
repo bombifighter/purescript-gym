@@ -141,7 +141,24 @@ A dolgozatban tárgyalt szoftver backend komponensének elkészítésére a Pure
 Munkánk elsődleges célja egy edzőterem működését támogató szoftver elkészítése PureScript backend és Vue.js frontend használatával. Ezen felül szeretnénk megvizsgálni és bemutatni a funkcionális nyelvek használatának előnyeit és lehetőségeit leginkább webalkalmazások fejlesztése során. A szoftver elkészültét követően implementálásra kerül ugyanez a backend Java nyelven a Spring keretrendszer használatával. Célunk a két verzió sebességének és fejlesztési tapasztalatainak összehasonlítása.
 
 A huszonegyedik században egy korszerű edzőteremnek szüksége van egy szoftverre, amely a mindennapi üzletmenetet támogatja. Választásunk azért erre a területre esett, mert egyrészt mindketten szeretünk edzeni járni, másrészt pedig a szoftver összetettsége már alkalmas lehet a PureScript nyelv megismerésére, lehetőségeinek és előnyeinek bemutatására, illetve egy elterjedtebb technológiával (Java, Spring) készült változatával való összehasonlításra.
-mi tud, célunk
+
+Az alkalmazás felhasználói az edzőterem recepciós kollégái. A rendszerben lehetőség van rögzíteni:
+\begin{itemize}
+\item vendégeket
+\item bérlettípusak (jegytípusokat)
+\item a felhasználók jegyeit, bérleteit
+\item öltözőszekrényeket
+\end{itemize}
+
+A\textit{Vendégek} oldalon listázhatjuk a regisztrált vendégeket, újat regisztrálhatunk, a meglévők adatait módosíthatjuk, vendéget törölhetünk. A vendégek számára bérleteket vagy jegyeket lehet vásárolni. A továbbiakban bérletnek nevezzük azt a tagásgot, ami egy időtartamra engedélyezi a terem használatát, jegynek pedig ami alkalmakhoz kötött. A jegyeknek is van egy elévülési ideje. Minden belépőnek három ára van: teljes, diák és klub ár. A felhasználóknak klubtagság vásárlására van lehetőségük, amely különböző előnyökkel jár, például kedvezőbb bérletárak.
+
+A vezérlőpulton lehetőség van a vendégek beléptetésére: a regisztrált vendégek listájából ki kell választani az illetőt. A listában csak az aktív bérlettel vagy érvényes jeggyel rendelkezők jelennek meg. A illetőhöz hozzárendelődik a neme szerint egy szabad öltözőszekrény. Jeggyel rendelkező vendégek számára a jegyen található fennmaradó alkalmak száma eggyel csökken. Az öltözőszekrények megtekintésére egy külön lap szolgál. Itt nemek szerint meg lehet tekinteni minden szekrény állapotát, illetve az előzménytörténetét, vagyis mikor és ki használta. A foglalt szekrények piros színnel jelennek meg.
+
+A vezérlőpulton  a beléptetett vendégek kijelentkeztetésére is van lehetőség. Ezt úgy tehetjük meg, hogy a feljövő listából kiválasztjuk az illetőt. Ilyenkor felszabadul a szekrénye. 
+
+Minden oldal tetején egy navigációs sáv található, mellyel a megfelelő lapra ugorhatunk.
+
+A közös munka során az egyik legnépszerűbb verziókezelő rendszert, a git-et használtuk a Github szolgáltatóval. Az extrém programozás módszerei közül többet is alkalmaztunk, például a páros programozást, mely hatékonynak bizonyult. Lényege, hogy az egyik fejlesztő írja a kódot, a másik pedig segíti közben.
 
 \newpage
 \section{Szakirodalmi áttekintés}
@@ -213,7 +230,9 @@ Frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
 \subsection{Vue.js}
 
 \newpage
-\section{Eredmények és azok értékelése}
+\section{Az elvégzett munka és az eredmények ismertetése}
+
+\subsection{Tervezés}
 
 \begin{figure}
 \includegraphics[width=\textwidth]{database}
@@ -224,6 +243,13 @@ Frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
 \includegraphics[width=\textwidth]{usecase}
 \caption{Használati eset (use case) diagram. }
 \end{figure}
+
+\subsection{Implementálás}
+\subsection{Tesztelés?}
+
+\subsection{Java Spring backend}
+
+\subsection{A kettő összehasonlítása}
 
 \begin{table}[h!]
 \centering
@@ -248,15 +274,8 @@ DELETE & /guest/deleteGuest/\{id\} & Egy vendég törlése  \\
 \end{table}
 
 \newpage
-\section{Továbbfejlesztési lehetőségek}
-
-A vizsgált és specifikációk készítésekor használt modellezési nyelvek (ARIS, BPMN, UML, Petri-hálók) közül én az ARIS-t találtam jelen feladathoz a legmegfelelőbbnek. A különböző diagramtípusok integrációja és azok rendszerezett kezelése mindenképp kiemeli a többi közül. Ezen felül leginkább a folyamatok leírásakor az általa kínált információtöbbletet is hasznosnak találtam, véleményem szerint a többinél nagyobb kifejezőerővel rendelkezik ez az eszköz. 
-
-\newpage
 \section*{Összefoglalás}
 \addcontentsline{toc}{section}{Összefoglalás}
-
-A mai korszerű vállalatoknak versenyképességük megőrzése céljából elengedhetetlenné vált üzleti szoftverek alkalmazása. Dolgozatom célkitűzése egy debreceni kereskedelmi profilú kisvállalkozás folyamatainak, működésének megismerése, modellezése és a számára készülő vállalatirányítási rendszer üzleti követelmény specifikációjának elkészítése volt. 
 
 %******************példa képek:
 
@@ -295,6 +314,16 @@ A mai korszerű vállalatoknak versenyképességük megőrzése céljából elen
 %\end{enumerate}
 %A Petri háló struktúrát $(P, T, E, w)$ módon jelöljük. (\textit{Peterson., 1981})
 %\end{definíció}
+
+%******************felsorolas
+%\begin{itemize}
+%\item egy adott időszakban egy vevő mennyit vásárolt?
+%\item melyik partnernek mennyi ki nem fizetett, vagy lejárt tartozása van?
+%\item egy adott termékből mennyi fogyott adott idő alatt?
+%\item ki állított ki egy bizonyos számlát?
+%\item kik vannak jelenleg bejelentkezve?
+%\item kinek van lejárt tartozása és mennyi?
+%\end{itemize}
 
 \addcontentsline{toc}{section}{Irodalomjegyzék}
 
@@ -349,6 +378,8 @@ J. Sturtz.: Functional Programming in Python: When and How to Use It. Hozzáfér
 \bibitem{cpp}
 D. Cravey.: Functional-Style Programming in C++. Hozzáférés dátuma: 2023.04.20.
 \url{https://learn.microsoft.com/en-us/archive/msdn-magazine/2012/august/c-functional-style-programming-in-c}
+
+\href{https://learn.microsoft.com/en-us/archive/msdn-magazine/2012/august/c-functional-style-programming-in-c}{D. Cravey.: Functional-Style Programming in C++}.\\ Hozzáférés dátuma: 2023.04.20.
 
 \end{thebibliography}
 \end{document}
