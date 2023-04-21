@@ -1,0 +1,11 @@
+#1 - Windows 10, Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz
+
+measurement_1.py (10):
+measurement_2.py (10):
+measurement_3.py (10):
+measurement_1.py (50):
+measurement_2.py (50):
+measurement_3.py (50):
+measurement_1.py (100):
+measurement_2.py (100):
+measurement_3.py (100):
