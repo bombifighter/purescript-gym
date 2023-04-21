@@ -1,5 +1,41 @@
 #1 - Windows 10, Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz
 
+PureScript:
+measurement_1.py (10): 61.94
+measurement_2.py (10): 41.22
+measurement_3.py (10): 124.73
+measurement_1.py (50): 309.00
+measurement_2.py (50): 205.53
+measurement_3.py (50): 620.72
+measurement_1.py (100): 618.50
+measurement_2.py (100): 409.20
+measurement_3.py (100):1227.73
+
+Java:
+measurement_1.py (10):
+measurement_2.py (10):
+measurement_3.py (10):
+measurement_1.py (50):
+measurement_2.py (50):
+measurement_3.py (50):
+measurement_1.py (100):
+measurement_2.py (100):
+measurement_3.py (100):
+
+#2 - macOS Ventura, Apple M1 3.2GHz
+
+PureScript:
+measurement_1.py (10):
+measurement_2.py (10):
+measurement_3.py (10):
+measurement_1.py (50):
+measurement_2.py (50):
+measurement_3.py (50):
+measurement_1.py (100):
+measurement_2.py (100):
+measurement_3.py (100):
+
+Java:
 measurement_1.py (10):
 measurement_2.py (10):
 measurement_3.py (10):

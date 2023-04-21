@@ -138,7 +138,7 @@ A funkcionális programozás egy kevésbé elterjedt programozási paradigma. No
 
 A dolgozatban tárgyalt szoftver backend komponensének elkészítésére a PureScript nyelvet választottuk. Ez egy tisztán funkcionális és erősen típusos programozási nyelv, mely Javascript-re fordul. Azért választottuk ezt a nyelvet, mert tisztán funkcionális, a közelmúltban megjelent nyelv, mely a többi funkcionális nyelvhez (Haskell, Elm) képest modernebb, erőteljesebb, könnyebben használható és teljesebb \cite{CS}.
 
-Munkánk elsődleges célja egy edzőterem működését támogató szoftver elkészítése PureScript backend és Vue.js frontend használatával. Ezen felül szeretnénk megvizsgálni és bemutatni a funkcionális nyelvek használatának előnyeit és lehetőségeit leginkább webalkalmazások fejlesztése során. A szoftver elkészültét követően implementálásra kerül ugyanez a backend Java nyelven a Spring keretrendszer használatával. Célunk a két verzió sebességének és fejlesztési tapasztalatainak összehasonlítása.
+Munkánk elsődleges célja egy edzőterem működését támogató szoftver elkészítése PureScript backend és Vue.js frontend használatával. Ezen felül szeretnénk megvizsgálni és bemutatni a funkcionális nyelvek használatának előnyeit és lehetőségeit leginkább webalkalmazások fejlesztése során. A szoftver elkészültét követően implementálásra kerül ugyanez a backend Java nyelven a Spring keretrendszer használatával. Célunk a két verzió sebességének és fejlesztési tapasztalatainak összehasonlítása. A sebesség összehasonlítására többféle operációs rendszerrel és különböző specifikációkkal rendelkező számítógépeken ugyanazokat a kéréseket 10, 50 és 100-as kötegekben küldjük el a két különböző szervernek, majd elemezzük az így kapott eredményeket.
 
 A huszonegyedik században egy korszerű edzőteremnek szüksége van egy szoftverre, amely a mindennapi üzletmenetet támogatja. Választásunk azért erre a területre esett, mert egyrészt mindketten szeretünk edzeni járni, másrészt pedig a szoftver összetettsége már alkalmas lehet a PureScript nyelv megismerésére, lehetőségeinek és előnyeinek bemutatására, illetve egy elterjedtebb technológiával (Java, Spring) készült változatával való összehasonlításra.
 
@@ -218,7 +218,7 @@ Az előnyök között első helyen állt az átláthatóság és érthetőség. 
 
 Memóriahasználat és teljesítmény. Mivel a funkcionális nyelvek nem használnak érték-átadást, sokszor egy változó értékének megváltozása helyett létrejön egy újabb, ami így több erőforrást igényel \cite{JN}. A legtöbb funkcionális nyelv ennek ellenére számos módon ígyekszik ezt kompenzálni: farokrekurzió, lusta kiértékelés, "smart linking". A több paradigmát támogató vagy OOP nyelvek nem feltétlen implementálják ezeket az optimalizációkat \cite{JN}.
 
-Mivel a funkcionális nyelvek használata kevésbé elterjedt, kevesebb eszköz, keretrendszer áll rendelkezésre és kevesebb a felhasználók, szakértők száma.
+Mivel a funkcionális nyelvek használata kevésbé elterjedt, kevesebb eszköz, keretrendszer áll rendelkezésre és kevesebb a felhasználók, szakértők száma. Ennek következtében a fejlesztést nehezíti néha a dokumentáció hiányossága vagy teljes hiánya, illetve az interneten fellelhető minta kódok hiánya és elavultsága.
 
 \subsection{PureScript}
 
@@ -229,27 +229,21 @@ Frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
 
 \subsection{Vue.js}
 
+\subsection{Java}
+\subsubsection{Spring}
+
 \newpage
-\section{Az elvégzett munka és az eredmények ismertetése}
+\section{A fejlesztés bemutatása}
 
-\subsection{Tervezés}
+\subsection{PureScript}
 
-\begin{figure}
-\includegraphics[width=\textwidth]{database}
-\caption{A szoftver adatbázis modellje.}
-\end{figure}
+\subsection{Java - Spring backend}
 
-\begin{figure}
-\includegraphics[width=\textwidth]{usecase}
-\caption{Használati eset (use case) diagram. }
-\end{figure}
+\subsection{Vue.js}
 
-\subsection{Implementálás}
-\subsection{Tesztelés?}
-
-\subsection{Java Spring backend}
-
-\subsection{A kettő összehasonlítása}
+\section{Az eredmények ismertetése}
+\subsection{A fejlesztés tapasztalatai}
+\subsection{Mérési eredmények}
 
 \begin{table}[h!]
 \centering
@@ -272,6 +266,16 @@ DELETE & /guest/deleteGuest/\{id\} & Egy vendég törlése  \\
 \end{tabular}
 \caption{A kérések listájának részlete.}
 \end{table}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{database}
+\caption{A szoftver adatbázis modellje.}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{usecase}
+\caption{Használati eset (use case) diagram. }
+\end{figure}
 
 \newpage
 \section*{Összefoglalás}
