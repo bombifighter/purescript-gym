@@ -184,3 +184,13 @@ INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('49', 'female', '
 INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('49', 'male', 'true');
 INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('50', 'female', 'true');
 INSERT INTO `mydb`.`locker` (`id`, `gender`, `isFree`) VALUES ('50', 'male', 'true');
+
+INSERT INTO `mydb`.`membershiptype` (`id`, `name`, `isPass`, `occasions`,`fullPrice`,`studentPrice`,`clubPrice` ) VALUES ('1', '1 month pass', 'true','-1','15000','10000','12000');
+INSERT INTO `mydb`.`membershiptype` (`id`, `name`, `isPass`, `occasions`,`fullPrice`,`studentPrice`,`clubPrice` ) VALUES ('2', '3 months pass', 'true','-1','40000','25000','32000');
+INSERT INTO `mydb`.`membershiptype` (`id`, `name`, `isPass`, `occasions`,`fullPrice`,`studentPrice`,`clubPrice` ) VALUES ('3', '6 months pass', 'true','-1','72000','41000','54000');
+INSERT INTO `mydb`.`membershiptype` (`id`, `name`, `isPass`, `occasions`,`fullPrice`,`studentPrice`,`clubPrice` ) VALUES ('4', '1 year pass', 'true','-1','130000','73000','96000');
+INSERT INTO `mydb`.`membershiptype` (`id`, `name`, `isPass`, `occasions`,`fullPrice`,`studentPrice`,`clubPrice` ) VALUES ('5', '1 day ticket', 'false','1','2500','2000','2000');
+INSERT INTO `mydb`.`membershiptype` (`id`, `name`, `isPass`, `occasions`,`fullPrice`,`studentPrice`,`clubPrice` ) VALUES ('6', '5 days ticket', 'false','5','10000','8000','8000');
+INSERT INTO `mydb`.`membershiptype` (`id`, `name`, `isPass`, `occasions`,`fullPrice`,`studentPrice`,`clubPrice` ) VALUES ('7', '10 days ticket', 'false','10','18000','17000','17000');
+INSERT INTO `mydb`.`membershiptype` (`id`, `name`, `isPass`, `occasions`,`fullPrice`,`studentPrice`,`clubPrice` ) VALUES ('8', 'sauna ticket', 'false','1','2500','2000','2000');
+INSERT INTO `mydb`.`membershiptype` (`id`, `name`, `isPass`, `occasions`,`fullPrice`,`studentPrice`,`clubPrice` ) VALUES ('9', 'VIP parking', 'true','-1','5000','5000','0');

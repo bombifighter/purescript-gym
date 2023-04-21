@@ -134,11 +134,31 @@
 \section*{Bevezetés}
 \addcontentsline{toc}{section}{Bevezetés}
 
-miert ezt valasztottuk
+A funkcionális programozás egy kevésbé elterjedt programozási paradigma. Noha számos népszerű nyelv használ funkcionális elemeket \cite{Java} \cite{py} \cite{cpp},  a teljesen funkcionális fejlesztés nem annyira népszerű. Megismerése az oktatásban sem igazán hangsúlyos. Ennek ellenére számos előnnyel rendelkezik, melyeket a későbbi fejezetekben fogunk részletezni. Másfajta gondolkosámódot igényel, mint az imperatív megközelítés: a "hogyan?" helyett a "mit csináljon a program?" kérdésre adja meg a választ.
 
-mi a munkánk és a dolgozat célja
+A dolgozatban tárgyalt szoftver backend komponensének elkészítésére a PureScript nyelvet választottuk. Ez egy tisztán funkcionális és erősen típusos programozási nyelv, mely Javascript-re fordul. Azért választottuk ezt a nyelvet, mert tisztán funkcionális, a közelmúltban megjelent nyelv, mely a többi funkcionális nyelvhez (Haskell, Elm) képest modernebb, erőteljesebb, könnyebben használható és teljesebb \cite{CS}.
 
-A huszonegyedik század harmadik évtizedében minden vállalatnak, cégnek vagy szervezetnek elengedhetetlenül szükségessé vált az informatika bevonása a mindennapi működésbe. A cégek versenyképességük megőrzése, a hatékonyság és profitabilitás növelése érdekében már gyakorlatilag egy mikrovállalkozás méretétől kezdve rászorulnak valamiféle speciális céges szoftver, vállalatirányítási rendszer használatára. Egy kicsit nagyobb vállalatnál pedig már egészen elképzelhetetlen lenne a működés e szoftverek nélkül. A költségcsökkentés és automatizálás mellett meg kell említeni az információ növekvő szerepét, egy vállalatirányítási rendszer biztosíthatja a gyors (valós idejű) információ hozzáférést a munkatársaknak, illetve adatokkal látja el a döntéshozókat.
+Munkánk elsődleges célja egy edzőterem működését támogató szoftver elkészítése PureScript backend és Vue.js frontend használatával. Ezen felül szeretnénk megvizsgálni és bemutatni a funkcionális nyelvek használatának előnyeit és lehetőségeit leginkább webalkalmazások fejlesztése során. A szoftver elkészültét követően implementálásra kerül ugyanez a backend Java nyelven a Spring keretrendszer használatával. Célunk a két verzió sebességének és fejlesztési tapasztalatainak összehasonlítása.
+
+A huszonegyedik században egy korszerű edzőteremnek szüksége van egy szoftverre, amely a mindennapi üzletmenetet támogatja. Választásunk azért erre a területre esett, mert egyrészt mindketten szeretünk edzeni járni, másrészt pedig a szoftver összetettsége már alkalmas lehet a PureScript nyelv megismerésére, lehetőségeinek és előnyeinek bemutatására, illetve egy elterjedtebb technológiával (Java, Spring) készült változatával való összehasonlításra.
+
+Az alkalmazás felhasználói az edzőterem recepciós kollégái. A rendszerben lehetőség van rögzíteni:
+\begin{itemize}
+\item vendégeket
+\item bérlettípusak (jegytípusokat)
+\item a felhasználók jegyeit, bérleteit
+\item öltözőszekrényeket
+\end{itemize}
+
+A\textit{Vendégek} oldalon listázhatjuk a regisztrált vendégeket, újat regisztrálhatunk, a meglévők adatait módosíthatjuk, vendéget törölhetünk. A vendégek számára bérleteket vagy jegyeket lehet vásárolni. A továbbiakban bérletnek nevezzük azt a tagásgot, ami egy időtartamra engedélyezi a terem használatát, jegynek pedig ami alkalmakhoz kötött. A jegyeknek is van egy elévülési ideje. Minden belépőnek három ára van: teljes, diák és klub ár. A felhasználóknak klubtagság vásárlására van lehetőségük, amely különböző előnyökkel jár, például kedvezőbb bérletárak.
+
+A vezérlőpulton lehetőség van a vendégek beléptetésére: a regisztrált vendégek listájából ki kell választani az illetőt. A listában csak az aktív bérlettel vagy érvényes jeggyel rendelkezők jelennek meg. A illetőhöz hozzárendelődik a neme szerint egy szabad öltözőszekrény. Jeggyel rendelkező vendégek számára a jegyen található fennmaradó alkalmak száma eggyel csökken. Az öltözőszekrények megtekintésére egy külön lap szolgál. Itt nemek szerint meg lehet tekinteni minden szekrény állapotát, illetve az előzménytörténetét, vagyis mikor és ki használta. A foglalt szekrények piros színnel jelennek meg.
+
+A vezérlőpulton  a beléptetett vendégek kijelentkeztetésére is van lehetőség. Ezt úgy tehetjük meg, hogy a feljövő listából kiválasztjuk az illetőt. Ilyenkor felszabadul a szekrénye. 
+
+Minden oldal tetején egy navigációs sáv található, mellyel a megfelelő lapra ugorhatunk.
+
+A közös munka során az egyik legnépszerűbb verziókezelő rendszert, a git-et használtuk a Github szolgáltatóval. Az extrém programozás módszerei közül többet is alkalmaztunk, például a páros programozást, mely hatékonynak bizonyult. Lényege, hogy az egyik fejlesztő írja a kódot, a másik pedig segíti közben.
 
 \newpage
 \section{Szakirodalmi áttekintés}
@@ -154,6 +174,7 @@ A logikai programozási paradigma lényege, hogy a programozó állításokat, s
 Manapság az egyik legelterjedtebb paradigma az objektumorientált programozás. Ez egy gondolkodásmód, tervezési módszer is egyben. A valós világot osztályok formájára képezi le, melynek egyedeit objektumok személyesítenek meg. Legfőbb elvei az egységbezárás (encapsulation: az adatmodell és az eljárásmodell szétválaszthatatlansága), öröklődés (újrafelhasználhatóság kiterjesztése), hozzáférés-szabályozás és többalakúság (polimorphism: lehetővé teszi, hogy ugyanarra az üzenetre különböző objektumok a saját módjukon válaszoljanak) \cite{VD}.
 
 A ma leginkább használatos nyelvekre általánosságban igaz az, hogy nem csupán egyetlen paradigmát követnek tisztán, hanem többet vegyítenek. Ennek az az oka, hogy minden paradigmának megvan a maga előnye (és persze hátránya is), és ezeket az előnyöket érdemes kihasználni. Például a Java (2023. áprilisában a harmadik legtöbbet használt nyelv \cite{TIO}) alapjaiban imperatív, objektumorientált, de a nyolcas verziótól kezdve \cite{Java} megjelennek benne funkcionális elemek, például a lambda kifejezések. A nyelv hivatalos oldala \cite{Java} "erőteljes kiterjesztés"-nek nevezi ezt a lépést.
+A Java mellett több elterjedt, nem tisztán funkcionális nyelv, mint például a Python vagy a C++ is épít be funkcionális elemeket \cite{py} \cite{cpp}.
 
 \subsubsection{A funkcionális programozás előnyei}
 A funkcionális programozás, mint paradigma, számos előnnyel rendelkezik. Az imperatív gondolkodás kötöttségét egy másfajta megközelítéssel oldja fel. A lényeg, hogy \textit{mit} csináljon a program, és nem az, hogy \textit{hogyan}. Ez az ötlet a programozótól is  másfajta megközelítést, gondolkodásmódot kíván, és máshogy strukturált kódot is fog eredményezni. 
@@ -201,13 +222,17 @@ Mivel a funkcionális nyelvek használata kevésbé elterjedt, kevesebb eszköz,
 
 \subsection{PureScript}
 
-A PureScript egy erősen típusos, tisztán funkcionális nyelv. Javascript kódra fordul. Amit Javascriptben meg lehet írni, azt nagyjából PureScriptben is \cite{CS}. A böngészőben és  a szerveren egyaránt futtatható. A Haskell az alapja, sokban hasonlít rá. Charles Scalfani \cite{CS} szerint erősebb, de egyben könnyebben is használható.
+A PureScript egy erősen típusos, tisztán funkcionális nyelv. Javascript kódra fordul. Ennek előnye, hogy a kód írására egy szép, könnyen áttekinthető és egyértelmű nyelvet haszálunk, amiből egy hatékony Javascript kód generálódik. Amit Javascriptben meg lehet írni, azt nagyjából PureScriptben is \cite{CS}. A böngészőben és  a szerveren egyaránt futtatható.
+
+A nyelv alapja a Haskell, sokban hasonlít rá. Charles Scalfani \cite{CS} szerint erősebb, de egyben könnyebben is használható.
 Frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
 
 \subsection{Vue.js}
 
 \newpage
-\section{Eredmények és azok értékelése}
+\section{Az elvégzett munka és az eredmények ismertetése}
+
+\subsection{Tervezés}
 
 \begin{figure}
 \includegraphics[width=\textwidth]{database}
@@ -219,17 +244,38 @@ Frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
 \caption{Használati eset (use case) diagram. }
 \end{figure}
 
+\subsection{Implementálás}
+\subsection{Tesztelés?}
 
-\newpage
-\section{Továbbfejlesztési lehetőségek}
+\subsection{Java Spring backend}
 
-A vizsgált és specifikációk készítésekor használt modellezési nyelvek (ARIS, BPMN, UML, Petri-hálók) közül én az ARIS-t találtam jelen feladathoz a legmegfelelőbbnek. A különböző diagramtípusok integrációja és azok rendszerezett kezelése mindenképp kiemeli a többi közül. Ezen felül leginkább a folyamatok leírásakor az általa kínált információtöbbletet is hasznosnak találtam, véleményem szerint a többinél nagyobb kifejezőerővel rendelkezik ez az eszköz. 
+\subsection{A kettő összehasonlítása}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |p{1.7cm}|p{4.4cm}|p{6.3cm}| } 
+\hline
+ \textbf{Metódus} & \textbf{Útvonal} &\textbf{Leírás}\\
+\hline
+GET & /guest/getAll& Az összes vendég lekérése.\\
+\hline
+GET & /guest/getById/\{id\}& Egy vendég lekérése az azonosítója alapján.\\
+\hline
+POST & /guest/insertGuest&  Egy új vendég hozzáadása. \\
+\hline
+PUT & /guest/updateGuest/\{id\} & Egy vendég kartonjának szerkesztése \\
+\hline
+DELETE & /guest/deleteGuest/\{id\} & Egy vendég törlése  \\
+\hline
+... & ... &...  \\
+\hline
+\end{tabular}
+\caption{A kérések listájának részlete.}
+\end{table}
 
 \newpage
 \section*{Összefoglalás}
 \addcontentsline{toc}{section}{Összefoglalás}
-
-A mai korszerű vállalatoknak versenyképességük megőrzése céljából elengedhetetlenné vált üzleti szoftverek alkalmazása. Dolgozatom célkitűzése egy debreceni kereskedelmi profilú kisvállalkozás folyamatainak, működésének megismerése, modellezése és a számára készülő vállalatirányítási rendszer üzleti követelmény specifikációjának elkészítése volt. 
 
 %******************példa képek:
 
@@ -268,6 +314,16 @@ A mai korszerű vállalatoknak versenyképességük megőrzése céljából elen
 %\end{enumerate}
 %A Petri háló struktúrát $(P, T, E, w)$ módon jelöljük. (\textit{Peterson., 1981})
 %\end{definíció}
+
+%******************felsorolas
+%\begin{itemize}
+%\item egy adott időszakban egy vevő mennyit vásárolt?
+%\item melyik partnernek mennyi ki nem fizetett, vagy lejárt tartozása van?
+%\item egy adott termékből mennyi fogyott adott idő alatt?
+%\item ki állított ki egy bizonyos számlát?
+%\item kik vannak jelenleg bejelentkezve?
+%\item kinek van lejárt tartozása és mennyi?
+%\end{itemize}
 
 \addcontentsline{toc}{section}{Irodalomjegyzék}
 
@@ -314,6 +370,16 @@ Hozzáférés dátuma: 2023.04.12.
 
 \bibitem{vue}
 \url{https://vuejs.org/guide/introduction.html}
+
+\bibitem{py}
+J. Sturtz.: Functional Programming in Python: When and How to Use It. Hozzáférés dátuma: 2023.04.20.
+\url{https://realpython.com/python-functional-programming/}
+
+\bibitem{cpp}
+D. Cravey.: Functional-Style Programming in C++. Hozzáférés dátuma: 2023.04.20.
+\url{https://learn.microsoft.com/en-us/archive/msdn-magazine/2012/august/c-functional-style-programming-in-c}
+
+\href{https://learn.microsoft.com/en-us/archive/msdn-magazine/2012/august/c-functional-style-programming-in-c}{D. Cravey.: Functional-Style Programming in C++}.\\ Hozzáférés dátuma: 2023.04.20.
 
 \end{thebibliography}
 \end{document}
