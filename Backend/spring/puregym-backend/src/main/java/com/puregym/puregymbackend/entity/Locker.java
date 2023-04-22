@@ -2,14 +2,22 @@ package com.puregym.puregymbackend.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "locker")
+@SqlResultSetMapping(
+        name = "FreeLockerIdWrapper",
+        classes = {
+                @ConstructorResult(
+                        targetClass = FreeLockerIdWrapper.class,
+                        columns = {
+                                @ColumnResult(name="id", type = Long.class)
+                        }
+                )
+        }
+)
 public class Locker {
 
     @Id

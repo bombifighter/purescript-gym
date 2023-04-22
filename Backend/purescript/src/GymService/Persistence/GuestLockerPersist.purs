@@ -44,9 +44,9 @@ getUsedGuestLockers :: Connection -> Aff (Array GuestLocker)
 getUsedGuestLockers conn = query_ getUsedGuestLockersQuery conn
 
 getLastGuestLockerIdQuery :: String
-getLastGuestLockerIdQuery = "select ifnull(max(id),0) as id from guestlocker"
+getLastGuestLockerIdQuery = "select ifnull(max(id),0) as lastId from guestlocker"
 
-getLastGuestLockerId :: Connection -> Aff (Array { id :: Int })
+getLastGuestLockerId :: Connection -> Aff (Array { lastId :: Int })
 getLastGuestLockerId conn = query_ getLastGuestLockerIdQuery conn
 
 endGuestLockerQuery :: String

@@ -284,7 +284,7 @@ router { body, method: Post, path: ["guest", "checkin"]} = do
             case newId of
               Nothing -> badRequest' corsHeader $ wrapMessageinJSON "Cannot get guestlocker ID"
               Just id -> do
-                let targetId = id.id + 1
+                let targetId = id.lastId + 1
                 let start = checkin.date <> " " <> checkin.time
                 let guestLocker = GuestLocker { id: targetId, guestId: checkin.guestId, lockerId: freeLocker.id, lockerGender: checkin.gender, startTime: start, endTime: "0"}
                 insertGuestLocker guestLocker conn

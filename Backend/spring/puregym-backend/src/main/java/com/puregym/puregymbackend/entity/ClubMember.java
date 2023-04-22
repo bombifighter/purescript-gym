@@ -2,14 +2,22 @@ package com.puregym.puregymbackend.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "clubmember")
+@SqlResultSetMapping(
+        name = "LastIdWrapper",
+        classes = {
+                @ConstructorResult(
+                        targetClass = LastIdWrapper.class,
+                        columns = {
+                                @ColumnResult(name="lastId", type = Long.class)
+                        }
+                )
+        }
+)
 public class ClubMember {
 
     @Id

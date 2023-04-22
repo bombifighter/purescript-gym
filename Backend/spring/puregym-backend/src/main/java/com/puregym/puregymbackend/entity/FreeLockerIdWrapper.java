@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LastIdWrapper {
+public class FreeLockerIdWrapper {
 
-    private Long lastId;
+    private Long id;
 }

@@ -49,6 +49,7 @@ public class GuestController {
 
     @GetMapping(path = "/getInactive/{date}")
     List<InactiveGuest> getInactiveGuests(@PathVariable String date) {
+        System.out.println(date);
         return guestService.getInactiveGuests(date);
     }
 

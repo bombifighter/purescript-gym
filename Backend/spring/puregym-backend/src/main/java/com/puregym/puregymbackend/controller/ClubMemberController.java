@@ -20,9 +20,6 @@ public class ClubMemberController {
     @Autowired
     ClubMemberService clubMemberService;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @GetMapping(path = "/findMembershipsById/{id}")
     List<ClubMember> getMembershipsById(@PathVariable Long id) {
         return clubMemberService.findClubMembershipByGuestId(id);
@@ -30,7 +27,7 @@ public class ClubMemberController {
 
     @GetMapping(path = "/getLastId")
     List<LastIdWrapper> getLastClubMemberId() {
-        return clubMemberService.getLastId(entityManager);
+        return clubMemberService.getLastId();
     }
 
     @PostMapping(path = "/insertClubMember")
