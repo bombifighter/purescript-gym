@@ -1,12 +1,16 @@
 package com.puregym.puregymbackend.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "guest")
+@AllArgsConstructor
+@NoArgsConstructor
 @SqlResultSetMappings( {
         @SqlResultSetMapping(
                 name = "ActiveGuest",

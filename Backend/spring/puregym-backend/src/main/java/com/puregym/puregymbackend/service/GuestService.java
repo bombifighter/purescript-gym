@@ -27,6 +27,9 @@ public class GuestService {
     @Autowired
     MembershipService membershipService;
 
+    @Autowired
+    ClubMemberService clubMemberService;
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -60,6 +63,9 @@ public class GuestService {
     }
 
     public void deleteGuest(Long Id) {
+        guestLockerService.deleteGuestLockerByGuestId(Id);
+        clubMemberService.deleteClubMemberByGuestId(Id);
+        membershipService.deleteMembershipByGuestId(Id);
         guestRepository.deleteById(Id);
     }
 
@@ -80,8 +86,8 @@ public class GuestService {
     }
 
     public void checkinGuest(CheckinGuest checkinGuest) {
-        Long freeLockerId = lockerService.getFreeGenderLocker(checkinGuest.getGender()).get(0).getId() + 1;
-        Long newId = guestLockerService.getLastGuestLockerId().get(0).getLastId();
+        Long freeLockerId = lockerService.getFreeGenderLocker(checkinGuest.getGender()).get(0).getId();
+        Long newId = guestLockerService.getLastGuestLockerId().get(0).getLastId() + 1;
         String startTime = checkinGuest.getDate() + " " + checkinGuest.getTime();
         GuestLocker newGuestLocker = new GuestLocker(newId, checkinGuest.getGuestId(), freeLockerId, checkinGuest.getGender(), startTime, "0");
         guestLockerService.insertGuestLocker(newGuestLocker);

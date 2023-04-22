@@ -1,11 +1,15 @@
 package com.puregym.puregymbackend.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "membership")
 @SqlResultSetMapping(
         name = "OccasionsLeftWrapper",
@@ -14,7 +18,7 @@ import javax.persistence.*;
                         targetClass = OccasionsLeftWrapper.class,
                         columns = {
                                 @ColumnResult(name="id", type = Long.class),
-                                @ColumnResult(name="occasionsLeft", type = String.class)
+                                @ColumnResult(name="occasionsLeft", type = Long.class)
                         }
                 )
         }

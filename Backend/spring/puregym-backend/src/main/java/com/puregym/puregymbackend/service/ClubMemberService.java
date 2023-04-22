@@ -3,9 +3,9 @@ package com.puregym.puregymbackend.service;
 import com.puregym.puregymbackend.entity.ClubMember;
 import com.puregym.puregymbackend.entity.LastIdWrapper;
 import com.puregym.puregymbackend.repository.ClubMemberRepository;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,5 +33,12 @@ public class ClubMemberService {
 
     public void insertClubMember(ClubMember clubMember) {
         clubMemberRepository.save(clubMember);
+    }
+
+    @Transactional
+    public void deleteClubMemberByGuestId(Long id) {
+        Query q = entityManager.createNativeQuery("DELETE FROM clubmember WHERE guestId = ?1")
+                .setParameter(1, id);
+        q.executeUpdate();
     }
 }

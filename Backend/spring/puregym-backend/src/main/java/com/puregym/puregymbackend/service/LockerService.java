@@ -1,11 +1,11 @@
 package com.puregym.puregymbackend.service;
 
 import com.puregym.puregymbackend.entity.FreeLockerIdWrapper;
-import com.puregym.puregymbackend.entity.LastIdWrapper;
 import com.puregym.puregymbackend.entity.Locker;
 import com.puregym.puregymbackend.repository.LockerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,7 +23,7 @@ public class LockerService {
     EntityManager entityManager;
 
     public List<Locker> getAllLockers() {
-        return new ArrayList<>(lockerRepository.findAll());
+        return new ArrayList<>(lockerRepository.getAll());
     }
 
     public List<Locker> getLockerByIdAndGender(String gender, Long id) {
@@ -36,11 +36,19 @@ public class LockerService {
         return (List<FreeLockerIdWrapper>) q.getResultList();
     }
 
+    @Transactional
     public void occupyLocker(Long id, String gender) {
-        lockerRepository.occupyLocker(id, gender);
+        Query q = entityManager.createNativeQuery("UPDATE locker SET isFree = 'false' WHERE id = ?1 AND gender = ?2")
+                .setParameter(1, id)
+                .setParameter(2, gender);
+        q.executeUpdate();
     }
 
+    @Transactional
     public void freeupLocker(Long id, String gender) {
-        lockerRepository.freeupLocker(id, gender);
+        Query q = entityManager.createNativeQuery("UPDATE locker SET isFree = 'true' WHERE id = ?1 AND gender = ?2")
+                .setParameter(1, id)
+                .setParameter(2, gender);
+        q.executeUpdate();
     }
 }

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -49,7 +51,6 @@ public class GuestController {
 
     @GetMapping(path = "/getInactive/{date}")
     List<InactiveGuest> getInactiveGuests(@PathVariable String date) {
-        System.out.println(date);
         return guestService.getInactiveGuests(date);
     }
 

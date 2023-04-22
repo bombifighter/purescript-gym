@@ -1,11 +1,17 @@
 package com.puregym.puregymbackend.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
+@IdClass(Locker.class)
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "locker")
 @SqlResultSetMapping(
         name = "FreeLockerIdWrapper",
@@ -18,12 +24,12 @@ import javax.persistence.*;
                 )
         }
 )
-public class Locker {
+public class Locker implements Serializable {
 
     @Id
     private Long id;
 
-    @Column
+    @Id
     private String gender;
 
     @Column(name = "isFree")

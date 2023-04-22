@@ -1,11 +1,15 @@
 package com.puregym.puregymbackend.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "clubmember")
 @SqlResultSetMapping(
         name = "LastIdWrapper",

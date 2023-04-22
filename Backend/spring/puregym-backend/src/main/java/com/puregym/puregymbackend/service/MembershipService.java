@@ -6,6 +6,7 @@ import com.puregym.puregymbackend.entity.OccasionsLeftWrapper;
 import com.puregym.puregymbackend.repository.MembershipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,7 +43,18 @@ public class MembershipService {
         return (List<OccasionsLeftWrapper>) q.getResultList();
     }
 
+    @Transactional
     public void setOccasions(Long occasionsLeft, Long id) {
-        membershipRepository.setOccasions(occasionsLeft, id);
+        Query q = entityManager.createNativeQuery("UPDATE membership SET occasionsLeft = ?1 where id = ?2")
+                .setParameter(1, occasionsLeft)
+                .setParameter(2, id);
+        q.executeUpdate();
+    }
+
+    @Transactional
+    public void deleteMembershipByGuestId(Long id) {
+        Query q = entityManager.createNativeQuery("DELETE FROM membership WHERE guestId = ?1")
+                .setParameter(1, id);
+        q.executeUpdate();
     }
 }

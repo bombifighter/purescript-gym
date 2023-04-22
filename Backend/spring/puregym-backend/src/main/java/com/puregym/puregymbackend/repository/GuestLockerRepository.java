@@ -10,9 +10,6 @@ import java.util.List;
 @Repository
 public interface GuestLockerRepository extends JpaRepository<GuestLocker, Long> {
 
-    @Query(value = "SELECT id, guestId, lockerId, lockerGender, startTime, endTime FROM guestlocker WHERE lockerGender = ?1 and lockerId = ?1 ORDER BY startTime desc", nativeQuery = true)
-    List<GuestLocker> getHistory(String gender, Long id);
-
-    @Query(value = "UPDATE guestlocker SET endTime = ?1 WHERE guestId = ?2 and lockerId = ?3 and lockerGender = ?4 and endTime = '0'", nativeQuery = true)
-    void endGuestLocker(String newEndTime, Long guestId, Long lockerId, String lockerGender);
+    @Query(value = "SELECT id, guestId, lockerId, lockerGender, startTime, endTime FROM guestlocker WHERE lockerGender = ?1 and lockerId = ?2 ORDER BY startTime desc", nativeQuery = true)
+    List<GuestLocker> getHistory(String lockerGender, Long lockerId);
 }
