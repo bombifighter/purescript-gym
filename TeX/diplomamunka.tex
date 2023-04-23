@@ -145,7 +145,7 @@ A huszonegyedik században egy korszerű edzőteremnek szüksége van egy szoftv
 Az alkalmazás felhasználói az edzőterem recepciós kollégái. A rendszerben lehetőség van rögzíteni:
 \begin{itemize}
 \item vendégeket
-\item bérlettípusak (jegytípusokat)
+\item bérlettípusokat (jegytípusokat)
 \item a felhasználók jegyeit, bérleteit
 \item öltözőszekrényeket
 \end{itemize}
@@ -228,6 +228,28 @@ A nyelv alapja a Haskell, sokban hasonlít rá. Charles Scalfani \cite{CS} szeri
 Frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
 
 \subsection{Vue.js}
+
+\subsubsection{JavaScript keretrendszerek}
+
+A Vue.js egy klines-oldali keretrendszer, mely a JavaScript programozási nyelvre épül. A JavaScript 1996-os indulása óta mára már megkerülhetetlen része a webnek, a weben található oldalak több mint 95\%-án használatban van valamilyen formában \cite{JS_USAGE}. Az évek során a nyelvvel dolgozó fejlesztőknek köszönhetően számos különböző problémára megoldást nyújtó könyvtár született, mely mind a web mai formájának alakulásához járult hozzá.
+
+A keretrendszerek is ilyen könyvtárak. Meghatározzák egy abban írt szoftver felépítését, mely olyan előnyökkel jár mint a kiszámíthatóság, fenntarthatóság illetve a skálázhatóság.
+A keretrendszerek megépítésének motivációja a fejlesztési munkamenet egyszerűsítésében keresendő. Nem vértezi fel új képességekkel az eredeti programozási nyelvet (jelen esetünkben a JavaScriptet), hanem átláthatóbbá valamint könnyebben elérhetővé teszi azt. Általuk a fejlesztőknek csak azt kell meghatározniuk, hogy hogyan nézzen ki az általuk elkészíteni kívánt felhasználói felület, a megvalósításról pedig már a keretrendszer gondoskodik.
+
+Az alább felsorolt tulajdonságok szintén a fejlesztési folyamatokat megkönnyítéséhez járulnak hozzá:
+\begin{itemize}
+\item tesztelési és kódellenőrzési eszközök biztosítása,
+\item felhasználói felület részekre (komponensekre) osztása,
+\item útvonalkezelés megkönnyítése.
+\end{itemize}
+
+Az elvitathatatlan előnyökön felül természetesen van más nézőpont is ami felől vizsgálódnia szükséges egy fejlesztőnek, mielőtt egy keretrendszer használatába kezd, az alap JavaScriptet elfeledve. Fontos észben tartani, hogy a keretrendszerek elsajátításához időre van szükség, hogy az általa biztosított eszközöket a lehető leghatékonyabban tudja felhasználni a fejlesztő a céljai elérésére. Elenghetetlen továbbá átgondoli az elkészítendő program célját. Egy olyan alkalmazás, amely semmilyen felhasználói interakcióval nem rendelkezik, nem biztos, hogy igényel egy olyan professzionális fejlesztői eszközt, mint egy keretrendszer, mely komplex struktúrája feleslegesen bonyolítja a fejlesztési folyamatot.
+
+Ahhoz, hogy az elérhető keretrendszerek közül a legmegfelelőbb kerüljön kiválasztásra, érdemes szem előtt tartani néhány egyszerű szempontot. A választott keretrendszer dokumentációjának minősége és elérhetősége. Minél részletesebb, minél több példával rendelkezik, annál könnyebb lesz a fejlesztés során felmerülő problémákra megoldást találni vagy az implementációs kérdésekben döntést hozni. A dokumentációt kiegészítő szempont a fejlesztői közösség aktivitása, amely a speciális esetekben nyújtat segítséget, akár korábban feltett és megválaszolt kérdéseken keresztül.
+
+\subsubsection{A Vue.js rövid története és tulajdonságai}
+
+A Vue.js ötlete Evan You, Google alkalmazott fejében született meg. A munkája során szüksége lett volna egy olyan hatékony eszközre, ami gyorsan képes nagy mennyiségű HTML dokumentumot előállítani adatok és prototípusok felhasználásával. A már létező eszközök nem tudták teljes mértékben kielégíteni az igényeit. Volt olyan, amelyik csupán struktúrát biztosított, de az adatkezelése nem volt ideális (Backbone), de volt olyan is, amelyik túl szigorú, kötött szabályrendszerével nem csak a fejlesztendő alkalmazás struktúráját, de a kódolási folyamatot is túlságosan nagy mértékben kívánta befolyásolni (Angular). A megfelelő megoldás hiánya arra késztette, hogy saját maga hozza létre az általa keresett keretrendszert. Így jelent meg a keretrendszer 2014-ben, mely azóta egy lelkes fejlesztő kis magánprojektjéből széles fejlesztői körökben elterjedt és folyamatosan fejlődő keretrendszerré nőtte ki magát.
 
 \subsection{Java}
 \subsubsection{Spring}
@@ -384,6 +406,9 @@ D. Cravey.: Functional-Style Programming in C++. Hozzáférés dátuma: 2023.04.
 \url{https://learn.microsoft.com/en-us/archive/msdn-magazine/2012/august/c-functional-style-programming-in-c}
 
 \href{https://learn.microsoft.com/en-us/archive/msdn-magazine/2012/august/c-functional-style-programming-in-c}{D. Cravey.: Functional-Style Programming in C++}.\\ Hozzáférés dátuma: 2023.04.20.
+
+\bibitem{JS_USAGE}
+Kliens-oldali programozási nyelvek használatát bemutató statisztika. \url{https://w3techs.com/technologies/details/cp-javascript}  Hozzáférés dátuma: 2023.04.23.
 
 \end{thebibliography}
 \end{document}
