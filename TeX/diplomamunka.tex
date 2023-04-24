@@ -222,11 +222,89 @@ Mivel a funkcionális nyelvek használata kevésbé elterjedt, kevesebb eszköz,
 
 \subsection{PureScript}
 
+A nyelvet Phil Freeman tervezte 2013-ban, ugyanis nem volt megelégedve a Haskell-t Javascript-re fordító próbálkozásokkal (például Fay, Haste, vagy GHCJS) \cite{pd}. A nyelv teljes forráskódja és dokumentációja megtalálható a GitHubon \cite{pgit}. Hasznos dokumentációs forrás továbbá a Pursuit \cite{purs}, illetve a nyelv alkotója által publikált PureScript by Example könyv \cite{PE}.
+
 A PureScript egy erősen típusos, tisztán funkcionális nyelv. Javascript kódra fordul. Ennek előnye, hogy a kód írására egy szép, könnyen áttekinthető és egyértelmű nyelvet haszálunk, amiből egy hatékony Javascript kód generálódik. Amit Javascriptben meg lehet írni, azt nagyjából PureScriptben is \cite{CS}. A böngészőben és  a szerveren egyaránt futtatható.
 
-A nyelv alapja a Haskell, sokban hasonlít rá. Charles Scalfani \cite{CS} szerint erősebb, de egyben könnyebben is használható.
-Frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
+A nyelv alapja a Haskell, nagyban hasonlít rá. Maga a szintkaxis annyira hasonló, hogy néhány fejlesztői eszköz a kód megjelenítéséhez a Haskell kiemelését használja. A nyelv fordítója is Haskell nyelven íródott \cite{CS}. Charles Scalfani \cite{CS} szerint erősebb, de egyben könnyebben is használható, mint a Haskell.
 
+A nyelv komoly előnye, hogy frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
+
+A PureScriptnek saját csomagkezelő szoftvere van, a Spago \cite{spago}. Forráskódja szintén elérhető a GitHubon. Munkánk során mi is ezt használtuk, véleményünk szerint nagyon egyszerűen használható, és probléma sem merült fel vele kapcsolatban.
+
+A PureScript rendelkezik egy parancsoros végrehajtási móddal,  ezt PSCI-nek vagy REPL-nek nevezik.  Soronként történik a kód begépelése és végrehajtása. Több sort is megadhatunk egyszerre a \textit{:paste} paranccsal (kilépés: ctrl + D).  A nyelvvel való ismerkedés és a tesztelés során hasznos lehet,  ugyanis lépésről lépésre tudjuk irányítani a kódot,  például típusok lekérdezéséhez. 
+
+A következő kódcsipet a  \textit{Hello,  world!} program PureScript változata:
+
+\begin{verbatim}
+module Main where
+
+import Prelude
+
+import Effect (Effect)
+import Effect.Console (log)
+
+main :: Effect Unit
+main = log "Hello World!"
+\end{verbatim}
+
+Előre definiált könyvtárakból lehetőség van függvényeket importálni,  ezt a fájl elején tehetjük meg.  Elég explicit módon kell megadni a konkrét behívandó függvényeket és komponenseket.  Ezután (mint tiszta funkcionális nyelvhez illik) függvények deklarációja és definíciója következik.  A következő kódcsipet egy függvényt ábrázol:
+
+\begin{verbatim}
+add :: Int -> Int -> Int
+add a b = a + b
+\end{verbatim}
+
+Az első sor nem kötelező,  de az átláthatóság érdekében érdemes megadni.  Azt lehet belőle leolvasni,  hogy az add egy olyan függvény,  amely két Int típusú input paraméterrel rendelkezik,  és kimeneti értékként egy Int-et állít elő. A függvény a következőt csinálja: \cite{CS}:
+\begin{itemize}
+\item kap egy vagy több bemeneti értéket
+\item elvégez bizonyos számításokat
+\item visszaad egy értéket
+\end{itemize}
+Egy tiszta függvény mellékhatás mente, és mindig ugyanazt a kimenetet állítja elő\cite{CS}.  A tiszta funkcionális elvek szerint egy függvénynek csak egy kimeneti értéket adhat vissza. Ez nehézségnek tűnhet, de az úgy nevezett \textit{Currying} koncepció segíthet: egy több paraméteres függvény egy paraméteres függvények halmazára cserélését jelenti.
+
+A nyelv további jellemzője, hogy minden változó "Immutable", vagyis a létrejöttük után nem módosulhatnak. Ez is egy érdekes tulajdonság az imperatív világban járatosabb fejlesztők számára.  Az imperatív nyelvekben is van lehetőség objektumoknak ilyen tulajdonság beállítására.  PureScriptben a \textit{let} kulcsszó gyakran segítségünkre lehet ilyenkor, például:
+
+\begin{verbatim}
+add :: Int -> Int
+add x = do
+  let y = 20
+    x + 20
+\end{verbatim}
+A fenti függvény visszaadja a bemeneti értéknél hússzal nagyobb integert. PureScriptben a sorok behúzása is lényeges, a Pythonéhoz hasonló elven működik. Ott, ahol a legtöbb nyelv zárójeleket használna, a PureScriptben behúzás található: eggyel bentebbi behúzás egy zárójelezett blokknak felel meg.
+
+Az imperatív nyelvek egyik alap építőelemét, a ciklusokat is el kell felejteni PureScriptben. Más megközelítés helyettük például a rekurzió használata, mely a funkcionális nyelvekben gyakori koncepció. Példaként Charles Scalfani könyvéből \cite{CS} mutatok két Javascript kódcsipetet, melyek ugyanazt a célt szolgálják. 
+A ciklusos megközelítés:
+
+\begin{verbatim}
+const factorial = n => {
+    var result = 1;
+    for (var i = 1; i <= n; ++i)
+        result = result * i;
+    return result;
+};
+\end{verbatim}
+
+Funkcionális módon:
+\begin{verbatim}
+const factorial = n => n === 0 ? 1 : n * factorial (n - 1);
+\end{verbatim}
+
+A második kódcsipet úgy definiálja a függvényt, hogy azt mondja meg, \textit{mit} számoljon ki, míg az első a \textit{hogyan} kérdésre adja meg a választ. Ugyanez a kód PureScriptben:
+
+\begin{verbatim}
+factorial :: Int -> Int
+factorial n =
+   if n = 1 then 1 else factorial $ n - 1
+\end{verbatim}
+
+A fenti két funkcionális függvény farokrekurzív, mivel a rekurzív hívás maga a függvényben az utolsó hívás. A rekurzió egy előnyös fajtája, mivel kevesebb memóriát igényel. Ez annak köszönhető, hogy ily módon a veremben kevesebb információ tárolódik, és a sebesség is szignifikánsan jobb lesz egy nem farokrekurzív függvényhez képest.
+
+A PureScript továbbá statikus nyelv.  Ez azt jelenti, hogy a típusok ellenőrzése fordítás alatt zajlik, és nem futásidő alatt. Előnye, hogy a hibák már fordítás közben kiderülnek,  kevesebb tesztelés szükséges. Hátránya pedig, hogy a típusokra több figyelmet kell fordítani, limitálja a programozói szabadságot \cite{CS}.
+
+A nyelvvel kapcsolatban kissé negatívum élményként tapasztaltuk, hogy az általános dokumentáltság (nem magának PureScript nyelvnek a dokumentációja, inkább a rendelkezésre álló egyéb oktatási anyagok, könyvek, példák, megválaszolt kérdésekre gondolva) hiányos, sokszor nehéz volt emiatt haladni a fejlesztéssel. Ez véleményünk szerint egyrészt a kevésbé népes funkcionális fejlesztői közösségnek köszönhető, másrészt pedig a nyelv fiatal korának.
+
+\newpage
 \subsection{Vue.js}
 
 \subsubsection{JavaScript keretrendszerek}
@@ -409,6 +487,22 @@ D. Cravey.: Functional-Style Programming in C++. Hozzáférés dátuma: 2023.04.
 
 \bibitem{JS_USAGE}
 Kliens-oldali programozási nyelvek használatát bemutató statisztika. \url{https://w3techs.com/technologies/details/cp-javascript}  Hozzáférés dátuma: 2023.04.23.
+
+\bibitem{pd}
+A PureScript nyelv hivatalos dokumentációja.
+\url{https://github.com/purescript/documentation} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{pgit}
+A PureScript nyelv hivatalos forráskódja.
+\url{https://github.com/purescript/purescript} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{spago}
+A Spago hivatalos dokumentációja.
+\url{https://github.com/purescript/spago} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{purs}
+Pursuit. Hivatalos PureScript dokumentáció.
+\url{https://pursuit.purescript.org} Hozzáférés dátuma: 2023.04.24.
 
 \end{thebibliography}
 \end{document}
