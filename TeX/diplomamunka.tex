@@ -229,6 +229,8 @@ Frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
 
 \subsection{Vue.js}
 
+Dolgozatunk frontend része Vue.js-ben készült,  ezért röviden szeretnénk összefoglalni annak alapjait, tuldajonságait és egy rövid példán keresztül a használatának könnyedségét.
+
 \subsubsection{JavaScript keretrendszerek}
 
 A Vue.js egy klines-oldali keretrendszer, mely a JavaScript programozási nyelvre épül. A JavaScript 1996-os indulása óta mára már megkerülhetetlen része a webnek, a weben található oldalak több mint 95\%-án használatban van valamilyen formában \cite{JS_USAGE}. Az évek során a nyelvvel dolgozó fejlesztőknek köszönhetően számos különböző problémára megoldást nyújtó könyvtár született, mely mind a web mai formájának alakulásához járult hozzá.
@@ -236,7 +238,7 @@ A Vue.js egy klines-oldali keretrendszer, mely a JavaScript programozási nyelvr
 A keretrendszerek is ilyen könyvtárak. Meghatározzák egy abban írt szoftver felépítését, mely olyan előnyökkel jár mint a kiszámíthatóság, fenntarthatóság illetve a skálázhatóság.
 A keretrendszerek megépítésének motivációja a fejlesztési munkamenet egyszerűsítésében keresendő. Nem vértezi fel új képességekkel az eredeti programozási nyelvet (jelen esetünkben a JavaScriptet), hanem átláthatóbbá valamint könnyebben elérhetővé teszi azt. Általuk a fejlesztőknek csak azt kell meghatározniuk, hogy hogyan nézzen ki az általuk elkészíteni kívánt felhasználói felület, a megvalósításról pedig már a keretrendszer gondoskodik.
 
-Az alább felsorolt tulajdonságok szintén a fejlesztési folyamatokat megkönnyítéséhez járulnak hozzá:
+Az alább felsorolt tulajdonságok szintén a fejlesztési folyamatok megkönnyítéséhez járulnak hozzá:
 \begin{itemize}
 \item tesztelési és kódellenőrzési eszközök biztosítása,
 \item felhasználói felület részekre (komponensekre) osztása,
@@ -249,10 +251,152 @@ Ahhoz, hogy az elérhető keretrendszerek közül a legmegfelelőbb kerüljön k
 
 \subsubsection{A Vue.js rövid története és tulajdonságai}
 
-A Vue.js ötlete Evan You, Google alkalmazott fejében született meg. A munkája során szüksége lett volna egy olyan hatékony eszközre, ami gyorsan képes nagy mennyiségű HTML dokumentumot előállítani adatok és prototípusok felhasználásával. A már létező eszközök nem tudták teljes mértékben kielégíteni az igényeit. Volt olyan, amelyik csupán struktúrát biztosított, de az adatkezelése nem volt ideális (Backbone), de volt olyan is, amelyik túl szigorú, kötött szabályrendszerével nem csak a fejlesztendő alkalmazás struktúráját, de a kódolási folyamatot is túlságosan nagy mértékben kívánta befolyásolni (Angular). A megfelelő megoldás hiánya arra késztette, hogy saját maga hozza létre az általa keresett keretrendszert. Így jelent meg a keretrendszer 2014-ben, mely azóta egy lelkes fejlesztő kis magánprojektjéből széles fejlesztői körökben elterjedt és folyamatosan fejlődő keretrendszerré nőtte ki magát.
+A Vue.js ötlete Evan You Google alkalmazott fejében született meg \cite{VUE_BOOK}. A munkája során szüksége lett volna egy olyan hatékony eszközre, ami gyorsan képes nagy mennyiségű HTML dokumentumot előállítani adatok és prototípusok felhasználásával. A már létező eszközök nem tudták teljes mértékben kielégíteni az igényeit \cite{VUE_BOOK}. Volt olyan, amelyik csupán struktúrát biztosított, de az adatkezelése nem volt ideális (Backbone), de volt olyan is, amelyik túl szigorú, kötött szabályrendszerével nem csak a fejlesztendő alkalmazás struktúráját, de a kódolási folyamatot is túlságosan nagy mértékben kívánta befolyásolni (Angular). A megfelelő megoldás hiánya arra késztette, hogy saját maga hozza létre az általa keresett keretrendszert. Így jelent meg a keretrendszer 2014-ben, mely azóta egy lelkes fejlesztő kis magánprojektjéből széles fejlesztői körökben elterjedt és folyamatosan fejlődő keretrendszerré nőtte ki magát.
 
-\subsection{Java}
-\subsubsection{Spring}
+A Vue.js figyelemre méltó eredménye, hogy fel tudta venni a versenyt olyan elterjedt, szintén JavaScriptre vagy TypeScriptre épülő keretrendszerekkel mint az Angular vagy a React. Ebben hatalmas szerepe van az elérhetőségének. Minden olyan böngésző képes a Vue.js-t kezelni, amelyik támogatja az ES2015 (ES6) JavaScript szabványt \cite{VUE_SUPP}, ezzel a felhasználók 96,09\%-ához jut el \cite{ES2015_USAGE}. Megbízhatóságát biztosítja a több mint 1,5 millió felhasználó világszinten, de olyan nagyvállalatok is használják mint a NASA, Apple vagy a Microsoft \cite{VUE_COMPANIES}.
+
+A Vue.js az alábbi tulajdonságokkal rendelkezik:
+\begin{itemize}
+	\item[]\textbf{Gyors}
+	- Különféle teljesítménytesztek igazolják, hogy gyorsabb keretrendszer mint a rivális Angular vagy React \cite{FRAMEWORK_PERF}.
+	\item[]\textbf{Könnyed}
+	- Egy Vue.js-ben fejlesztett alkalmazás az úgynevezett \textit{tree-shaking}nek köszönhetően nem tartalmaz olyan beépített könyvtárakat, amiket a fejlesztés során nem használnak, ezzel csökkentve az alkalmazás végős méretét \cite{VUE_LW}.
+	\item[]\textbf{Skálázható}
+	- A keretrendszer eszköztára lehetővé teszi nagyobb alkalmazások fejlesztését is, melyet a nagy fokú modularitásának köszönhet \cite{VUE_SCALE}.
+	\item[]\textbf{Gyorsan tanulható}
+	- A részletes dokumentáció, az aktív közösség és az alapos oktató anyagoknak köszönhetően gyorsan elsajátítható a Vue.js használata, melyet a fejlesztés során is megtapasztalhattunk.
+\end{itemize}
+
+Ezeken a tulajdonságokon felül nagy előnye a keretrendszernek, hogy egy komponenshez tartozó forráskódok egyetlen jól struktúrált fájlban megtalálhatók. Ez az úgy nevezett \textit{Single-file Component} tulajdonság. A következőkben a keretrendszer dokumentációja \cite{VUE_DOCS} és saját fejlesztési tapasztalataink alapján ismertetjük annak részletesebb tulajdonságait. Egy fájl tartalma a következőképpen alakulhat:
+\begin{itemize}
+	\item[]\textbf{Sablon}
+	- Először a komponens vázát tartalmazó sablont kell megadnunk, ez minden komponens kötelező eleme. Egy HTML alapú sablon szintaxisban adjuk meg a komponensünk vázát, amelyet az alkalmazás futása során fogunk adatokkal megtölteni. Ezt a sablont a \textit{<template></template>} HTML címkék között tudjuk megadni.
+	\item[]\textbf{Szkript}
+	- A komponens dinamikusságáért felel, az abban megjelenő adatot szolgáltatja a sablon számára. Itt végezhetünk adatlekérést, kezelhetjük a komponenshez tartozó interkaciók mögötti műveleteket. Megadhatjuk a komponens által felhasznált más komponenseket, változókat, de azt is meg tudjuk pontosan határozni, hogy az adott komponens bizonyos életciklusaiban milyen műveletek hajtódjanak végre. A kódokat a már jól ismert, de opcionális  \textit{<script></script>} HTML címkék között tudjuk elhelyezni. 
+	\item[]\textbf{Stílus}
+	- A komponensekhez természetesen stílust is rendelhetünk, a Cascading Style Sheet (CSS) stílusleíró nyelv segítségével. Arról is dönthetünk, hogy az itt megírt stílusdefiníciók az egész alkalmazásra legyenek érvényesek, vagy csak az adott komponensre a \textit{scoped} kulcsszó megadásával. Webfejlesztői tapasztalataink szerint ez egy igen erős eszköz. A különféle keretrendszerek nélküli fejlesztés során a stílusok nyomonkövetése egy növekvő alkalmazásban egyre nehézkesebb, nem fenntartható kódot tud eredményezni, mely problémát ezzel az apró megoldással könnyen meg lehet előzni. A stílusdefiníciókat az opcionális \textit{<style></style>} HTML címkék között tudjuk megadni.
+\end{itemize}
+
+A \textbf{sablon} és a \textbf{stílus} kapcsolata a HTML és CSS kapcsolatából kézenfekvő, egy alap weblaphoz hasonlóan itt is attribútumokat adhatunk a HTML elemekhez, melyekhez általunk definiált stílus szabályok tartoznak. Az adatot szolgáltató \textbf{Szkript} rész kapcsolata a \textbf{sablon}nal már kicsit bonyolultabb, de egy egyszerű példán keresztül könnyen át lehet látni a működést.
+
+\subsubsection{A Vue.js működés közben}
+
+Mielőtt létrehoznánk első komponensünket, először inicializálnunk kell egy Vue.js-nek megfelelő könyvtárstruktúrát. A fejlett eszközök segítségével ez egy nagyon egyszerű feladat. Először szükségünk lesz a Node.js JavaScript futtató környezet legalább 16.0-s verziójára. Amint ez rendelkezésre áll, a környezethez tartozó \textbf{npm} csomagkezelő segítségével egy parancsban tudjuk telepíteni a függőségeket és inicializálni a példa projektünket:
+\begin{verbatim}
+npm init vue@latest
+\end{verbatim}
+
+Itt meg kell adnunk a készítendő projekt néhány alaptulajdonságát. Majd belépve az újonnan létrehozott projekt könyvtárába már létre is tudunk hozni komponenseket.
+Nézzük meg egy alapvető komponens forráskódját tartalmazó fájlt az \textit{PageTitle.vue}-t:
+\begin{verbatim}
+<template>
+    <h1>{{ title }}</h1>
+</template>
+
+<script>
+export default {
+    props: ['title']
+}
+</script>
+
+<style scoped>
+h1 {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+</style>
+\end{verbatim}
+
+Ez egy olyan újrafelhasználható cím komponensnek a forráskódja, amelyben a címben megjelenő szöveg paraméterezhetőA fájl elején található a \textbf{sablon}. Ebben található egy \textit{h1} HTML elem. Az elem szövege egy dupla kapcsos zárójelben, egy úgynevezett \textit{mustache} sablonban helyezkedik el. Az ott található \textit{title} kulcsszó egy változó, melynek értéke a \textbf{szkript} részben kerül majd meghatározásra. A dupla kapcsos zárójelben egyébként bármilyen érvényes JavaScript kód elhelyezhető, ami további komplex, de mégis egyszerűen érthető megoldásokat tesz lehetővé.
+
+A \textbf{szkript} részben találhatjuk a komponens számára elérhető változókat függvényeket. Ebben a példakódban egyetlen fajta változót láthatunk. A \textit{props} listában olyan változó neveket sorolunk fel, amelyeknek értékét a komponens más komponensekben való használatakor kell megadni. Például ezt a példa komponenst szeretnénk egy oldal komponensében felhasználni, hogy ott egy címet jelenítsen meg, az általunk választott szöveggel. Ezt a következő féle képpen tudjuk megtenni a \textit{PageComponent.vue} fájl sablon részében:
+\begin{verbatim}
+<template>
+    <PageTitle title="Példa cím"></PageTitle>
+</template>
+\end{verbatim}
+
+Ekkor a \textit{PageTitle} komponens beágyazódik a \textit{PageComponent} oldal komponensbe, és a hozzá kapcsolt \textbf{title} változó értéke "\textit{Példa cím}", ez a cím fog megjelenni a kirenderelt oldalon. Így egy komponens több oldalon is felhasználható, csupán a \textbf{title} változó értékét kell módosítanunk.
+
+A \textbf{stílus} rész pedig egyértelműen megadja, hogy milyen stílusú legyen a \textit{h1} elemünk. Figyeljük meg a \textit{<style></style>} címkében szereplő \textit{scoped} kulcsszót, mely a már említett módon segít a komponensek stílusainak elkülönítésében.
+
+Az elkészült oldal komponenst importálnunk kell az alkalmazásunk belépési pontjául szolgáló \textbf{App.vue} fájlba, melyet JavaScript segítségével fel kell csatolunk egy HTML fájlban lévő elemre. Ezt követően a következő parancsok segítségével tudjuk elindítani az alkalmazásunkat, mely alapértelmezés szerint egy Vite \cite{https://vitejs.dev/} által lokálisan futtatott szerveren teszi elérhetővé alkalmazásunkat:
+\begin{verbatim}
+npm install
+npm run dev
+\end{verbatim}
+
+Ennek további hatalmas előnye, hogy így nem kell minden kód változtatás után újraindítanunk a szervert, hanem az automatikusan képes felismerni és megjeleníteni a változásokat, és a fejlesztőnek már csak az alkalmazása további kialakításával kell foglalkoznia.
+
+\subsection{Spring Boot}
+
+Ahhoz hogy a dolgozatunk PureScript nyelven írt backend részét igazán értékelni tudjuk, szükségünk volt egy másik nyelven írt implementációra, amely jó összehasonlítási alapot nyújthat számunkra. Választásunk azért esett a Spring Bootra, mert ezt egyetemi tanulmányaink során már több ízben is megismerhettük, illetve szakmai tapasztalankon keresztül is találkoztunk ezzel a teljesen más nyelven írt eszközzel. Ebben az alfejezetben ezt szeretnénk bemutatni.
+
+\subsubsection{Java}
+
+A Spring alapja az 1995-ben megjelent, jelenleg az Oracle vállalat kezelésében működő ojektumorientált programozási nyelv és platform, a Java \cite{JAVA_ABOUT}. Az alkotójának, James Goslingnak eredeti célkitűzése az "írd meg egyszer, futtasd bárhol" volt \cite{JAVA_BOOK}, ami a hordozhatóság tulajdonságában meg is valósult. Működése a következő képpen alakul \cite{ORACLE_JAVA}:
+\begin{enumerate}
+\item A fejlesztő megírja a forráskódot a \textit{.java} kiterjesztésű szöveges fájlba.
+\item A \textit{javac} fordító a megírt kódból \textit{.class} kiterjesztésű bájtkódokat tartalmazó fájlokat készít
+\item E bájtkódokat fogja a Java Virtual Machine (JVM) a számítógép számára érthető utasításokká formálni, ami így végrehajtja a megírt programot.
+\end{enumerate}
+
+A nyelv fontosabb tulajdonságai a következők \cite{JAVA_BOOK}:
+\begin{itemize}
+	\item[]\textbf{Hordozhatóság}
+	- A már említett JVM adja a nyelv hordozhatóságát, mely segítségével bármilyen számítógépen lehetséges Java kód futtatása. Mára a Java támogatása szinte magától értetődő és nem csak a fő operációs rendszerek támogatják, de böngészők, telefonok és IoT eszközök is. Így már szinte szó szerint értelmezhető a fentebbi Gosling idézetben szereplő "bárhol".
+	\item[]\textbf{Biztonság}
+	- Ez fő szempont volt a nyelv kialakításának kezdeteitől fogva. A Java prograok egy alaposan testreszabható jogosultságokkal rendelkező izolált környezetben futnak, ami lehetővé teszi nem megbízható forrásból származó forráskódok, csomagok használatát, anélkül, hogy az kárt okozna a számítógépünkben.
+	\item[]\textbf{Dinamikusság és kiterjeszthetőség}
+	- A Java kódok osztályokba szerveződnek, melyeket dinamikusan képes betölteni a fordító, akkor amikor azokra szükség van.
+\end{itemize}
+
+A nyelv jelentősége tagadhatatlan. A TIOBE indexen az előkelő harmadik helyen szerepel \cite{TIO}, és bár népszerűsége az utóbbi években valamelyest csökkent, biztosan sokáig népszerű lesz még a már meglévő, ebben a nyelvben írt szoftverek és rendszerek miatt. A népszerűség egyik fontos hozadéka a nyelvvel foglalkozó aktív közösség, mely nagyban hozzájárul a nyelv elsajátításának megkönnyítéséhez.
+
+Amennyire népszerű a programozással megismerkedők körében könnyen tanulhatósága miatt, egy-egy alkalmazás fejlesztése gyakran túlságosan bonyolulttá tud válni. E bonyolultság enyhítésére a Java nyelvhez is készültek keretrendszerek. Egy ilyen keretrendszer a Spring, dolgozatunk második backend implementációjának alapja.
+
+\subsubsection{Spring, a Java keretrendszer}
+
+A Spring egy 2003-ban megjelent keretrendszer Java alkalmazások fejlesztésének támogatásához. Széleskörű eszköztárral rendelkezik, hogy skálázható, nagy teljesítményű alkalamzásokat lehessen általa létre hozni. A keretrendszer legfőbb tulajdonsága a modularitás. Az alap modulon túl a fejlesztő kezében van a döntés, hogy az adott alkalmazásba mely számára szükséges modulokat építi be. A főbb modulok a következő területeket érintik \cite{SPRING_BOOK}:
+\begin{itemize}
+\item adatelérés és kezelés,
+\item web,
+\item biztonság,
+\item tesztelés.
+\end{itemize}
+
+A keretrendszer alapelve a függőség befecskendezés vagy angolul Dependency Injection, melynek lényege, hogy a függőségek futási időben kerülnek átadásra. Ez két alapvető Java koncepció felhasználásával került implementálásra: az interfészek és a JavaBean-ek. Az interfészek és a függőség befecskendezésének kölcsönösen hasznos együttműködésének eredménye a rugalmas de nem túl bonyolult alkalmazások. A függőség befecskendezés előnyei \cite{SPRING_BOOK}:
+\begin{itemize}
+	\item[]\textbf{Csökkent kódméret}
+	- A függőség befecskendezés következtében sokkal kevesebb kódra van szükség ahhoz, hogy alkalmazásunk különböző részeit összeillesszük.
+	\item[]\textbf{Alkalmazás konfigurációk egyszerűsödése}
+	- A konfigurációk - hasonlóan a Spring alapgondolatához - modulárisan működnek, így ha egy részét le szeretnénk cserélni az alkalmazásunknak, azt nagyon könnyen meg tudjuk tenni.
+	\item[]\textbf{Tesztelhetőség fejlődése}
+	- Az előbb említett modularitás hozadéka a tesztelésben is tetten érhető. A tesztelési folyamat során a különböző objektumok mock-olása ennek következtében nagyban leegyszerűsödik.
+\end{itemize}
+
+\subsubsection{A Spring Boot projekt}
+
+A Spring keretrendszer egy elterjedt modulja a Spring Boot. Erőssége, hogy a korábban említett konfigurációk terhének tetemes részét leveszi a fejlesztők válláról. Az alkalmazásfejlesztésben fontos szerepe van annak is, hogy a Spring boot rendelkezik beépített web szerver támogatással, mint a Tomcat vagy a Jetty, amely lehetővé teszi a Java alkalmazásokból készített JAR csomagok könnyed kihelyezését. Így a fejlesztőnek egy külön álló szerver felállításával sem kell törődnie. Alap csomagokkal is rendelkezik a keretrendszer, amelyek általános felhasználási eseteket fednek le, így egy alap váz létrehozása az alkalmazásunkhoz igazán egyszerű feladat.
+
+Egy Spring Boot alkalmazás felépítése rétegekből áll, mely tartalmazza a következő fontosabb rétegeket:
+\begin{itemize}
+	\item[]\textbf{Modell}
+	- Az alkalmazásban használt entitások modelljeit tartalmazza,
+	\item[]\textbf{Perzisztencia}
+	- Az entitások és az adatbázis közötti kapcsolatot hozza létre,
+	\item[]\textbf{Szolgáltatás}
+	- Az entitásokkal kapcsolatos műveleteket adja meg a Perzisztencia réteg felhasználásával,
+	\item[]\textbf{Kontroller}
+	- Az alkalmazás végpontjaihoz rendeli a Szolgáltatás réteg műveleteit.
+\end{itemize}
+
+A Spring Boottal való fejlesztés egyszerűségének ékes példája a Spring által biztosított inicializáló eszköz, a Spring Initializr \cite{SPRING_INIT}. Ebben az eszközben magunk konfigurálhatjuk a készítendő projektünket a projekt menedzsment eszköz, a Spring Boot verzió, a Java verzió vagy az egyéb függőségek kiválasztásával. Ezt követően legenerálódik a projekt a paraméterek alapján, és kezdődhet is a fejlesztés.
+
+E tulajdonságaival rengeteg időt spórol meg a fejlesztők számára, de természetesen ennek ára is. Mivel a lehető legtöbb mindent a fejlesztő helyett kíván megoldani, így a korábban felsorolt előnyöket kevésbé lesz képes kihasználni a fejlesztő, amennyiben egy komplexebb alkalmazást kíván fejleszteni, ezért ilyenkor gyakran kell manuális konfigurációkra támaszkodni az alapértelmezettek helyett.
+
+A hátránya ellenére is hatalmas népszerűségnek örvend, ma is gyakori felhasználási területe a REST API-k fejlesztése, ahogy ez a mi esetünkben is így történt. A saját fejlesztési tapasztalatokon keresztül pedig a fent említett előnyökre és hátrányokra is igazolást fogunk látni.
 
 \newpage
 \section{A fejlesztés bemutatása}
@@ -409,6 +553,49 @@ D. Cravey.: Functional-Style Programming in C++. Hozzáférés dátuma: 2023.04.
 
 \bibitem{JS_USAGE}
 Kliens-oldali programozási nyelvek használatát bemutató statisztika. \url{https://w3techs.com/technologies/details/cp-javascript}  Hozzáférés dátuma: 2023.04.23.
+
+\bibitem{VUE_SUPP}
+A Vue.js által támogatott böngészők. \url{https://vuejs.org/about/faq.html#what-browsers-does-vue-support} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{ES2015_USAGE}
+Az ES2015-öt támogató böngészők. \url{https://caniuse.com/es6} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{VUE_COMPANIES}
+Vue.js-t használó nagyvállalatok. \url{https://vuejs.org/about/faq.html#is-vue-reliable} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{FRAMEWORK_PERF}
+Különféle JavaScript alapú keretrendszerek benchmark eredményei. \url{https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{VUE_LW}
+A Vue.js könnyed tulajdonságának leírása. \url{https://vuejs.org/about/faq.html#is-vue-lightweight} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{VUE_SCALE}
+A Vue.js skálázhatóságának leírása. \url{https://vuejs.org/about/faq.html#does-vue-scale} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{VUE_DOCS}
+A Vue.js hivatalos dokumentációja, útmutatója. \url{https://vuejs.org/guide/introduction.html} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{VUE_BOOK}
+Olga Filipova: Learning Vue.js 2, 2016.
+
+\bibitem{VITE}
+A Vue.js fejlesztéshez használt Vite szerver honlapja. \url{https://vitejs.dev/}
+
+\bibitem{JAVA_ABOUT}
+A Java nyelv rövid története. \url{https://www.java.com/en/download/help/whatis_java.html} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{JAVA_BOOK}
+David Flanagan: Java in a Nutshell, 2005
+
+\bibitem{ORACLE_JAVA}
+A Java nyelv működése. \url{https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html}
+
+\bibitem{SPRING_BOOK}
+Iuliana Cosmina, Rob Harrop, Chris Schaefe, Clarence Ho: Pro Spring 5: An In-Depth Guide to the Spring Framework and Its Tools, 2017
+
+\bibitem{SPRING_INIT}
+A Spring Initializr eszköz. \url{https://start.spring.io/}
+
 
 \end{thebibliography}
 \end{document}
