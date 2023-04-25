@@ -16,3 +16,6 @@ diplomamunka.synctex.gz
 diplomamunka.toc
 
 .idea
+
+.DS_Store
+.psc-ide-port
