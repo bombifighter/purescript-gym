@@ -230,7 +230,7 @@ A nyelv alapja a Haskell, nagyban hasonlít rá. Maga a szintkaxis annyira hason
 
 A nyelv komoly előnye, hogy frontend és backend fejlesztésre egyaránt alkalmas lehet \cite{CS}.
 
-A PureScriptnek saját csomagkezelő szoftvere van, a Spago \cite{spago}. Forráskódja szintén elérhető a GitHubon. Munkánk során mi is ezt használtuk, véleményünk szerint nagyon egyszerűen használható, és probléma sem merült fel vele kapcsolatban.
+A PureScriptnek saját csomagkezelő - fordító szoftvere van, a Spago \cite{spago}. Forráskódja szintén elérhető a GitHubon. Munkánk során mi is ezt használtuk, véleményünk szerint nagyon egyszerűen használható, és probléma sem merült fel vele kapcsolatban.
 
 A PureScript rendelkezik egy parancsoros végrehajtási móddal,  ezt PSCI-nek vagy REPL-nek nevezik.  Soronként történik a kód begépelése és végrehajtása. Több sort is megadhatunk egyszerre a \textit{:paste} paranccsal (kilépés: ctrl + D).  A nyelvvel való ismerkedés és a tesztelés során hasznos lehet,  ugyanis lépésről lépésre tudjuk irányítani a kódot,  például típusok lekérdezéséhez. 
 
@@ -481,6 +481,52 @@ A hátránya ellenére is hatalmas népszerűségnek örvend, ma is gyakori felh
 
 \subsection{PureScript}
 
+Az alkalmazás fejlesztéséhez első lépésként telepítettük a szükséges szoftvereket a npm csomagkezelő segítségével. 
+\begin{verbatim}
+npm install -g purescript
+npm install -g spago
+\end{verbatim}
+
+Az első sor maga a PureScript, a második pedig Spago telepítéséhez szükséges. A Spago egyrészt a csomagokat is kezeli, illetve a szoftver életciklusát is menedzseli, például az \textit{install, build, run} parancsok segítségével.  Fejlesztő környezetként a Visual Studio Code-ot választottuk, mely rendelkezik PureScript kiterjesztésekkel és kiemeléssel is.
+
+Ezután jó darabig ismerkedtünk magával a nyelvvel, mivel valamennyi funkcionális tapasztalattal mindketten rendelkeztünk korábban, de nagyrészt imperatív nyelveket használunk.  Ehhez jó segítség volt a PSCI, amit a \textit{spago repl} paranccsal lehet elindítani. Lehetőség van egy alap kód megadására, ami minden indításnál lefut, ide helyeztük a szükséges importokat. Ezután soronként futtattuk a programot, példáuk gyakran lekértük az elemek típusát a \textit{:type} paranccsal.
+
+\begin{figure}[h!]
+\includegraphics[width=0.8\textwidth]{database}
+\caption{A szoftver adatbázis modellje.}
+\end{figure}
+
+A következő lépés az üzleti logika átgondolása, a funkcionális tervezés volt. Mivel a szoftver nem egy valós üzleti igényt elégít ki, hanem inkább kísérleti jellegű (Proof of Concept), így hatalmas hangsúlyt nem kapott ez a szakasz. Inkább arra figyeltünk, hogy a két alkalmazás majd nemcsak hogy ugyanazt a funkcionalitást lássa el, de lehetőleg (már amennyire a nyelvi sajátosságok engedik) ugyanúgy is épüljön fel, ugyanúgy viselkedjen. 
+
+A szoftver alapvetően az MVC (model - nézet - vezérlő) architektúrális mintát követi.  A modell megalkotásával kezdtük, ehhez készítettünk egy adatbázismodellt, mely az első ábrán látható. A PureScript kódban ez szolgált a típusok vázaként is. Minden típushoz egy \textit{.purs} fájlt készítettünk, melyben magának a típusnak és a hozzá tartozó függvényeknek a leírása található. A következő módon készítettünk egy ilyen típust:
+
+\begin{verbatim}
+newtype Guest = Guest
+    { id   :: Int
+    , name :: String
+    , gender :: String
+    , bdate :: String
+    , phone :: String
+    , email :: String
+    }
+\end{verbatim}
+?readforeign
+Egy Guest típusú elemet a következőképp hozhatunk ezután létre repl-ben:
+\begin{verbatim}
+g = Guest {id:1, name: "Doma" gender:"male", bdate:"2005.04.26", phone:"+36401234567", email:"doma@mail.com"}
+\end{verbatim}
+
+\begin{verbatim}
+getGuestId :: Guest -> Int
+getGuestId (Guest guest) = guest.id
+\end{verbatim}
+
+\begin{verbatim}
+setGuestId :: Int -> Guest -> Guest
+setGuestId s (Guest guest) = Guest {id:s, name:guest.name, gender:guest.gender, bdate:guest.bdate, phone:guest.phone, email:guest.email}
+
+\end{verbatim}
+
 \subsection{Java - Spring Boot backend}
 
 Ebben az alfejezetben az összehasonlítás alapjául szolgáló Java Spring Boot REST API fejlesztését fogjuk bemutatni. Fontos megjegyezni, hogy ha csupán a Spring segítségével szerettük volna elkészíteni a REST API-nkat, akkor valószínüleg nem mindenhol a most implementált megoldásokat alkalmaztuk volna. Mindent olyan módszerrel kívántunk megoldani, ami a legjobban hasonlít a PureScriptben használtakra, mindezt azért, hogy a dolgozatban szereplő összevetésben szereplő különbségek inkább a nyelvbeli különbségekből fakadjanak és ne a megoldások különbségéből. Ez növeli az összehasonlítás értékét, eredményének jelentőségét. Ennek tudatában vegyük végig a fejlesztés lépéseit.
@@ -554,11 +600,6 @@ DELETE & /guest/deleteGuest/\{id\} & Egy vendég törlése  \\
 \end{tabular}
 \caption{A kérések listájának részlete.}
 \end{table}
-
-\begin{figure}
-\includegraphics[width=\textwidth]{database}
-\caption{A szoftver adatbázis modellje.}
-\end{figure}
 
 \begin{figure}
 \includegraphics[width=\textwidth]{usecase}
