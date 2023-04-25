@@ -1,71 +1,71 @@
 #1 - Windows 10, Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz
 
 PureScript:
-measurement_1.py (10): 61.94
-measurement_2.py (10): 41.22
-measurement_3.py (10): 124.73
-measurement_1.py (50): 309.00
-measurement_2.py (50): 205.53
-measurement_3.py (50): 620.72
-measurement_1.py (100): 618.50
-measurement_2.py (100): 409.20
-measurement_3.py (100): 1227.73
-
-Java:
 measurement_1.py (10):
 measurement_2.py (10):
 measurement_3.py (10):
-measurement_1.py (50): 
-measurement_2.py (50):
-measurement_3.py (50):
-measurement_1.py (100): 
-measurement_2.py (100): 
-measurement_3.py (100):
-
-#2 - macOS Ventura, Apple M1 3.2GHz
-
-PureScript:
-measurement_1.py (10): 0.1843
-measurement_2.py (10): 0.1329
-measurement_3.py (10): 
-measurement_1.py (50): 
-measurement_2.py (50): 
-measurement_3.py (50): 
-measurement_1.py (100): 
-measurement_2.py (100): 
-measurement_3.py (100): 
-
-Java:
-measurement_1.py (10):
-measurement_2.py (10):
-measurement_3.py (10):
-measurement_1.py (50):
-measurement_2.py (50):
-measurement_3.py (50):
 measurement_1.py (100):
 measurement_2.py (100):
 measurement_3.py (100):
-
-#3 - Windows 10, Intel(R) Core(TM) i5-9400F CPU @ 2.90GHz
-
-PureScript:
-measurement_1.py (10): 0.1767
-measurement_2.py (10): 0.0678
-measurement_3.py (10): 0.3222
-measurement_1.py (100): 1.6331
-measurement_2.py (100): 0.6755
-measurement_3.py (100): 1.9448
-measurement_1.py (1000): 9.3968
-measurement_2.py (1000): 5.3381
+measurement_1.py (1000):
+measurement_2.py (1000):
 measurement_3.py (1000):
 
 Java:
 measurement_1.py (10):
 measurement_2.py (10):
 measurement_3.py (10):
-measurement_1.py (50): 
-measurement_2.py (50):
-measurement_3.py (50):
-measurement_1.py (100): 
-measurement_2.py (100): 
+measurement_1.py (100):
+measurement_2.py (100):
 measurement_3.py (100):
+measurement_1.py (1000):
+measurement_2.py (1000):
+measurement_3.py (1000):
+
+#2 - macOS Ventura, Apple M1 3.2GHz
+
+PureScript:
+measurement_1.py (10):
+measurement_2.py (10):
+measurement_3.py (10):
+measurement_1.py (100):
+measurement_2.py (100):
+measurement_3.py (100):
+measurement_1.py (1000):
+measurement_2.py (1000):
+measurement_3.py (1000): 
+
+Java:
+measurement_1.py (10):
+measurement_2.py (10):
+measurement_3.py (10):
+measurement_1.py (100):
+measurement_2.py (100):
+measurement_3.py (100):
+measurement_1.py (1000):
+measurement_2.py (1000):
+measurement_3.py (1000):
+
+#3 - Windows 10, Intel(R) Core(TM) i5-9400F CPU @ 2.90GHz
+
+PureScript:
+measurement_1.py (10):
+measurement_2.py (10):
+measurement_3.py (10):
+measurement_1.py (100):
+measurement_2.py (100):
+measurement_3.py (100):
+measurement_1.py (1000):
+measurement_2.py (1000):
+measurement_3.py (1000):
+
+Java:
+measurement_1.py (10):
+measurement_2.py (10):
+measurement_3.py (10):
+measurement_1.py (100):
+measurement_2.py (100):
+measurement_3.py (100):
+measurement_1.py (1000):
+measurement_2.py (1000):
+measurement_3.py (1000):
