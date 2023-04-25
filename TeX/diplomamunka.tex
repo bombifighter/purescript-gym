@@ -461,11 +461,11 @@ A Spring keretrendszer egy elterjedt modulja a Spring Boot. Erőssége, hogy a k
 Egy Spring Boot alkalmazás felépítése rétegekből áll, mely tartalmazza a következő fontosabb rétegeket:
 \begin{itemize}
 	\item[]\textbf{Modell}
-	- Az alkalmazásban használt entitások modelljeit tartalmazza,
+	- Az alkalmazásban használt entitások modelljeit tartalmazza.
 	\item[]\textbf{Perzisztencia}
-	- Az entitások és az adatbázis közötti kapcsolatot hozza létre,
+	- Az entitások és az adatbázis közötti kapcsolatot hozza létre.
 	\item[]\textbf{Szolgáltatás}
-	- Az entitásokkal kapcsolatos műveleteket adja meg a Perzisztencia réteg felhasználásával,
+	- Az entitásokkal kapcsolatos műveleteket adja meg a Perzisztencia réteg felhasználásával.
 	\item[]\textbf{Kontroller}
 	- Az alkalmazás végpontjaihoz rendeli a Szolgáltatás réteg műveleteit.
 \end{itemize}
@@ -481,7 +481,51 @@ A hátránya ellenére is hatalmas népszerűségnek örvend, ma is gyakori felh
 
 \subsection{PureScript}
 
-\subsection{Java - Spring backend}
+\subsection{Java - Spring Boot backend}
+
+Ebben az alfejezetben az összehasonlítás alapjául szolgáló Java Spring Boot REST API fejlesztését fogjuk bemutatni. Fontos megjegyezni, hogy ha csupán a Spring segítségével szerettük volna elkészíteni a REST API-nkat, akkor valószínüleg nem mindenhol a most implementált megoldásokat alkalmaztuk volna. Mindent olyan módszerrel kívántunk megoldani, ami a legjobban hasonlít a PureScriptben használtakra, mindezt azért, hogy a dolgozatban szereplő összevetésben szereplő különbségek inkább a nyelvbeli különbségekből fakadjanak és ne a megoldások különbségéből. Ez növeli az összehasonlítás értékét, eredményének jelentőségét. Ennek tudatában vegyük végig a fejlesztés lépéseit.
+
+\subsubsection{A tényleges implementáció}
+
+A Java projekt első lépéseként a már említett Spring Initializr eszközt használtuk fel. Ennek három fontos részét kell kiemeljük:
+\begin{itemize}
+	\item[]\textbf{Projekt menedzsment eszköz: Maven}
+	- Mivel mindkettőnk ezt az eszközt használta korábbi Java fejlesztéseink esetén, ezért ezt részesítettük előnyben.
+	\item[]\textbf{Java verzió - 8}
+	- Azért választottuk ezt a verziót, mert korábban ezzel már fejlesztettünk, illetve a magasabb verziók által kínált nyelvi eszközöket sem kívántunk igénybe venni.
+	\item[]\textbf{Függőségek}
+	- Szükségünk volt a Spring Boot által biztosított kezdő csomagok közül a \textit{web}-hez kapcsolódóra, az adatbázis eléréshez a \textit{Java Persistence API}-ra (\textit{JPA}), a \textit{MySQL} adatbázishoz kapcsolódáshoz egy \textit{kapcsoló} csomagra és a \textit{Lombok Projekt} csomagjára, melynek a fejlesztési menetre való pozitív hatásáról említést fogunk tenni a későbbiekben.
+\end{itemize}
+
+Ezt követően rendelkezésünkre is állt a projekt váza. A következő lépésben kihasználva a Spring konfigurációinak erősségét, elvégezzük a  szükséges konfigurálásokat. Meghatározzuk, hogy a HTTP szerver saját számítógépünk melyik portján legyen elérhető, illetve megadjuk a korábban létrehozott MySQL adatbázisunk elérési adatait és a perzisztálási stratégiát. amely a JPA adatbázisunkhoz való alapvető hozzáállását szabályozza.
+
+Ezt követően kerültek implementálásra az adatbázisunk tábláiban szereplő entitások modelljei. Meghatároztuk azok attribútumait típusaikkal együtt, mindezeket privát eléréső változók formájában. Az adott entitásokat leképező osztályokhoz szükséges konstruktorok, illetve a változók elérését és beállítását elvégző függvényeinket a már említett Lombok Projekt segítségével, csupán néhány annotáció felhasználásával meg is tudjuk adni. Így az entitások kódja tömör, kompakt marad. Ilyen annotációk a \textbf{@Data} vagy az \textbf{@AllArgsConstructor}. A Spring konfigurálhatósága az entitásoknál is tetten érhető, szintén annotációkon keresztül. Az \textbf{@Entity} annotáció jelzi, hogy az osztály leképezhető az adatbázis egy táblájára, illetve a változók közül az \textbf{@Id} annotáció segítségével adhatjuk meg a leképezett tábla elsődleges kulcsát. Speciális esetben előfordulhat, hogy egy tábla összetett, több mezőből álló elsődleges kulccsal rendelkezik, mely problémát szintén egy egyszerű annotációval, az osztályra helyezett \textbf{@IdClass}-szal tudjuk megoldani, így a változók közül már több kulcsot is ki tudunk jelölni. Nézzük meg a \textbf{Guest} entitást példaként, hogy milyen tömören és egyszerűen lehet lemodellezni az adatunkat:
+\begin{verbatim}
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class Guest {
+
+    @Id
+    private Long id;
+    private String name;
+    private String gender;
+    private String bdate;
+    private String phone;
+    private String email;
+}
+\end{verbatim}
+
+Az entitásokat követik a hozzájuk tartozó repository-k, ezt minden entitáshoz szükséges megadnunk. Ezek olyan interfészek, mely a \textit{JpaRepository} osztály terjesztik ki, és az entitás struktúrája alapján alapértelmezett SQL lekérdezéseket biztosítanak számunkra Java függvények formájában. Természetesen egyéni lekérdezéseket is hozzá tudunk adni, azonban ennek két alapesete van:
+\begin{itemize}
+	\item[]\textbf{1. A repository típusa megegyezik az egyéni lekérdezés eredményének típusával}
+	- Ebben az esetben csak a függvényeket kell deklarálnunk és ellátnunk azokat a \textbf{@Query} annotációval, amiben az SQL lekérdezésünket tudjuk elhelyezni. Ezekben természetesen paramétereket is elhelyezhetünk, melyek a későbbiek folyamán töltődnek fel tartalommal.
+	\item[]\textbf{2. A repository típusa nem egyezik meg az egyéni lekérdezés eredményének típusával}
+	- Ebben az esetben elegáns megoldásként egy úgynevezett csomagoló osztályt hozhatunk létre, amely a lekérdezési eredmény mezőinek megfelelő változókat tartalmazza, majd ezt követően egy konfigurációs annotáció, az \textbf{@SqlResultSetMapping} hozzáadásával tudathatjuk a Springgel, hogy miként szeretnénk leképezni a kapott eredményt a csomagoló osztály változóira. Ezen apró módosításokat követően viszont ugyanúgy tudjuk megadni az egyéni lekérdezéseinket, mint az előző esetben.
+
+A következő réteg a szolgáltatás.
+\end{itemize}
 
 \subsection{Vue.js}
 
