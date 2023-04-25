@@ -46,12 +46,12 @@ export default {
     },
     methods: {
         async checkStatus() {
-            const res = await fetch(`http://localhost:3000/locker/get/${this.gender}/${this.lockerId}`)
+            const res = await fetch(`http://127.0.0.1:3000/locker/get/${this.gender}/${this.lockerId}`)
             const data = await res.json()
             this.status = data[0].isFree == 'true' ? 'free' : 'occupied'
         },
         async getHistory() {
-            const res = await fetch(`http://localhost:3000/guestLocker/getHistory/${this.gender}/${this.lockerId}`)
+            const res = await fetch(`http://127.0.0.1:3000/guestLocker/getHistory/${this.gender}/${this.lockerId}`)
             const data = await res.json()
             this.history = data
         },

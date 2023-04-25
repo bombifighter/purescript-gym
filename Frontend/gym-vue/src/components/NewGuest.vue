@@ -50,7 +50,7 @@ export default {
     },
     methods: {
         async getNextId() {
-            const response = await fetch("http://localhost:3000/guest/getLastId")
+            const response = await fetch("http://127.0.0.1:3000/guest/getLastId")
             const data = await response.json()
             this.guest.id = data[0].lastId + 1
         },
@@ -60,7 +60,7 @@ export default {
                 headers: new Headers({ "Content-Type": "application/json" }),
                 body: JSON.stringify(this.guest)
             }
-            await fetch(`http://localhost:3000/guest/insertGuest`, options)
+            await fetch(`http://127.0.0.1:3000/guest/insertGuest`, options)
             this.$router.push({ path: '/guests' })
         },
         exit() {

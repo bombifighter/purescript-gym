@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         async getActiveGuests() {
-            const res = await fetch("http://localhost:3000/guest/getActive")
+            const res = await fetch("http://127.0.0.1:3000/guest/getActive")
             const data = await res.json()
             this.activeGuests = data;
         },
@@ -46,7 +46,7 @@ export default {
                 headers: new Headers({ "Content-Type": "application/json" }),
                 body: JSON.stringify(checkout)
             }
-            await fetch("http://localhost:3000/guest/checkout", options)
+            await fetch("http://127.0.0.1:3000/guest/checkout", options)
             this.$router.go()
         }
     },

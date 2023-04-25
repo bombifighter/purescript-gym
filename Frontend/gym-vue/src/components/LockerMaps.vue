@@ -5,7 +5,7 @@
             <div class="lockerIcons">
                 <a :href="'/lockers/history/female/' + locker.id" v-for="locker in femaleLockers"
                     :class="calculateColor(locker.isFree)">{{
-                        locker.id }}</a>
+                                        locker.id }}</a>
             </div>
         </div>
         <div class="maleLockers">
@@ -13,7 +13,7 @@
             <div class="lockerIcons">
                 <a :href="'/lockers/history/male/' + locker.id" v-for="locker in maleLockers"
                     :class="calculateColor(locker.isFree)">{{
-                        locker.id }}</a>
+                                        locker.id }}</a>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@ export default {
     },
     methods: {
         async getData() {
-            const res = await fetch("http://localhost:3000/locker/getAll");
+            const res = await fetch("http://127.0.0.1:3000/locker/getAll");
             const data = await res.json();
             this.femaleLockers = data.filter(locker => locker.gender == 'female')
             this.maleLockers = data.filter(locker => locker.gender == 'male');

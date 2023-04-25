@@ -60,7 +60,7 @@ export default {
     },
     methods: {
         async getData() {
-            const res = await fetch("http://localhost:3000/guest/getAll");
+            const res = await fetch("http://127.0.0.1:3000/guest/getAll");
             const finalRes = await res.json();
             this.guests = finalRes;
         },
@@ -68,7 +68,7 @@ export default {
             const options = {
                 method: "DELETE"
             }
-            await fetch(`http://localhost:3000/guest/deleteGuest/${id}`, options)
+            await fetch(`http://127.0.0.1:3000/guest/deleteGuest/${id}`, options)
             this.$router.go()
         },
         openOverlay(idToDelete) {

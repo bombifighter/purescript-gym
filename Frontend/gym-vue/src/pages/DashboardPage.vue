@@ -63,7 +63,7 @@ export default {
     methods: {
         async getInactiveGuests() {
             const date = encodeURIComponent(moment().format("YYYY/MM/DD"))
-            const res = await fetch(`http://localhost:3000/guest/getInactive/${date}`);
+            const res = await fetch(`http://127.0.0.1:3000/guest/getInactive/${date}`);
             const data = await res.json();
             this.inactiveGuests = data;
         },
@@ -76,7 +76,7 @@ export default {
                 headers: new Headers({ "Content-Type": "application/json" }),
                 body: JSON.stringify(checkin)
             }
-            await fetch("http://localhost:3000/guest/checkin", options)
+            await fetch("http://127.0.0.1:3000/guest/checkin", options)
             this.$router.go()
         },
         openOverlay() {

@@ -72,13 +72,13 @@
                             <td>{{ getOccasions(membershipType.isPass, membershipType.occasions) }}</td>
                             <td v-if="clubStatus == 'inactive'"><button class="btn btnAdd"
                                     @click.prevent="addMembership(membershipType.id, membershipType.occasions, 30)">{{
-                                        membershipType.fullPrice }}</button></td>
+                                                                        membershipType.fullPrice }}</button></td>
                             <td v-if="clubStatus == 'inactive'"><button class="btn btnAdd"
                                     @click.prevent="addMembership(membershipType.id, membershipType.occasions, 30)">{{
-                                        membershipType.studentPrice }}</button></td>
+                                                                        membershipType.studentPrice }}</button></td>
                             <td v-if="clubStatus == 'active'"><button class="btn btnAdd"
                                     @click.prevent="addMembership(membershipType.id, membershipType.occasions, 30)">{{
-                                        membershipType.clubPrice }}</button></td>
+                                                                        membershipType.clubPrice }}</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -106,17 +106,17 @@ export default {
     },
     methods: {
         async getData() {
-            const res = await fetch(`http://localhost:3000/guest/getById/${this.selectedGuestId}`)
+            const res = await fetch(`http://127.0.0.1:3000/guest/getById/${this.selectedGuestId}`)
             const data = await res.json()
             this.guest = data[0]
         },
         async getMembershipTypes() {
-            const res = await fetch("http://localhost:3000/membershipType/getAll")
+            const res = await fetch("http://127.0.0.1:3000/membershipType/getAll")
             const data = await res.json()
             this.membershipTypes = data
         },
         async getClubStatus() {
-            const res = await fetch(`http://localhost:3000/clubmember/findMembershipsById/${this.selectedGuestId}`)
+            const res = await fetch(`http://127.0.0.1:3000/clubmember/findMembershipsById/${this.selectedGuestId}`)
             const clubMemberships = await res.json()
             for (let clubMembership of clubMemberships) {
                 if (Date.parse(clubMembership.endDate) >= Date.now()) {
@@ -126,13 +126,13 @@ export default {
             }
         },
         async getMembershipStatus() {
-            const res = await fetch(`http://localhost:3000/membership/findMembershipsById/${this.selectedGuestId}`)
+            const res = await fetch(`http://127.0.0.1:3000/membership/findMembershipsById/${this.selectedGuestId}`)
             const memberships = await res.json()
             for (let membership of memberships) {
                 if (Date.parse(membership.endDate) >= Date.now() && membership.occasionsLeft != 0) {
                     this.membershipStatus = 'active'
                     this.membershipEndDate = membership.endDate
-                    const typeRes = await fetch(`http://localhost:3000/membershipType/getMembershipById/${membership.membershipTypeId}`)
+                    const typeRes = await fetch(`http://127.0.0.1:3000/membershipType/getMembershipById/${membership.membershipTypeId}`)
                     const membershipTypeData = (await typeRes.json())[0]
                     this.membershipName = membershipTypeData.name
                     this.membershipType = this.calculatePasstype(membershipTypeData.isPass)
@@ -153,7 +153,7 @@ export default {
                 headers: new Headers({ "Content-Type": "application/json" }),
                 body: JSON.stringify(newMembership)
             }
-            await fetch("http://localhost:3000/membership/insertMembership", options)
+            await fetch("http://127.0.0.1:3000/membership/insertMembership", options)
             this.$router.go()
         },
         async addClubMemberShip() {
@@ -166,16 +166,16 @@ export default {
                 headers: new Headers({ "Content-Type": "application/json" }),
                 body: JSON.stringify(newClubmembership)
             }
-            await fetch("http://localhost:3000/clubmember/insertClubMember", options)
+            await fetch("http://127.0.0.1:3000/clubmember/insertClubMember", options)
             this.$router.go()
         },
         async getLastClubMemberId() {
-            const response = await fetch("http://localhost:3000/clubmember/getLastId")
+            const response = await fetch("http://127.0.0.1:3000/clubmember/getLastId")
             const data = await response.json()
             return data[0].lastId
         },
         async getLastMemberId() {
-            const response = await fetch("http://localhost:3000/membership/getLastId")
+            const response = await fetch("http://127.0.0.1:3000/membership/getLastId")
             const data = await response.json()
             return data[0].lastId
         },

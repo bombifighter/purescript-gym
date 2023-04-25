@@ -51,7 +51,7 @@ export default {
     },
     methods: {
         async getData() {
-            const res = await fetch(`http://localhost:3000/guest/getById/${this.selectedGuestId}`);
+            const res = await fetch(`http://127.0.0.1:3000/guest/getById/${this.selectedGuestId}`);
             const finalRes = await res.json();
             this.guest = finalRes[0];
         },
@@ -61,7 +61,7 @@ export default {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(this.guest)
             }
-            await fetch(`http://localhost:3000/guest/updateGuest/${this.guest.id}`, options)
+            await fetch(`http://127.0.0.1:3000/guest/updateGuest/${this.guest.id}`, options)
             this.$router.push({ path: '/guests' })
         },
         exit() {

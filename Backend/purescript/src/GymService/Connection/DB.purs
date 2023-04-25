@@ -1,7 +1,5 @@
 module GymService.Connection.DB where
 
-import Prelude
-
 import MySQL.Connection (ConnectionInfo)
 import Data.Time.Duration (Milliseconds(..))
 import MySQL.Pool (createPool, defaultPoolInfo, Pool)
