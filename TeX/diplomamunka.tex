@@ -725,15 +725,36 @@ Végül az \textbf{öltözőszekrények} kezelőfelületén láthatjuk nemek sze
 Azt, hogy ezekben a megoldásokban, legyenek azok oldalak vagy komponensek, hogyan kötöttük össze a szkript réteg változóit a sablon réteg HTML elemeivel, ezzel dinamikussá téve a weblap tartalmát már a Vue.js-t ismertető fejezetben láthattuk. Azonban arról, hogy miként kötöttük össze a frontend alkalmazásunkat a HTTP REST szerverünnkel még nem esett szó. A HTTP kérésekhez a Fetch API-t használtuk \cite{FETCH_API}. Ezzel minden szükséges HTTP metódust tudunk kezelni. A szükséges REST API hívásokat kezelő aszinkron függvények implementálása a JavaScriptben megszokott módon történik. Egy rövid példán keresztül nézzük meg, hogy milyen egyszerűen meg lehet ezt a feladatot oldani. A példánkban azt a függvényt vizsgáljuk, amelyik a regisztrált vendégek listájához szükséges adatokat tölti be:
 \begin{verbatim}
 async getData() {
-            const res = await fetch("http://127.0.0.1:3000/guest/getAll");
-            const finalRes = await res.json();
-            this.guests = finalRes;
+    const res = await fetch("http://127.0.0.1:3000/guest/getAll");
+    const finalRes = await res.json();
+    this.guests = finalRes;
 }
 \end{verbatim}
 
 A komponens változója, a \textbf{guests} tartalma a függvény hívása után a vendégek adatainak listája lesz.
 
-Ami érdekessé teszi az adatelérést az az, hogy lehetőségünk van irányítani, hogy az oldal kirenderelésének mely szakaszában szeretnénk lekérni az adatokat. Ennek a felhasználó szempontjából van jelentősége. Amennyiben túl későn kérjük le az adatot, az a felhasználó felület ugrálását eredményezi, ugyanis az adatok később jelennek meg mint az oldalunk.
+Ami érdekessé teszi az adatelérést az az, hogy lehetőségünk van irányítani, hogy az oldal kirenderelésének mely szakaszában szeretnénk lekérni az adatokat. Ennek a felhasználó szempontjából van jelentősége. Amennyiben túl későn kérjük le az adatot, az a felhasználó felület ugrálását eredményezi, ugyanis az adatok később jelennek meg mint az oldalunk. E probléma megoldására a Vue.js kínál lehetőségeket. Ez a lehetőség az Vue életciklusok használata. Ahhoz, hogy megértsük a sorrendiséget a különböző életciklusok között, említést kell tennünk a Vue.js által biztosított API-okról. A fejlesztés során két API használatára van lehetőség: \textbf{Composition API} és \textbf{Options API}. A Composition API-ban egyetlen hívásban van lehetőségünk megadni és egyénileg tagolni a \textit{szkript} elemet, míg az Options API-ban különböző opciók szerint kell tagoljuk azt, mint például adatok, metódusok, külső változók \cite{API_STYLES}. A dokumentáció szerint az Options API kezdő barátabb, ezért a fejlesztés során ezzel dolgoztunk. A hivatalos oldalon lévő diagram szerint \cite{VUE_LIFECYCLE} az inicializálás első szakasza a következő:
+\begin{itemize}
+\item 1. A Composition API inicializálása - \textbf{setup} életciklus
+\item 2. \textbf{beforeCreate} életciklus
+\item 3. Options API inicializálása
+\item 4. \textbf{created} életciklus
+\end{itemize}
+
+Ennél a pontnál a diagram nem áll meg, de számunkra már látszik az az életciklus amire szükségünk van, ez pedig a \textbf{created}. Ez az a leghamarabbi pillanat az oldal generálása során, amikor már működik az általunk választott API. Így a komponensekhez tartzó változók  hamarabb kapnak értéket, mint hogy az oldal betöltődne a felhasználó számára. Ezt a mechanizmust nagyon egyszerűen ki tudjuk használni a szkript rétegben:
+\begin{verbatim}
+created() {
+    this.getData()
+}
+\end{verbatim}
+
+A \textit{created} opcióban tudjuk megadni azokat a függvényeket, amelyeket szeretnénk az adott életciklusban végrehajtani.
+
+\bigskip
+
+Az implementált oldalak összekötéséhez a keretrendszer egy újabb eszközét használjuk fel, a \textbf{vue-router} nevű útválasztó csomagot. Itt a korábban bemutatott RestController-hez hasonlóan tudjuk meghatározni, hogy milyen útvonalakon legyenek elérhetőek az oldalaink. Egy útvonalhoz egy oldal komponensét tudjuk csatolni. E mögött az a gondolat található, hogy az útvonalválasztó egy nézettel rendelkezik és ebbe a nézetbe az útvonalak táblázata alapján tölti be a megfelelő komponenst. Ezzel egyetlen útválasztó lesz a közös pontja a felépített oldalainknak.
+
+Minden Vue.js alkalmazásnak szüksége van egy központi, magát az alkalmazást megtestesítő komponensre, aminek \textit{de facto} elnevezése \textit{App.vue}. Ebben a mi esetünkben csak az útválasztó komponenst kell megadnunk. Az egyetlen hátralévő feladat pedig e komponens felcsatolása egy létező HTML elemre, az \textit{index.html} fájlban, JavaScript segítségével.
 
 \newpage
 \section{Az eredmények ismertetése}
@@ -914,6 +935,12 @@ Pursuit. Hivatalos PureScript dokumentáció.
 
 \bibitem{FETCH_API}
 A Fetch API hivatalos, MDN dokumentációja. \url{https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API} Hozzáférés dátuma: 2023.04.26.
+
+\bibitem{API_STYLES}
+A Vue.js API stílusainak bemutatása. \url{https://vuejs.org/guide/introduction.html#api-styles} Hozzáférés dátuma: 2023.04.26.
+
+\bibitem{VUE_LIFECYCLE}
+A Vue.js életciklus diagramja. \url{https://vuejs.org/guide/essentials/lifecycle.html#lifecycle-diagram} Hozzáférés dátuma: 2023.04.26.
 
 \end{thebibliography}
 \end{document}
