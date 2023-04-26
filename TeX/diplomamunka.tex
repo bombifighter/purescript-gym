@@ -307,14 +307,14 @@ A nyelvvel kapcsolatban kissé negatívum élményként tapasztaltuk, hogy az á
 \newpage
 \subsection{Vue.js}
 
-Dolgozatunk frontend része Vue.js-ben készült,  ezért röviden szeretnénk összefoglalni annak alapjait, tuldajonságait és egy rövid példán keresztül a használatának könnyedségét.
+Dolgozatunk frontend része Vue.js-ben készült,  ezért röviden szeretnénk összefoglalni annak alapjait, tulajdonságait és egy rövid példán keresztül a használatának könnyedségét.
 
 \subsubsection{JavaScript keretrendszerek}
 
-A Vue.js egy klines-oldali keretrendszer, mely a JavaScript programozási nyelvre épül. A JavaScript 1996-os indulása óta mára már megkerülhetetlen része a webnek, a weben található oldalak több mint 95\%-án használatban van valamilyen formában \cite{JS_USAGE}. Az évek során a nyelvvel dolgozó fejlesztőknek köszönhetően számos különböző problémára megoldást nyújtó könyvtár született, mely mind a web mai formájának alakulásához járult hozzá.
+A Vue.js egy kliens-oldali keretrendszer, mely a JavaScript programozási nyelvre épül. A JavaScript 1996-os indulása óta mára már megkerülhetetlen része a webnek, a weben található oldalak több mint 95\%-án használatban van valamilyen formában \cite{JS_USAGE}. Az évek során a nyelvvel dolgozó fejlesztőknek köszönhetően számos különböző problémára megoldást nyújtó könyvtár született, mely mind a web mai formájának alakulásához járult hozzá.
 
 A keretrendszerek is ilyen könyvtárak. Meghatározzák egy abban írt szoftver felépítését, mely olyan előnyökkel jár mint a kiszámíthatóság, fenntarthatóság illetve a skálázhatóság.
-A keretrendszerek megépítésének motivációja a fejlesztési munkamenet egyszerűsítésében keresendő. Nem vértezi fel új képességekkel az eredeti programozási nyelvet (jelen esetünkben a JavaScriptet), hanem átláthatóbbá valamint könnyebben elérhetővé teszi azt. Általuk a fejlesztőknek csak azt kell meghatározniuk, hogy hogyan nézzen ki az általuk elkészíteni kívánt felhasználói felület, a megvalósításról pedig már a keretrendszer gondoskodik.
+A keretrendszerek megépítésének motivációja a fejlesztési munkamenet egyszerűsítésében keresendő. Nem vértezi fel új képességekkel az eredeti programozási nyelvet (jelen esetünkben a JavaScriptet), hanem átláthatóbbá, valamint könnyebben elérhetővé teszi azt. Általuk a fejlesztőknek csak azt kell meghatározniuk, hogy hogyan nézzen ki az általuk elkészíteni kívánt felhasználói felület, a megvalósításról pedig már a keretrendszer gondoskodik.
 
 Az alább felsorolt tulajdonságok szintén a fejlesztési folyamatok megkönnyítéséhez járulnak hozzá:
 \begin{itemize}
@@ -323,34 +323,34 @@ Az alább felsorolt tulajdonságok szintén a fejlesztési folyamatok megkönny�
 \item útvonalkezelés megkönnyítése.
 \end{itemize}
 
-Az elvitathatatlan előnyökön felül természetesen van más nézőpont is ami felől vizsgálódnia szükséges egy fejlesztőnek, mielőtt egy keretrendszer használatába kezd, az alap JavaScriptet elfeledve. Fontos észben tartani, hogy a keretrendszerek elsajátításához időre van szükség, hogy az általa biztosított eszközöket a lehető leghatékonyabban tudja felhasználni a fejlesztő a céljai elérésére. Elenghetetlen továbbá átgondoli az elkészítendő program célját. Egy olyan alkalmazás, amely semmilyen felhasználói interakcióval nem rendelkezik, nem biztos, hogy igényel egy olyan professzionális fejlesztői eszközt, mint egy keretrendszer, mely komplex struktúrája feleslegesen bonyolítja a fejlesztési folyamatot.
+Az elvitathatatlan előnyökön felül természetesen van más nézőpont is ami felől vizsgálódnia szükséges egy fejlesztőnek, mielőtt egy keretrendszer használatába kezd, az alap JavaScriptet elfeledve. Fontos észben tartani, hogy a keretrendszerek elsajátításához időre van szükség, hogy az általa biztosított eszközöket a lehető leghatékonyabban tudja felhasználni a fejlesztő a céljai elérésére. Elengedhetetlen továbbá átgondolni az elkészítendő program célját. Egy olyan alkalmazás, amely semmilyen felhasználói interakcióval nem rendelkezik, nem biztos, hogy igényel egy olyan professzionális fejlesztői eszközt, mint egy keretrendszer, mely komplex struktúrája feleslegesen bonyolítja a fejlesztési folyamatot.
 
-Ahhoz, hogy az elérhető keretrendszerek közül a legmegfelelőbb kerüljön kiválasztásra, érdemes szem előtt tartani néhány egyszerű szempontot. A választott keretrendszer dokumentációjának minősége és elérhetősége. Minél részletesebb, minél több példával rendelkezik, annál könnyebb lesz a fejlesztés során felmerülő problémákra megoldást találni vagy az implementációs kérdésekben döntést hozni. A dokumentációt kiegészítő szempont a fejlesztői közösség aktivitása, amely a speciális esetekben nyújtat segítséget, akár korábban feltett és megválaszolt kérdéseken keresztül.
+Ahhoz, hogy az elérhető keretrendszerek közül a legmegfelelőbb kerüljön kiválasztásra, érdemes szem előtt tartani néhány egyszerű szempontot. A választott keretrendszer dokumentációjának minősége és elérhetősége. Minél részletesebb, minél több példával rendelkezik, annál könnyebb lesz a fejlesztés során felmerülő problémákra megoldást találni vagy az implementációs kérdésekben döntést hozni. A dokumentációt kiegészítő szempont a fejlesztői közösség aktivitása, amely a speciális esetekben nyújthat segítséget, akár korábban feltett és megválaszolt kérdéseken keresztül.
 
 \subsubsection{A Vue.js rövid története és tulajdonságai}
 
 A Vue.js ötlete Evan You Google alkalmazott fejében született meg \cite{VUE_BOOK}. A munkája során szüksége lett volna egy olyan hatékony eszközre, ami gyorsan képes nagy mennyiségű HTML dokumentumot előállítani adatok és prototípusok felhasználásával. A már létező eszközök nem tudták teljes mértékben kielégíteni az igényeit \cite{VUE_BOOK}. Volt olyan, amelyik csupán struktúrát biztosított, de az adatkezelése nem volt ideális (Backbone), de volt olyan is, amelyik túl szigorú, kötött szabályrendszerével nem csak a fejlesztendő alkalmazás struktúráját, de a kódolási folyamatot is túlságosan nagy mértékben kívánta befolyásolni (Angular). A megfelelő megoldás hiánya arra késztette, hogy saját maga hozza létre az általa keresett keretrendszert. Így jelent meg a keretrendszer 2014-ben, mely azóta egy lelkes fejlesztő kis magánprojektjéből széles fejlesztői körökben elterjedt és folyamatosan fejlődő keretrendszerré nőtte ki magát.
 
-A Vue.js figyelemre méltó eredménye, hogy fel tudta venni a versenyt olyan elterjedt, szintén JavaScriptre vagy TypeScriptre épülő keretrendszerekkel mint az Angular vagy a React. Ebben hatalmas szerepe van az elérhetőségének. Minden olyan böngésző képes a Vue.js-t kezelni, amelyik támogatja az ES2015 (ES6) JavaScript szabványt \cite{VUE_SUPP}, ezzel a felhasználók 96,09\%-ához jut el \cite{ES2015_USAGE}. Megbízhatóságát biztosítja a több mint 1,5 millió felhasználó világszinten, de olyan nagyvállalatok is használják mint a NASA, Apple vagy a Microsoft \cite{VUE_COMPANIES}.
+A Vue.js figyelemre méltó eredménye, hogy fel tudta venni a versenyt olyan elterjedt, szintén JavaScriptre vagy TypeScriptre épülő keretrendszerekkel mint az Angular vagy a React. Ebben hatalmas szerepe van az elérhetőségének. Minden olyan böngésző képes a Vue.js-t kezelni, amelyik támogatja az ES2015 (ES6) JavaScript szabványt \cite{VUE_SUPP}, ezzel a felhasználók 96,09\%-ához jut el \cite{ES2015_USAGE}. Megbízhatóságát biztosítja a több mint 1,5 millió felhasználó világszinten, de olyan nagyvállalatok is használják, mint a NASA, Apple vagy a Microsoft \cite{VUE_COMPANIES}.
 
 A Vue.js az alábbi tulajdonságokkal rendelkezik:
 \begin{itemize}
 	\item[]\textbf{Gyors}
 	- Különféle teljesítménytesztek igazolják, hogy gyorsabb keretrendszer mint a rivális Angular vagy React \cite{FRAMEWORK_PERF}.
 	\item[]\textbf{Könnyed}
-	- Egy Vue.js-ben fejlesztett alkalmazás az úgynevezett \textit{tree-shaking}nek köszönhetően nem tartalmaz olyan beépített könyvtárakat, amiket a fejlesztés során nem használnak, ezzel csökkentve az alkalmazás végős méretét \cite{VUE_LW}.
+	- Egy Vue.js-ben fejlesztett alkalmazás az úgynevezett \textit{tree-shaking}nek köszönhetően nem tartalmaz olyan beépített könyvtárakat, amiket a fejlesztés során nem használnak, ezzel csökkentve az alkalmazás végső méretét \cite{VUE_LW}.
 	\item[]\textbf{Skálázható}
 	- A keretrendszer eszköztára lehetővé teszi nagyobb alkalmazások fejlesztését is, melyet a nagy fokú modularitásának köszönhet \cite{VUE_SCALE}.
 	\item[]\textbf{Gyorsan tanulható}
 	- A részletes dokumentáció, az aktív közösség és az alapos oktató anyagoknak köszönhetően gyorsan elsajátítható a Vue.js használata, melyet a fejlesztés során is megtapasztalhattunk.
 \end{itemize}
 
-Ezeken a tulajdonságokon felül nagy előnye a keretrendszernek, hogy egy komponenshez tartozó forráskódok egyetlen jól struktúrált fájlban megtalálhatók. Ez az úgy nevezett \textit{Single-file Component} tulajdonság. A következőkben a keretrendszer dokumentációja \cite{VUE_DOCS} és saját fejlesztési tapasztalataink alapján ismertetjük annak részletesebb tulajdonságait. Egy fájl tartalma a következőképpen alakulhat:
+Ezeken a tulajdonságokon felül nagy előnye a keretrendszernek, hogy egy komponenshez tartozó forráskódok egyetlen jól strukturált fájlban megtalálhatók. Ez az úgy nevezett \textit{Single-file Component} tulajdonság. A következőkben a keretrendszer dokumentációja \cite{VUE_DOCS} és saját fejlesztési tapasztalataink alapján ismertetjük annak részletesebb tulajdonságait. Egy fájl tartalma a következőképpen alakulhat:
 \begin{itemize}
 	\item[]\textbf{Sablon}
 	- Először a komponens vázát tartalmazó sablont kell megadnunk, ez minden komponens kötelező eleme. Egy HTML alapú sablon szintaxisban adjuk meg a komponensünk vázát, amelyet az alkalmazás futása során fogunk adatokkal megtölteni. Ezt a sablont a \textit{<template></template>} HTML címkék között tudjuk megadni.
 	\item[]\textbf{Szkript}
-	- A komponens dinamikusságáért felel, az abban megjelenő adatot szolgáltatja a sablon számára. Itt végezhetünk adatlekérést, kezelhetjük a komponenshez tartozó interkaciók mögötti műveleteket. Megadhatjuk a komponens által felhasznált más komponenseket, változókat, de azt is meg tudjuk pontosan határozni, hogy az adott komponens bizonyos életciklusaiban milyen műveletek hajtódjanak végre. A kódokat a már jól ismert, de opcionális  \textit{<script></script>} HTML címkék között tudjuk elhelyezni. 
+	- A komponens dinamikusságáért felel, az abban megjelenő adatot szolgáltatja a sablon számára. Itt végezhetünk adatlekérést, kezelhetjük a komponenshez tartozó interakciók mögötti műveleteket. Megadhatjuk a komponens által felhasznált más komponenseket, változókat, de azt is meg tudjuk pontosan határozni, hogy az adott komponens bizonyos életciklusaiban milyen műveletek hajtódjanak végre. A kódokat a már jól ismert, de opcionális  \textit{<script></script>} HTML címkék között tudjuk elhelyezni. 
 	\item[]\textbf{Stílus}
 	- A komponensekhez természetesen stílust is rendelhetünk, a Cascading Style Sheet (CSS) stílusleíró nyelv segítségével. Arról is dönthetünk, hogy az itt megírt stílusdefiníciók az egész alkalmazásra legyenek érvényesek, vagy csak az adott komponensre a \textit{scoped} kulcsszó megadásával. Webfejlesztői tapasztalataink szerint ez egy igen erős eszköz. A különféle keretrendszerek nélküli fejlesztés során a stílusok nyomonkövetése egy növekvő alkalmazásban egyre nehézkesebb, nem fenntartható kódot tud eredményezni, mely problémát ezzel az apró megoldással könnyen meg lehet előzni. A stílusdefiníciókat az opcionális \textit{<style></style>} HTML címkék között tudjuk megadni.
 \end{itemize}
@@ -386,7 +386,7 @@ h1 {
 </style>
 \end{verbatim}
 
-Ez egy olyan újrafelhasználható cím komponensnek a forráskódja, amelyben a címben megjelenő szöveg paraméterezhetőA fájl elején található a \textbf{sablon}. Ebben található egy \textit{h1} HTML elem. Az elem szövege egy dupla kapcsos zárójelben, egy úgynevezett \textit{mustache} sablonban helyezkedik el. Az ott található \textit{title} kulcsszó egy változó, melynek értéke a \textbf{szkript} részben kerül majd meghatározásra. A dupla kapcsos zárójelben egyébként bármilyen érvényes JavaScript kód elhelyezhető, ami további komplex, de mégis egyszerűen érthető megoldásokat tesz lehetővé.
+Ez egy olyan újra felhasználható cím komponensnek a forráskódja, amelyben a címben megjelenő szöveg paraméterezhető. A fájl elején található a \textbf{sablon}. Ebben található egy \textit{h1} HTML elem. Az elem szövege egy dupla kapcsos zárójelben, egy úgynevezett \textit{mustache} sablonban helyezkedik el. Az ott található \textit{title} kulcsszó egy változó, melynek értéke a \textbf{szkript} részben kerül majd meghatározásra. A dupla kapcsos zárójelben egyébként bármilyen érvényes JavaScript kód elhelyezhető, ami további komplex, de mégis egyszerűen érthető megoldásokat tesz lehetővé.
 
 A \textbf{szkript} részben találhatjuk a komponens számára elérhető változókat függvényeket. Ebben a példakódban egyetlen fajta változót láthatunk. A \textit{props} listában olyan változó neveket sorolunk fel, amelyeknek értékét a komponens más komponensekben való használatakor kell megadni. Például ezt a példa komponenst szeretnénk egy oldal komponensében felhasználni, hogy ott egy címet jelenítsen meg, az általunk választott szöveggel. Ezt a következő féle képpen tudjuk megtenni a \textit{PageComponent.vue} fájl sablon részében:
 \begin{verbatim}
@@ -409,11 +409,11 @@ Ennek további hatalmas előnye, hogy így nem kell minden kód változtatás ut
 
 \subsection{Spring Boot}
 
-Ahhoz hogy a dolgozatunk PureScript nyelven írt backend részét igazán értékelni tudjuk, szükségünk volt egy másik nyelven írt implementációra, amely jó összehasonlítási alapot nyújthat számunkra. Választásunk azért esett a Spring Bootra, mert ezt egyetemi tanulmányaink során már több ízben is megismerhettük, illetve szakmai tapasztalankon keresztül is találkoztunk ezzel a teljesen más nyelven írt eszközzel. Ebben az alfejezetben ezt szeretnénk bemutatni.
+Ahhoz, hogy a dolgozatunk PureScript nyelven írt backend részét igazán értékelni tudjuk, szükségünk volt egy másik nyelven írt implementációra, amely jó összehasonlítási alapot nyújthat számunkra. Választásunk azért esett a Spring Bootra, mert ezt egyetemi tanulmányaink során már több ízben is megismerhettük, illetve szakmai tapasztalatainkon keresztül is találkoztunk ezzel a teljesen más nyelven írt eszközzel. Ebben az alfejezetben ezt szeretnénk bemutatni.
 
 \subsubsection{Java}
 
-A Spring alapja az 1995-ben megjelent, jelenleg az Oracle vállalat kezelésében működő ojektumorientált programozási nyelv és platform, a Java \cite{JAVA_ABOUT}. Az alkotójának, James Goslingnak eredeti célkitűzése az "írd meg egyszer, futtasd bárhol" volt \cite{JAVA_BOOK}, ami a hordozhatóság tulajdonságában meg is valósult. Működése a következő képpen alakul \cite{ORACLE_JAVA}:
+A Spring alapja az 1995-ben megjelent, jelenleg az Oracle vállalat kezelésében működő ojektum orientált programozási nyelv és platform, a Java \cite{JAVA_ABOUT}. Az alkotójának, James Goslingnak eredeti célkitűzése az "írd meg egyszer, futtasd bárhol" volt \cite{JAVA_BOOK}, ami a hordozhatóság tulajdonságában meg is valósult. Működése a következő képpen alakul \cite{ORACLE_JAVA}:
 \begin{enumerate}
 \item A fejlesztő megírja a forráskódot a \textit{.java} kiterjesztésű szöveges fájlba.
 \item A \textit{javac} fordító a megírt kódból \textit{.class} kiterjesztésű bájtkódokat tartalmazó fájlokat készít
@@ -423,9 +423,9 @@ A Spring alapja az 1995-ben megjelent, jelenleg az Oracle vállalat kezelésébe
 A nyelv fontosabb tulajdonságai a következők \cite{JAVA_BOOK}:
 \begin{itemize}
 	\item[]\textbf{Hordozhatóság}
-	- A már említett JVM adja a nyelv hordozhatóságát, mely segítségével bármilyen számítógépen lehetséges Java kód futtatása. Mára a Java támogatása szinte magától értetődő és nem csak a fő operációs rendszerek támogatják, de böngészők, telefonok és IoT eszközök is. Így már szinte szó szerint értelmezhető a fentebbi Gosling idézetben szereplő "bárhol".
+	- A már említett JVM adja a nyelv hordozhatóságát, mely segítségével bármilyen számítógépen lehetséges Java kód futtatása. Mára a Java támogatása szinte magától értetődő és nem csak a fő operációs rendszerek támogatják, de böngészők, telefonok és IoT eszközök is. Így már szinte szó szerint értelmezhető a fenti Gosling idézetben szereplő "bárhol".
 	\item[]\textbf{Biztonság}
-	- Ez fő szempont volt a nyelv kialakításának kezdeteitől fogva. A Java prograok egy alaposan testreszabható jogosultságokkal rendelkező izolált környezetben futnak, ami lehetővé teszi nem megbízható forrásból származó forráskódok, csomagok használatát, anélkül, hogy az kárt okozna a számítógépünkben.
+	- Ez fő szempont volt a nyelv kialakításának kezdeteitől fogva. A Java programok egy alaposan testreszabható jogosultságokkal rendelkező izolált környezetben futnak, ami lehetővé teszi nem megbízható forrásból származó forráskódok, csomagok használatát, anélkül, hogy az kárt okozna a számítógépünkben.
 	\item[]\textbf{Dinamikusság és kiterjeszthetőség}
 	- A Java kódok osztályokba szerveződnek, melyeket dinamikusan képes betölteni a fordító, akkor amikor azokra szükség van.
 \end{itemize}
@@ -436,7 +436,7 @@ Amennyire népszerű a programozással megismerkedők körében könnyen tanulha
 
 \subsubsection{Spring, a Java keretrendszer}
 
-A Spring egy 2003-ban megjelent keretrendszer Java alkalmazások fejlesztésének támogatásához. Széleskörű eszköztárral rendelkezik, hogy skálázható, nagy teljesítményű alkalamzásokat lehessen általa létre hozni. A keretrendszer legfőbb tulajdonsága a modularitás. Az alap modulon túl a fejlesztő kezében van a döntés, hogy az adott alkalmazásba mely számára szükséges modulokat építi be. A főbb modulok a következő területeket érintik \cite{SPRING_BOOK}:
+A Spring egy 2003-ban megjelent keretrendszer Java alkalmazások fejlesztésének támogatásához. Széleskörű eszköztárral rendelkezik, hogy skálázható, nagy teljesítményű alkalmazásokat lehessen általa létre hozni. A keretrendszer legfőbb tulajdonsága a modularitás. Az alap modulon túl a fejlesztő kezében van a döntés, hogy az adott alkalmazásba mely számára szükséges modulokat építi be. A főbb modulok a következő területeket érintik \cite{SPRING_BOOK}:
 \begin{itemize}
 \item adatelérés és kezelés,
 \item web,
@@ -444,7 +444,7 @@ A Spring egy 2003-ban megjelent keretrendszer Java alkalmazások fejlesztéséne
 \item tesztelés.
 \end{itemize}
 
-A keretrendszer alapelve a függőség befecskendezés vagy angolul Dependency Injection, melynek lényege, hogy a függőségek futási időben kerülnek átadásra. Ez két alapvető Java koncepció felhasználásával került implementálásra: az interfészek és a JavaBean-ek. Az interfészek és a függőség befecskendezésének kölcsönösen hasznos együttműködésének eredménye a rugalmas de nem túl bonyolult alkalmazások. A függőség befecskendezés előnyei \cite{SPRING_BOOK}:
+A keretrendszer alapelve a függőség befecskendezés vagy angolul Dependency Injection, melynek lényege, hogy a függőségek futási időben kerülnek átadásra. Ez két alapvető Java koncepció felhasználásával került implementálásra: az interfészek és a JavaBean-ek. Az interfészek és a függőség befecskendezésének kölcsönösen hasznos együttműködésének eredménye a rugalmas, de nem túl bonyolult alkalmazások. A függőség befecskendezés előnyei \cite{SPRING_BOOK}:
 \begin{itemize}
 	\item[]\textbf{Csökkent kódméret}
 	- A függőség befecskendezés következtében sokkal kevesebb kódra van szükség ahhoz, hogy alkalmazásunk különböző részeit összeillesszük.
