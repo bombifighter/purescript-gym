@@ -28,11 +28,11 @@ if __name__ == '__main__':
             response = requests.request("POST", url, headers=headers, data=payload)
 
             url = "http://127.0.0.1:3000/guest/checkout"
-            payload = "{\"guestId\": 1, \"lockerId\": 1, \"gender\": \"male\", \"dateTime\": \"2023/04/21\" }"
+            payload = "{\"guestId\": 1, \"lockerId\": 1, \"gender\": \"male\", \"dateTime\": \"2023/04/21 00:40\" }"
             response = requests.request("POST", url, headers=headers, data=payload)
 
             url = "http://127.0.0.1:3000/guest/deleteGuest/1"
-            response = requests.request("DELETE", url, headers=headers, data=payload)
+            response = requests.request("DELETE", url, headers=headers)
          
         
         end = time.time()

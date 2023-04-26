@@ -28,7 +28,7 @@ corsHeader :: Headers
 corsHeader = header "Access-Control-Allow-Origin" "*"
 
 corsMethodsHeaders :: Headers
-corsMethodsHeaders = headers [ Tuple "Access-Control-Allow-Methods" "OPTIONS, GET, HEAD, POST, DELETE, PUT", Tuple "Access-Control-Allow-Origin" "*"]
+corsMethodsHeaders = headers [ Tuple "Access-Control-Allow-Methods" "OPTIONS, GET, HEAD, POST, DELETE, PUT", Tuple "Access-Control-Allow-Origin" "*", Tuple "Access-Control-Allow-Headers" "*"]
 
 wrapMessageinJSON :: String -> String
 wrapMessageinJSON message = "{\"message\":\"" <> message <> "\"}"

@@ -563,18 +563,96 @@ public class Guest {
 }
 \end{verbatim}
 
-Az entitásokat követik a hozzájuk tartozó repository-k, ezt minden entitáshoz szükséges megadnunk. Ezek olyan interfészek, mely a \textit{JpaRepository} osztály terjesztik ki, és az entitás struktúrája alapján alapértelmezett SQL lekérdezéseket biztosítanak számunkra Java függvények formájában. Természetesen egyéni lekérdezéseket is hozzá tudunk adni, azonban ennek két alapesete van:
+Az entitásokat követik a hozzájuk tartozó perzisztencia rétegek, ezt minden entitáshoz szükséges megadnunk. Ezek olyan interfészek, mely a \textit{JpaRepository} osztály terjesztik ki, és az entitás struktúrája alapján alapértelmezett SQL lekérdezéseket biztosítanak számunkra Java függvények formájában.  Itt szükséges egy Spring annotáció, a \textbf{@Repository} alkalmazása. Természetesen egyéni lekérdezéseket is hozzá tudunk adni, azonban ennek két alapesete van:
 \begin{itemize}
-	\item[]\textbf{1. A repository típusa megegyezik az egyéni lekérdezés eredményének típusával}
+	\item[]\textbf{1. A perzisztencia típusa megegyezik az egyéni lekérdezés eredményének típusával}
 	- Ebben az esetben csak a függvényeket kell deklarálnunk és ellátnunk azokat a \textbf{@Query} annotációval, amiben az SQL lekérdezésünket tudjuk elhelyezni. Ezekben természetesen paramétereket is elhelyezhetünk, melyek a későbbiek folyamán töltődnek fel tartalommal.
-	\item[]\textbf{2. A repository típusa nem egyezik meg az egyéni lekérdezés eredményének típusával}
+	\item[]\textbf{2. A perzisztencia típusa nem egyezik meg az egyéni lekérdezés eredményének típusával}
 	- Ebben az esetben elegáns megoldásként egy úgynevezett csomagoló osztályt hozhatunk létre, amely a lekérdezési eredmény mezőinek megfelelő változókat tartalmazza, majd ezt követően egy konfigurációs annotáció, az \textbf{@SqlResultSetMapping} hozzáadásával tudathatjuk a Springgel, hogy miként szeretnénk leképezni a kapott eredményt a csomagoló osztály változóira. Ezen apró módosításokat követően viszont ugyanúgy tudjuk megadni az egyéni lekérdezéseinket, mint az előző esetben.
-
-A következő réteg a szolgáltatás.
 \end{itemize}
+
+A következő réteg a szolgáltatás. Itt adhatjuk meg azokat a függvényeket minden egyes entitáshoz külön osztályban, amelyek a különböző URL-ekre való hívásokkor fognak lefutni. Felhasználjuk bennük a perzisztencia réteg biztosította függvényeket és az egyénileg írt SQL lekérdezéseket is az \textbf{EntityManager} osztályon segítségével. Ehhez a réteghez is kapcsolódik egy Spring annotáció, a \textbf{@Service}. Ebben a rétegben érhetjük tetten a Spring nagy fegyverét, a függőség befecskendezést is. Minden egyes a rétegben használt perzisztencia osztályt definiálnunk kell az \textbf{@Autowired} annotációval együtt. Így a függőségek, nevezetesen a perzisztencia osztályok futási időben lesznek elérhetőek a szolgáltatás osztályokban.
+
+Az utolsó, legfelső réteg pedig a kontroller. Itt már több annotációval találkozhatunk, ezeket vizsgáljuk meg egy példán keresztül:
+\begin{verbatim}
+@CrossOrigin(origins = "http://localhost:5173")
+@RestController
+@RequestMapping("/guest")
+public class GuestController {
+
+    @Autowired
+    GuestService guestService;
+
+    @GetMapping(path = "/getAll")
+    List<Guest> getGuests() {
+        return guestService.getAllGuest();
+    }
+
+    ...
+}
+\end{verbatim}
+
+Az első annotáció a \textbf{@CrossOrigin}, melyben megadhatjuk, hogy milyen címekről fogadja a kontroller a kéréseket, más címekről érkező kérések elutasításra kerülnek. Itt a mi frontend szerverünk címét adtuk meg, ezzel biztosítva annak a HTTP szerverhez való hozzáférést. A \textbf{@RestController} annotációval tudatjuk a Springgel, hogy az osztály egy kontroller feladatát hivatott ellátni. A \textbf{RequestMapping} annotáció pedig segít nekünk rendszerezni a kontrollerek által adott végpontokat. Itt a vendégekkel kapcsolatos API végpontjaink vannal, ezért az annotációban megadott "\textit{/guest}" biztosítja azt, hogy a felsorolt végpontok ezzel az útvonallal fognak kezdődni a tényleges szerveren. Itt is találkozunk a függőség befecskendezéssel, de itt most a szolgáltatás osztályt szeretnénk befecskendezni, ugyanis az tartalmazza a szükséges függvényeket.
+
+Alatta pedig pegig egy példa végpont látható. Szintén annotáción keresztül tudjuk megadni az elvárt HTTP metódust, illetve az erre a vépontra érvényes útvonalat. Ez a vépont például a szolgáltatás felhasználásával az adatbázisban megtalálható vendégek listáját adja vissza. A korábban említett \textbf{@RestController} annotáció azt is biztosítja számunkra, hogy a függvények eredménye képpen kapott objektumok a HTTP válaszban JSON formátumban jelenjenek meg.
+
+Az összes réteget pedg maga az alkalmazás osztály fogja összekötni, mely osztály rendelkezik a \textbf{@SpringBootApplication} annotációval, és a \textit{main} függvényben csupán egyetlen függvényhívás található:
+\begin{verbatim}
+SpringApplication.run(PuregymBackendApplication.class, args);
+\end{verbatim}
+
+Az egyetlen hiányzó komponense a HTTP szerverünknek egy alkalmazásszerver. A mi megoldásunkban a \textit{Jetty} alkalmazásszervert használtuk fel, és mivel a Spring rengeteg mindent ad alapértelmezetten, így ezt sem kellett külön konfigurálni vagy létrehozni.
+
+Így már minden készen áll arra, hogy elindítsuk a szervert, melyet egy egyszerű \textit{Maven} paranccsal tehetünk meg:
+\begin{verbatim}
+mvn clean install spring-boot:run
+\end{verbatim}
+
+Így az alkalmazásunk néhány másodperc után már elérhető is az általunk konfigurált porton.
 
 \subsection{Vue.js}
 
+A most következő alfejezetben végül pedig a frontend alkalmazásunkként szolgáló Vue.js alkalmazás implementációját mutatjuk be. Mivel mindkét korábban ismertetett backend alkalmazásunk a számítógépünk 3000-es portján futtatható, így a Vue.js alkalmazás mindkét implementációval tökéletesen működik. Fontos megemlítenünk, hogy a dolgozatunknak nem az a célkitűzése, hogy egy tökéletes edzőtermi szoftvert hozzunk létre, hanem megvizsgáljuk a PureScript nyelvű implementációnkat a Spring implementáció tükrében. Így az alkalmazás frontend részének feladata inkább a szemléltetés, mintsem egy létező edzőtermi menedzsment szoftver alternatívája.
+
+\subsubsection{A Vue.js implementáció}
+
+A Vue.js fejlett keretrendszer lévén szintén biztosít számunkra egy egyszerű módot, hogy a fejlesztés zökkenőmentesen kezdődhessen. A projekt vázát a már korábban említett módon kaptuk meg az előző fejezetben említett függőségek telepítése után:
+\begin{verbatim}
+npm init vue@latest
+\end{verbatim}
+
+Alkalmazásunkban a következő főbb oldalakat szeretnénk létrehozni:
+\begin{itemize}
+	\item[]\textbf{Kezdőlap}
+	- Ezzel az oldallal találkozik a felhasználó először, innen lehetősége van továbbnavigálni a többi oldalra.
+	\item[]\textbf{Vezérlőpult}
+	- Ezen az oldalon lehet nyomon követni az éppen az edzőteremben tartózkodó úgynevezett aktív vendégeket, ki lehet őket jelentkeztetni, illetve itt lehet bejelentkeztetni az aktív bérlettel rendelkező, de nem aktív vendégeket.
+	\item[]\textbf{Vendégek}
+	- Itt láthatjuk az összes vendéget, aki valaha az edzőteremben járt. Lehet kezelni az adataikat, a Klub tagságukat, a bérleteiket és törölhetjük is őket. Ezen felül új vendég regisztrálására is van lehetőség.
+	\item[]\textbf{Öltözőszekrények}
+	- Végül itt pedig az öltözőszekrények állapotát tudjuk itt nyomonkövetni. Láthatjuk nemek szerinti bontásban, hogy melyek foglaltak, illetve egy-egy öltözőszekrényre vonatkozóan a használati történetét is megtekinthetjük.
+\end{itemize}
+\begin{figure}[h!]
+	\includegraphics[width=\textwidth]{landing-page}
+	\caption{A kezdőlap. }
+\end{figure}
+\begin{figure}[h!]
+	\includegraphics[width=\textwidth]{dashboard-page}
+	\caption{A vezérlőpult. }
+\end{figure}
+\begin{figure}[h!]
+	\includegraphics[width=\textwidth]{guests-page}
+	\caption{A vendégek kezelőfelülete. }
+\end{figure}
+\begin{figure}[h!]
+	\includegraphics[width=\textwidth]{lockers-page}
+	\caption{Az öltözőszekrények státusz oldala. }
+\end{figure}
+
+Ezekhez és az említett funkciókhoz tartozó aloldalak mindegyike és a bennük használt komponensek külön \textit{.vue} kiterjesztéssel rendelkező fájlban került implementálásra.
+A
+
+\newpage
 \section{Az eredmények ismertetése}
 \subsection{A fejlesztés tapasztalatai}
 \subsection{Mérési eredmények}

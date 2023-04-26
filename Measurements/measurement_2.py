@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
         start = time.time()
 
-        for i in range(1,10):
+        for j in range(1,10):
             url = "http://127.0.0.1:3000/guest/checkin"
             payload = "{\"guestId\": 1, \"gender\": \"male\", \"date\": \"2023/04/21\", \"time\": \"00:40\" }"
             response = requests.request("POST", url, headers=headers, data=payload)
