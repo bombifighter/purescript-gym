@@ -759,6 +759,37 @@ Minden Vue.js alkalmazásnak szüksége van egy központi, magát az alkalmazás
 \newpage
 \section{Az eredmények ismertetése}
 \subsection{A fejlesztés tapasztalatai}
+
+A fejlesztés eredménye 3 alkalmazás. Két REST API implementáció, az egyik PureScript míg a másik Java Spring Boot felhasználásával. Illetve egy frontend alkalmazás, mely a REST szerverekre támaszkodva egy edzőterem kezelő alkalmazást valósít meg. E nyelvekben való tudásaink nagyban eltértek, így a fejlesztési fázisokban nyelvenként különböző élményekben, tapasztalásokban volt részünk. Ebben a fejezetben a fejlesztési folyamat nehézségeiről és az ezeknek köszönhetően megszerzett hasznos tudásról szeretnénk röviden értekezni.
+
+\subsubsection{Fejlesztés funkcionális nyelven}
+
+Egyetemi tanulmányai során nagyon keveset talákozik a funkcionális nyelvvel a hallgató. Mindkettőnknek volt azonban olyan kötelezően választható tárgya az egyetemen, melynek tematikájában a funkcionális nyelvek is szerepeltek. Azonban ezen a tárgyon természetesen nem volt idő olyan mélységében elsajátítani egy funkcionális nyelvet, hogy azt követően könnyedén képesek legyünk egy komplett alkalamzást fejleszteni. Inkább a funkcionális nyelvek gondolkodásmódjának megértése, világának megismerése volt a feladat. Így az ezen e nyelven történő REST API implementáció izgalmas kihívást nyújtott számunkra. Mindkettőnk objektum orientált nyelvekkel dolgozott eddig, így egyik nagy feladatunk volt, hogy megértsük és elsajátítsuk a nyelvet legalább olyan szinten, hogy egy ilyen komplex célt tudjunk megvalósítani.
+
+A PureScript nagyon fiatal nyelvnek számít. A nyelv iránt rajongó, azt aktívan fejlesztő közösség mérete jóval elmarad mondjuk a Java nyelv mögötti közösséghez képest. Ennek több olyan hozadéka is van, amely két, a nyelv elsajátítását a zászlójára tűző fiatal számára nem túl pozitív. Egyrészt egy adott problémára nem létezik olyan sok megoldást kínáló csomag, legtöbbször egy-két opció adódik. Ráadásul mivel ezeket a csomagokat a fejlesztők igen nagy százaléka szabadidejében, önszorgalomból fejleszti, ezért a csomagok bővülése hosszabb folyamat, sőt vannak olyan csomagok amik egy rövid aktivitás után gyorsan eltűnnek, mert egyszerűen a fejlesztőnek úgy alakul az élete, hogy nem tud tovább foglalkozni annak karbantartásával. Másrészről az elérhető dokumentáció erősen hiányos, a fórumokon kevés problémába és arra adott megoldásba lehet ütközni, így egy nyelvet tanulónak az lehet az érzése, hogy egy teljesen zárt közösségbe szeretne valahogy bejutni.
+
+Például a MySQL kapcsolatos PureScript csomag semmilyen dokumentációval nem szolgál, így az azzal kapcsolatos munka során néhány fórum bejegyzésre és teszt esetre tudtunk támaszkodni. Az úgynevezett elhagyatott csomagokkal is volt személyes tapasztalatunk. Egy néhány éve elkészített rövid összefoglaló egy adott eszközről már egyáltalán nem aktuális, mert azóta a benne felhasznált csomagokat már nem tartják karban.
+
+Pozitívumot is tudunk azonban kiemelni a csomagokkal kapcsolatban. Az általunk használt \textit{spago} csomagkezelő eszköz alapértelmezés szerint csomag halmazokkal működik. Ezek a halmazok kizárólag karbantartott csomagokat tartalmaznak, számos felhasználási célra. Ráadásul minden csomagnak olyan verziója található meg a halmazban, amelyek egymással kompatibilisek. Így amíg az alapértelmezett csomagokat használjuk, addig könnyen meg tudjuk adni a készülendő projektunk függőségeit. Munkánk során mi is ezekre a csomagokra támaszkodtunk.
+
+Persze ahogy arra számítottunk is, a legtöbb időt a PureScript implementáció emésztette fel. Ennek oka nem kizárólag az említett dokumentáció hiány, vagy kis méretű közösség, hanem a funkcionális nyelvekben való járatlanságunk is.
+
+Olyan esettel is találkoztunk a fejlesztés során, hogy bizonyos funkciók nincsenek olyan kézenfekvően megoldva PureScriptben, mint mondjuk a Spring Bootban. Az API fejlesztés során nem ismeretlen fogalom a CORS, azaz a Cross Origin Resource Sharing. Ez leegyszerűsítve azért felel, hogy a szerver meg tudja határozni, hogy a beérkező kéréseket milyen címről fogajda el, azok milyen HTPP metódusokat használhatnak és a kérések fejléc mezőit is megszabhatják. Ez a Spring Bootban végtelenül egyszerűen, annotációkkal szabályozható. Viszont PureScriptben ezekről magunknak kellett gondoskodni. Egyrészt elő kellett készítenünk egy úgynevezett \textit{preflight} kérést, ami egy \textit{OPTIONS} metódusú ellenőrző kérdés, ami arra szolgál, hogy tájékoztassa a szerver a klienst az érvényes elérési szabályokról, másrészt minden egyes válaszhoz egy szabáyloknak megfelelő fejlécmezőt kellett csatoljunk.
+
+\subsubsection{Fejlesztés Java nyelven}
+
+A Java nyelv viszont már egy nagyon jól ismert terület volt számunkra. Nem csak az egyetemi tanulmányok során, de a mindennapi munkában is rendszeresen foglalkozunk vele. Ráadásul egy kötelező egyetemi tárgy keretében az alapképzésen még a Spring keretrendszert is megismertük, így a Spring Boot alapú REST API implementálása jóval könnyebb feladatnak bizonyult a PureScript nyelvű társánál.
+
+Nem meglepő módon az elérhető dokumentációval, a fejlesztő közösséggel és a megoldások sokszínűségével nem volt probléma a Java esetében. A népszerűségének köszönhetően nem találkoztunk olyan problémával, amire ne lett volna korábban példa, így megoldás is. Sőt az esetek nagy részében több megoldási lehetőség adódott, így magunk választhattuk ki a számunkra megfelelőt.
+
+A fejlesztés során azonban egy érdekes problémával találkoztunk, amivel kapcsolatban egyikünknek sem volt még tapasztalata. Az API-nak létezik egy olyan vépontja, amelyben az URL-ben megadandó paraméter tartalmaz '/' karaktereket, azonban a kontrollerünk nem tudta feldolgozni az ilyen kéréseket, annak ellenére, hogy karakterkódolást is alkalmaztunk. Sok egyéni URL feldolgozó megoldást kipróbáltunk, mielőtt megtaláltuk a probléma igazi forrását. Ez nem a Spring kontrollerben volt keresendő, hanem az automatikusan a Spring által konfigurált \textit{Tomcat}  alkalamzásszerverünkben. Ugyanis a Tomcat az ilyen jellegű kéréseket nem tudta kezelni. Ezért írtuk felül az alapértelmezett szervert, és cseréltük le a Tomcatet \textit{Jetty}-re, mely meg is oldotta a problémánkat. Ezt a megoldást az aktív Java és Spring fejlesztő közösségnek köszönhetően találtuk meg.
+
+\subsubsection{Frontend Vue.js-ben}
+
+A Frontend fejlesztés területén is közös elősimereteink voltak, mindkettőnk foglalkozott már Angular keretrendszerben frontend alkalmazás implementálásával. Így ha magával a Vue.js-szel még nem találkoztunk, a komponens alapú, hasonló gondolatvilágú frontend fejlesztéssel már igen, mely hozzájárult ahhoz, hogy viszonylag gyorsan megismerkedjünk a keretrendszerrel.
+
+A keretrendszer fiatal kora ellenére hatalmas közösség szerveződött köré, így szerencsére nem küzd a PureScript dokumentációbeli hátrányával. Természetesen abból a szempontból kicsit torz ez az összehasonlítás, hogy a Vue.js nem egy nyelv, hanem egy keretrendszer, és az alapjául szolgáló JavaScript sokkal nagyobb múltra tekint vissza.
+
 \subsection{Mérési eredmények}
 
 \newpage
