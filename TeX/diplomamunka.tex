@@ -680,11 +680,11 @@ Alkalmazásunkban a következő főbb oldalakat szeretnénk létrehozni:
 	\item[]\textbf{Kezdőlap}
 	- Ezzel az oldallal találkozik a felhasználó először, innen lehetősége van továbbnavigálni a többi oldalra.
 	\item[]\textbf{Vezérlőpult}
-	- Ezen az oldalon lehet nyomon követni az éppen az edzőteremben tartózkodó úgynevezett aktív vendégeket, ki lehet őket jelentkeztetni, illetve itt lehet bejelentkeztetni az aktív bérlettel rendelkező, de nem aktív vendégeket.
+	- Ezen az oldalon lehet nyomon követni az éppen aktív vendégeket és az aktív bérlettel rendelkező, de nem aktív vendégeket.
 	\item[]\textbf{Vendégek}
 	- Itt láthatjuk az összes vendéget, aki valaha az edzőteremben járt. Lehet kezelni az adataikat, a Klub tagságukat, a bérleteiket és törölhetjük is őket. Ezen felül új vendég regisztrálására is van lehetőség.
 	\item[]\textbf{Öltözőszekrények}
-	- Végül itt pedig az öltözőszekrények állapotát tudjuk itt nyomonkövetni. Láthatjuk nemek szerinti bontásban, hogy melyek foglaltak, illetve egy-egy öltözőszekrényre vonatkozóan a használati történetét is megtekinthetjük.
+	- Végül itt pedig az öltözőszekrények állapotát tudjuk nyomonkövetni.
 \end{itemize}
 \begin{figure}[h!]
 	\includegraphics[width=\textwidth]{landing-page}
@@ -703,8 +703,37 @@ Alkalmazásunkban a következő főbb oldalakat szeretnénk létrehozni:
 	\caption{Az öltözőszekrények státusz oldala. }
 \end{figure}
 
-Ezekhez és az említett funkciókhoz tartozó aloldalak mindegyike és a bennük használt komponensek külön \textit{.vue} kiterjesztéssel rendelkező fájlban került implementálásra.
-A
+Ezekhez és az említett funkciókhoz tartozó aloldalak mindegyike és a bennük használt komponensek külön \textit{.vue} kiterjesztéssel rendelkező fájlban került implementálásra. Az alkalmazás bizonyos vizuális elemeinek elkészítéséhez a \textbf{Bootstrap} frontend eszköztárat is felhasználtuk. Ez által előre elkészített stílusokkal és elemekkel is tudtunk dolgozni, felgyorsítva ezzel a fejlesztési folyamatot és egyszerűsítve a forráskódot.
+Vegyük végig a funkciókat és implementációjukat.
+
+A \textbf{kezdőlap} csupán navigációs célokat szolgál. Itt találjuk meg a képzeletbeli edzőtermünk logóját, nevét és a navigációs komponenst, melyen keresztül a három másik fő oldal egyikére navigálhatunk. Ahhoz, hogy a navigálás az alkalmazás használata során gördülékeny legyen, minden egyéb oldalon elhelyeztünk egy navigációs sávot. Ez egy komponens formájában került implementálásra, így minden olyan oldalon, ahol szerettük volna felhasználni csak importálnunk kellett a komponens fájlt a \textit{szkript} elemben és ezt a sort kellett megadnunk az adott oldal \textit{sablon} elemében:
+\begin{verbatim}
+<HeaderNav></HeaderNav>
+\end{verbatim}
+
+A következő oldal a \textbf{vezérlőpult}. Itt listába gyűjtve látjuk az edzőteremben tartózkodó vendégeinket, mellettük a hozzájuk rendelt öltözőszekrény számmal és a bent tartózkodásuk kezdetének idejével. Itt egyesével lehet őket kijelentkeztetni, ami a valós világ azon eseményének felel meg, amikor a vendég befejezte a tevékenységét az edzőteremben és távozni szeretne. Ekkor nem csak a vendég státusza változik, de az általa elfoglalt öltözőszekrény is felszabadul. Lehetőség van még vendégek bejelentkeztetésére is. Az ehhez tartozó gombra kattintva a felugró ablakban listázódnak ki azok a vendégek, akik aktív bérlettel rendelkeznek. A bejelentkezést követően megkapják öltözőszekrény számukat és engedélyezett számukra a belépés. Ez a háttérben a következő folyamat szerint történik:
+\begin{itemize}
+\item 1. Kérünk a rendszertől egy a vendég nemének megfelelő szabad öltözőszekrény számot.
+\item 2. Aktívra állítjuk a vendég státuszát és foglaltra állítjuk az öltözőszekrény állapotát.
+\item 3. Amennyiben a vendék alkalom alapú bérlettel rendelkezik, csökkentük a hátralévő alkalmainak számát.
+\end{itemize}
+
+A \textbf{vendégek kezelőfelülete} sok funkcióval rendelkezik. Az alap oldalon találhatjuk a regisztrált vendégeket, az adataikkal együtt. Minden vendéghez 3 akció tartozik. A vendég adatainak módosításához egy űrlapot tartalmazó oldal nyílik meg, ahol a kívánt adat szerkesztése után el tudjuk menteni az új állapotot. Megtekinthetjük a vendég bérleti és klub tagsági állapotát is. Ha a vendég rendelkezik ezekkel, úgy azok lejárati dátuma szerepel a megnyíló oldalon, illetve alkalom alapú bérlet esetén a hátralévő alkalmak száma. Amennyiben viszont a vendég nem rendelkezik ezekkel, úgy egy-egy gomb jelenik meg, ahol hozzá tudjuk adni ezeket a vendég profiljához. A bérlet esetén egy felugró ablakból válaszhatjuk ki, hogy milyen típust szeretnénk, a hozzá tartozó árlista pedig a klub tagság függvényében dinamikusan változik. A  \textbf{vendégek kezelőfelületén} az utolsó adott vendéghez tartozó funkció a törlés, amely bár megítélésünk szerint egy ritkán használt funkció lenne valós esetben, azonban előfordulhat, hogy a vendég szeretné az adatait törölni. Ekkor egy megerősítést követően nem csak a vendég adatlapja, de tagsági története és aktivitási története is törlésre kerül. Az oldalon található még egy funkció, amely vendégek regisztrálására szolgál. Ezt egy üres űrlap kitöltését követően követően tudjuk megtenni. A regisztrációt követően egyből kezelhető az új vendég bérlet és klub tagság állapota.
+
+Végül az \textbf{öltözőszekrények} kezelőfelületén láthatjuk nemek szerinti bontásban az öltöző szekrények állapotát. A szabad szekrények zöld, míg a foglalt szekrények piros színnel jelennek meg. Minden egyes szekrényt lehetőségünk van kiválasztani. A felugró oldalon megtekinthetjük az adott szekrény aktuális állapotát és a korábban a szekrényt elfoglaló vendégeket is. Minden egyes bejegyzésből a hozzá tartozó vendég adatlapjára navigálhatunk. Ennek a funkciónak például talált tárgyak esetén tudja az edzőterem hasznát venni, mivel így visszakövethető, hogy mely vendég használta a szekrényt az eseményt megelőző napokban.
+
+Azt, hogy ezekben a megoldásokban, legyenek azok oldalak vagy komponensek, hogyan kötöttük össze a szkript réteg változóit a sablon réteg HTML elemeivel, ezzel dinamikussá téve a weblap tartalmát már a Vue.js-t ismertető fejezetben láthattuk. Azonban arról, hogy miként kötöttük össze a frontend alkalmazásunkat a HTTP REST szerverünnkel még nem esett szó. A HTTP kérésekhez a Fetch API-t használtuk \cite{FETCH_API}. Ezzel minden szükséges HTTP metódust tudunk kezelni. A szükséges REST API hívásokat kezelő aszinkron függvények implementálása a JavaScriptben megszokott módon történik. Egy rövid példán keresztül nézzük meg, hogy milyen egyszerűen meg lehet ezt a feladatot oldani. A példánkban azt a függvényt vizsgáljuk, amelyik a regisztrált vendégek listájához szükséges adatokat tölti be:
+\begin{verbatim}
+async getData() {
+            const res = await fetch("http://127.0.0.1:3000/guest/getAll");
+            const finalRes = await res.json();
+            this.guests = finalRes;
+}
+\end{verbatim}
+
+A komponens változója, a \textbf{guests} tartalma a függvény hívása után a vendégek adatainak listája lesz.
+
+Ami érdekessé teszi az adatelérést az az, hogy lehetőségünk van irányítani, hogy az oldal kirenderelésének mely szakaszában szeretnénk lekérni az adatokat. Ennek a felhasználó szempontjából van jelentősége. Amennyiben túl későn kérjük le az adatot, az a felhasználó felület ugrálását eredményezi, ugyanis az adatok később jelennek meg mint az oldalunk.
 
 \newpage
 \section{Az eredmények ismertetése}
@@ -882,6 +911,9 @@ Pursuit. Hivatalos PureScript dokumentáció.
 
 \bibitem{purs}
 \url{https://uizard.io} 
+
+\bibitem{FETCH_API}
+A Fetch API hivatalos, MDN dokumentációja. \url{https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API} Hozzáférés dátuma: 2023.04.26.
 
 \end{thebibliography}
 \end{document}
