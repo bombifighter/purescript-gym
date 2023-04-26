@@ -479,6 +479,65 @@ A hátránya ellenére is hatalmas népszerűségnek örvend, ma is gyakori felh
 \newpage
 \section{A fejlesztés bemutatása}
 
+A fejlesztés során szem előtt tartottuk azt az elvet,  hogy a két alkalmazás majd nemcsak hogy ugyanazt a funkcionalitást lássa el, de lehetőleg (már amennyire a nyelvi sajátosságok engedik) ugyanúgy is épüljön fel, ugyanúgy viselkedjen.  Mindkét alkalmazás ugyanazt a MySQL adatbázist és ugyanazt a frontendet használja.
+
+Az első lépés az üzleti logika átgondolása, a funkcionális tervezés volt. Mivel a szoftver nem egy valós üzleti igényt elégít ki, hanem inkább kísérleti jellegű (Proof of Concept), így ez a szakasz kisebb hangsúlyt kapott.
+
+Az adatbázis megtervezésével kezdtük. A MySQL adatbáziskezelőt választottuk, mivel nyílt forráskodú, a tervezett funkcionalitást bőven ellátja és könnyen lehet használni. Elkészítettük a sémát, mely az első ábrán látható. Tartalmazza a táblák nevét,  az attribútumokat,  félkövér kiemeléssel az elsődleges kulcsot. A táblák közötti nyilak a külső kulcsokat és kapcsolattípusokat mutatják.
+
+A \textit{Vendégek} tábla tartalmazza egy vendég adatait stb.... ez kell?
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{database}
+\caption{A szoftver adatbázis modellje.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{usecase}
+\caption{Használati eset (use case) diagram. }
+\end{figure}
+
+
+A Vue.js-ben implementált frontend ugyanazon a porton (3000, természetesen nem egyszerre) tud kommunikálni akár a PureScript,  akár a Spring Boot REST API-val. Ez HTTP kérések használatával történik: mindkét backend ugyanazokra a kérésekre ugyanazt a választ és ugyanazt a működést eredményezi.  Az első táblázatban néhány kérés látható a vendégekkel kapcsolatban. A szerver erre a kérésre küld egy választ, mely ha szükséges, tartalmazhat a body-ban egy JSON-t.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |p{1.7cm}|p{4.4cm}|p{6.3cm}| } 
+\hline
+ \textbf{Metódus} & \textbf{Útvonal} &\textbf{Leírás}\\
+\hline
+GET & /guest/getAll& Az összes vendég lekérése.\\
+\hline
+GET & /guest/getById/\{id\}& Egy vendég lekérése az azonosítója alapján.\\
+\hline
+POST & /guest/insertGuest&  Egy új vendég hozzáadása. \\
+\hline
+PUT & /guest/updateGuest/\{id\} & Egy vendég kartonjának szerkesztése \\
+\hline
+DELETE & /guest/deleteGuest/\{id\} & Egy vendég törlése  \\
+\hline
+... & ... &...  \\
+\hline
+\end{tabular}
+\caption{A kérések listájának részlete.}
+\end{table}
+
+
+Az Uizard\cite{uizard} nevű szoftverrel elkészítettük az oldalak kinézetének terveit, illetve az oldalak közötti navigációt modellező prototípust. Ez nagyon hasznos lehet a korai tesztelés szempontjából, ugyanis egy ilyen prototípus rövid idő alatt elkészíthető, így nagyon hamar egy kattintgatható prototípuson lehet kipróbálni, hogy az üzleti logikának megfelel-e. A harmadik ábrán az így elkészült navigációs térkép és mellette néhány képernyőkép terv látható.
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{0.45\textwidth}
+\includegraphics[width=7cm]{navigation} 
+\end{subfigure}
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=7cm]{pages}
+\end{subfigure}
+\caption{Az oldalak közötti navigáció és az oldalak tervezése.}
+\end{figure}
+
+\newpage
 \subsection{PureScript}
 
 Az alkalmazás fejlesztéséhez első lépésként telepítettük a szükséges szoftvereket a npm csomagkezelő segítségével. 
@@ -491,12 +550,7 @@ Az első sor maga a PureScript, a második pedig Spago telepítéséhez szüksé
 
 Ezután jó darabig ismerkedtünk magával a nyelvvel, mivel valamennyi funkcionális tapasztalattal mindketten rendelkeztünk korábban, de nagyrészt imperatív nyelveket használunk.  Ehhez jó segítség volt a PSCI, amit a \textit{spago repl} paranccsal lehet elindítani. Lehetőség van egy alap kód megadására, ami minden indításnál lefut, ide helyeztük a szükséges importokat. Ezután soronként futtattuk a programot, példáuk gyakran lekértük az elemek típusát a \textit{:type} paranccsal.
 
-\begin{figure}[h!]
-\includegraphics[width=0.8\textwidth]{database}
-\caption{A szoftver adatbázis modellje.}
-\end{figure}
-
-A következő lépés az üzleti logika átgondolása, a funkcionális tervezés volt. Mivel a szoftver nem egy valós üzleti igényt elégít ki, hanem inkább kísérleti jellegű (Proof of Concept), így hatalmas hangsúlyt nem kapott ez a szakasz. Inkább arra figyeltünk, hogy a két alkalmazás majd nemcsak hogy ugyanazt a funkcionalitást lássa el, de lehetőleg (már amennyire a nyelvi sajátosságok engedik) ugyanúgy is épüljön fel, ugyanúgy viselkedjen. 
+A következő lépés az üzleti logika átgondolása, a funkcionális tervezés volt. Mivel a szoftver nem egy valós üzleti igényt elégít ki, hanem inkább kísérleti jellegű (Proof of Concept), így hatalmas hangsúlyt nem kapott ez a szakasz. 
 
 A szoftver alapvetően az MVC (model - nézet - vezérlő) architektúrális mintát követi.  A modell megalkotásával kezdtük, ehhez készítettünk egy adatbázismodellt, mely az első ábrán látható. A PureScript kódban ez szolgált a típusok vázaként is. Minden típushoz egy \textit{.purs} fájlt készítettünk, melyben magának a típusnak és a hozzá tartozó függvényeknek a leírása található. A következő módon készítettünk egy ilyen típust:
 
@@ -656,33 +710,6 @@ A
 \section{Az eredmények ismertetése}
 \subsection{A fejlesztés tapasztalatai}
 \subsection{Mérési eredmények}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{ |p{1.7cm}|p{4.4cm}|p{6.3cm}| } 
-\hline
- \textbf{Metódus} & \textbf{Útvonal} &\textbf{Leírás}\\
-\hline
-GET & /guest/getAll& Az összes vendég lekérése.\\
-\hline
-GET & /guest/getById/\{id\}& Egy vendég lekérése az azonosítója alapján.\\
-\hline
-POST & /guest/insertGuest&  Egy új vendég hozzáadása. \\
-\hline
-PUT & /guest/updateGuest/\{id\} & Egy vendég kartonjának szerkesztése \\
-\hline
-DELETE & /guest/deleteGuest/\{id\} & Egy vendég törlése  \\
-\hline
-... & ... &...  \\
-\hline
-\end{tabular}
-\caption{A kérések listájának részlete.}
-\end{table}
-
-\begin{figure}
-\includegraphics[width=\textwidth]{usecase}
-\caption{Használati eset (use case) diagram. }
-\end{figure}
 
 \newpage
 \section*{Összefoglalás}
@@ -852,6 +879,9 @@ A Spago hivatalos dokumentációja.
 \bibitem{purs}
 Pursuit. Hivatalos PureScript dokumentáció.
 \url{https://pursuit.purescript.org} Hozzáférés dátuma: 2023.04.24.
+
+\bibitem{purs}
+\url{https://uizard.io} 
 
 \end{thebibliography}
 \end{document}
