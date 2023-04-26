@@ -138,7 +138,7 @@ A funkcionális programozás egy kevésbé elterjedt programozási paradigma. No
 
 A dolgozatban tárgyalt szoftver backend komponensének elkészítésére a PureScript nyelvet választottuk. Ez egy tisztán funkcionális és erősen típusos programozási nyelv, mely Javascript-re fordul. Azért választottuk ezt a nyelvet, mert tisztán funkcionális, a közelmúltban megjelent nyelv, mely a többi funkcionális nyelvhez (Haskell, Elm) képest modernebb, erőteljesebb, könnyebben használható és teljesebb \cite{CS}.
 
-Munkánk elsődleges célja egy edzőterem működését támogató szoftver elkészítése PureScript backend és Vue.js frontend használatával. Ezen felül szeretnénk megvizsgálni és bemutatni a funkcionális nyelvek használatának előnyeit és lehetőségeit leginkább webalkalmazások fejlesztése során. A szoftver elkészültét követően implementálásra kerül ugyanez a backend Java nyelven a Spring keretrendszer használatával. Célunk a két verzió sebességének és fejlesztési tapasztalatainak összehasonlítása. A sebesség összehasonlítására többféle operációs rendszerrel és különböző specifikációkkal rendelkező számítógépeken ugyanazokat a kéréseket 10, 50 és 100-as kötegekben küldjük el a két különböző szervernek, majd elemezzük az így kapott eredményeket.
+Munkánk elsődleges célja egy edzőterem működését támogató szoftver elkészítése PureScript backend és Vue.js frontend használatával. Ezen felül szeretnénk megvizsgálni és bemutatni a funkcionális nyelvek használatának előnyeit és lehetőségeit leginkább webalkalmazások fejlesztése során. A szoftver elkészültét követően implementálásra kerül ugyanez a backend Java nyelven a Spring keretrendszer használatával. Célunk a két verzió sebességének és fejlesztési tapasztalatainak összehasonlítása. A sebesség összehasonlítására többféle operációs rendszerrel és különböző specifikációkkal rendelkező számítógépeken ugyanazokat a kéréseket 10,  100 és 1000-es kötegekben küldjük el a két különböző szervernek, majd elemezzük az így kapott eredményeket.
 
 A huszonegyedik században egy korszerű edzőteremnek szüksége van egy szoftverre, amely a mindennapi üzletmenetet támogatja. Választásunk azért erre a területre esett, mert egyrészt mindketten szeretünk edzeni járni, másrészt pedig a szoftver összetettsége már alkalmas lehet a PureScript nyelv megismerésére, lehetőségeinek és előnyeinek bemutatására, illetve egy elterjedtebb technológiával (Java, Spring) készült változatával való összehasonlításra.
 
@@ -792,57 +792,61 @@ A keretrendszer fiatal kora ellenére hatalmas közösség szerveződött köré
 
 \subsection{Mérési eredmények}
 
+A két szoftver objektív összehasonlítására teszteseteket készítettünk Python-ban. A három különböző tesztesetben különböző kéréssorozatokat küldünk a szervernek feldolgozásra, és mérjük a közben eltelt időt. Például a hármas számú tesztesetben létrehozunk egy vendéget,  vásárolunk neki tagságot,  beléptetjük , kiléptetjük majd töröljük a vendégek közül.  A tesztesetek összeállításánál arra ügyeltünk, hogy a teszt olyan állapotban hagyja az adatbázist, amilyenben találta. Ennek köszönhetően több konfigurációban is zökkenőmentesen tudtuk a teszteket egymás után futtatni.
+
+A következő kódcsipet segítségével kommunikálunk a szerverrel:
+\begin{verbatim}
+    url = "http://127.0.0.1:3000/guest/insertGuest"
+    payload = "{\"id\":1 , \"name\": \"Abel\", \"gender\": ...
+    response = requests.request("POST", url, headers=headers, 
+               data=payload)
+\end{verbatim}
+
+Megadjuk az URL címet, útvonalat, opcionálisan a rakományt és a HTTP kérés típusát a \textit{requests} Python könyvtárból származó függvénynek, mely a HTTP választ eredményezi.
+
+A frontend alkalmazás implementálása és a tesztek elvégzése közben egy számunkra új ismeretet gyűjtöttünk a lokális fejlesztéssel kapcsolatban. Mivel tesztjeinket nem csak Windows operációs rendszeren végeztük, hanem MacOS operációs rendszeren is, arra lettünk figyelmesek, hogy a Windows-os mért értékek szignifikánsan nagyobbak MacOS-es társaiknál (nagyjából két nagyságrend különbség mutatkozott). Ez kérdéseket vetett fel bennünk, ugyanis a két számítógép számításteljesítményének különbsége nem indokolt ekkora eltéréseket. A probléma forrása egy egyszerű Windows mechanizmus volt. Eredetileg a frontend alkalmazásunkban lévő HTTP hívásokhoz és a tesztekhez is \textit{http://localhost:3000} címet használtuk. Általános esetben ugyanazt jelenti Windows-os rendszereken, mintha a \textit{localhost} név helyett a számítógép lokális IP címét, a \textit{127.0.0.1}-et írnánk. Azonban van egy igen lényeges különbség a kettő között. Mégpedig az, hogy a \textit{localhost} nevet a rendszernek még fel kell oldania, mielőtt a kérést elküldené. A MacOS rendszeren ez a mechanizmus ettől eltérően működik, így nem okozott problémát. Miután a címeket kicseréltük az IP címet tartalmazókra, utána már nagyságrendileg hansoló eredményeink voltak mind a két típusú operációs rendszer esetében.
+
+\begin{figure}[h!]
+	\includegraphics[width=\textwidth]{diag10}
+	\caption{A tesztek eredménye másodpercben MacOS és Windows operációs rendszereken, tízes kötegmérettel.}
+\end{figure}
+
+A teszteseteket tízes, százas és ezres kötegekben futtattuk, minden köteget ötször, és ebből számoltunk átlagot. Azért választottunk több kötegméretet, hogy azt is lássul, hogy egyre több kérés esetén hogy viszonyul a sebesség.
+
+A teszteket lefuttattuk Windows 10 és MacOS Ventura operációs rendszereken is (Intel(R) Core(TM) i5-9400F CPU @ 2,90 GHz és Apple M1 3,2 GHz processzorokkal rendelkező gépeken). Célunk nem a két rendszer sebességének összehasonlítása volt ezzel, csak megerősítés és kíváncsiság az eredmények konzisztenciájára vonatkozóan.
+
+A mi esetünkben az általunk végzett PureScript tesztek átlagosan 13,25 százalékkal teljesítettek jobban.  A ? ábrákon tízes és ezres kötegek átlageredményei láthatók másodpercben, bal oldalon MacOS Ventura, jobb oldalon Windows 10 operációs rendszer alatt. A többi diagram megtalálható a függelékben.
+
+\begin{figure}[h!]
+	\includegraphics[width=\textwidth]{diag1000}
+	\caption{A tesztek eredménye másodpercben MacOS és Windows operációs rendszereken, ezres kötegmérettel.}
+\end{figure}
+
+A második táblázatban a következő tendencia figyelhető meg az eredmények között: a kötegméret növekedésével egyértelműen csökken a PureScript előnye. Tízes kötegnél még átlagosan 20,4 százalékkal, míg ezres kötegméretnél már csak 7,8 százalékkal kevesebb időre volt szüksége a PureScript szervernek.
+
+Véleményünk szerint ez annak köszönhető, hogy ???
+
+Ami még érdekes eredmény, hogy MacOS operációs rendszer alatt a sebességkülönbség jóval nagyobb, mint Windows-on: Mac-en 24,15 százalék, míg Windows-on csak 2,36 százalék átlagosan.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |p{3.2cm}|p{6cm}| } 
+\hline
+ \textbf{Kötegméret} &\textbf{A PureScript átlagos sebességbeli előnye}\\
+\hline10&20,40\%\\
+\hline
+100& 11,57\%\\
+\hline
+1000& 7,80\%\\
+\hline
+\end{tabular}
+\caption{Mérési eredmények kötegméret szerint}
+\end{table}
+
+
 \newpage
 \section*{Összefoglalás}
 \addcontentsline{toc}{section}{Összefoglalás}
-
-%******************példa képek:
-
-%\begin{figure}
-%\centering
-%\includegraphics[width=0.7\textwidth]{org}
-%\caption{Organogram.}
-%\end{figure}
-
-%\begin{wrapfigure}{r}{0.4\textwidth}
-%\includegraphics[width=0.4\textwidth]{test1}
-%\caption{Értékteremtő lánc diagram.}
-%\end{wrapfigure}
-
-%\begin{figure}[h]
-%\centering
-%\begin{subfigure}{0.45\textwidth}
-%\includegraphics[width=8cm]{pelda1} 
-%\end{subfigure}
-%\begin{subfigure}{0.4\textwidth}
-%\includegraphics[width=8cm]{pelda2}
-%\end{subfigure}
-%\caption{A háló $t_1$ tüzelése előtt és után}
-%\end{figure}
-
-%******************felsorolas
-%\begin{definíció}
-%A Petri háló ($PN$) egy ($P, T, E, w, m_0$) rendszer, ahol
-%\begin{enumerate}
-%\item $P$ a helyek véges halmaza,
-%\item $T$ a tranzíciók véges halmaza feltéve, hogy $P \cap T = \emptyset$,
-%\item $E \subseteq (P \times T) \cup (T \times P)$ az élek véges halmaza,
-%\item $ w: E\rightarrow N^+$ a súlyfüggvény,
-%\item $ m: P\rightarrow N$ a token-eloszlás függvény,
-%\item $ m_0$ a kezdeti token eloszlás.
-%\end{enumerate}
-%A Petri háló struktúrát $(P, T, E, w)$ módon jelöljük. (\textit{Peterson., 1981})
-%\end{definíció}
-
-%******************felsorolas
-%\begin{itemize}
-%\item egy adott időszakban egy vevő mennyit vásárolt?
-%\item melyik partnernek mennyi ki nem fizetett, vagy lejárt tartozása van?
-%\item egy adott termékből mennyi fogyott adott idő alatt?
-%\item ki állított ki egy bizonyos számlát?
-%\item kik vannak jelenleg bejelentkezve?
-%\item kinek van lejárt tartozása és mennyi?
-%\end{itemize}
 
 \addcontentsline{toc}{section}{Irodalomjegyzék}
 
@@ -855,12 +859,6 @@ C. Scalfani. Functional Programming Made Easier: A Step-by-Step Guide. 2021.
 
 \bibitem{PE}
 P. Freeman. PureScript by Example. 2014 - 2017.
-\url{https://book.purescript.org/}
-
-\bibitem{VD}
-Dr. Vadász Dénes: Programozási paradigmák, programozási nyelvek (letölthető egyetemi oktatási anyag)
-\url{https://web.archive.org/web/20150501083657/http://www.iit.uni-miskolc.hu/iitweb/export/sites/default/users/DVadasz/GEIAL401/Progpar-4-fejezet.pdf#}
-Hozzáférés dátuma: 2023.04.11.
 
 \bibitem{JM}
 John McCarthy: The implementation of LISP. 1996.
@@ -869,19 +867,31 @@ http://www-formal.stanford.edu/jmc/history/lisp/node3.html
 \bibitem{Sz}
 Szuromi Zs.: Programozási paradigmák, kézirat. ME, 1996.
 
+\bibitem{VUE_BOOK}
+Olga Filipova: Learning Vue.js 2, 2016.
+
+\bibitem{JAVA_BOOK}
+David Flanagan: Java in a Nutshell, 2005
+
+\bibitem{SPRING_BOOK}
+Iuliana Cosmina, Rob Harrop, Chris Schaefe, Clarence Ho: Pro Spring 5: An In-Depth Guide to the Spring Framework and Its Tools, 2017
+
+\bibitem{VD}
+\href{https://web.archive.org/web/20150501083657/http://www.iit.uni-miskolc.hu/iitweb/export/sites/default/users/DVadasz/GEIAL401/Progpar-4-fejezet.pdf#}{Dr. Vadász Dénes: Programozási paradigmák, programozási nyelvek (letölthető egyetemi oktatási anyag)}.\\ Hozzáférés dátuma: 2023.04.11.
+
 \bibitem{TIO}
-The TIOBE Programming Community index. \url{https://www.tiobe.com/tiobe-index/} Hozzáférés dátuma: 2023.04.11.
+The TIOBE Programming Community index. \\ \url{https://www.tiobe.com/tiobe-index/} \\Hozzáférés dátuma: 2023.04.11.
 
 \bibitem{Java}
-A Java nyelv hivatalos honlapja. \url{https://dev.java/learn/lambdas/}  Hozzáférés dátuma: 2023.04.11.
+A Java nyelv hivatalos honlapja. \\ \url{https://dev.java/learn/lambdas/}  \\Hozzáférés dátuma: 2023.04.11.
 
 \bibitem{sy}
-B. Radojicic.: Imperative to Functional Programming in Java. 2022
-\url{https://symphony.is/blog/imperative-to-functional-programming-in-java} Hozzáférés dátuma: 2023.04.11.
+B. Radojicic.: Imperative to Functional Programming in Java. 2022\\
+\url{https://symphony.is/blog/imperative-to-functional-programming-in-java} \\Hozzáférés dátuma: 2023.04.11.
 
 \bibitem{JN}
-J. Neumann.: Advantages and disadvantages of functional programming. 2022.
-\url{https://medium.com/twodigits/advantages-and-disadvantages-of-functional-programming-52a81c8bf446}
+J. Neumann.: Advantages and disadvantages of functional programming. 2022.\\
+\url{https://medium.com/twodigits/advantages-and-disadvantages-of-functional\\-programming-52a81c8bf446}\\
 Hozzáférés dátuma: 2023.04.12.
 
 \bibitem{PS}
@@ -891,81 +901,77 @@ Hozzáférés dátuma: 2023.04.12.
 \url{https://vuejs.org/guide/introduction.html}
 
 \bibitem{py}
-J. Sturtz.: Functional Programming in Python: When and How to Use It. Hozzáférés dátuma: 2023.04.20.
-\url{https://realpython.com/python-functional-programming/}
+J. Sturtz.: Functional Programming in Python: When and How to Use It. \\
+\url{https://realpython.com/python-functional-programming/}\\Hozzáférés dátuma: 2023.04.20.
 
 \bibitem{cpp}
-D. Cravey.: Functional-Style Programming in C++. Hozzáférés dátuma: 2023.04.20.
+D. Cravey.: Functional-Style Programming in C++. \\
 \url{https://learn.microsoft.com/en-us/archive/msdn-magazine/2012/august/c-functional-style-programming-in-c}
-
-\href{https://learn.microsoft.com/en-us/archive/msdn-magazine/2012/august/c-functional-style-programming-in-c}{D. Cravey.: Functional-Style Programming in C++}.\\ Hozzáférés dátuma: 2023.04.20.
+\\Hozzáférés dátuma: 2023.04.20.
 
 \bibitem{JS_USAGE}
-Kliens-oldali programozási nyelvek használatát bemutató statisztika. \url{https://w3techs.com/technologies/details/cp-javascript}  Hozzáférés dátuma: 2023.04.23.
+Kliens-oldali programozási nyelvek használatát bemutató statisztika. \\ \url{https://w3techs.com/technologies/details/cp-javascript}  \\Hozzáférés dátuma: 2023.04.23.
 
 \bibitem{VUE_SUPP}
-A Vue.js által támogatott böngészők. \url{https://vuejs.org/about/faq.html#what-browsers-does-vue-support} Hozzáférés dátuma: 2023.04.24.
+A Vue.js által támogatott böngészők. \\ \url{https://vuejs.org/about/faq.html#what-browsers-does-vue-support}\\ Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{ES2015_USAGE}
-Az ES2015-öt támogató böngészők. \url{https://caniuse.com/es6} Hozzáférés dátuma: 2023.04.24.
+Az ES2015-öt támogató böngészők. \url{https://caniuse.com/es6} \\Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{VUE_COMPANIES}
-Vue.js-t használó nagyvállalatok. \url{https://vuejs.org/about/faq.html#is-vue-reliable} Hozzáférés dátuma: 2023.04.24.
+Vue.js-t használó nagyvállalatok. \\ \url{https://vuejs.org/about/faq.html#is-vue-reliable} \\Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{FRAMEWORK_PERF}
-Különféle JavaScript alapú keretrendszerek benchmark eredményei. \url{https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html} Hozzáférés dátuma: 2023.04.24.
+Különféle JavaScript alapú keretrendszerek benchmark eredményei. \\ \url{https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html}\\ Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{VUE_LW}
-A Vue.js könnyed tulajdonságának leírása. \url{https://vuejs.org/about/faq.html#is-vue-lightweight} Hozzáférés dátuma: 2023.04.24.
+A Vue.js könnyed tulajdonságának leírása. \\ \url{https://vuejs.org/about/faq.html#is-vue-lightweight} \\Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{VUE_SCALE}
-A Vue.js skálázhatóságának leírása. \url{https://vuejs.org/about/faq.html#does-vue-scale} Hozzáférés dátuma: 2023.04.24.
+A Vue.js skálázhatóságának leírása. \\ \url{https://vuejs.org/about/faq.html#does-vue-scale}\\ Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{VUE_DOCS}
-A Vue.js hivatalos dokumentációja, útmutatója. \url{https://vuejs.org/guide/introduction.html} Hozzáférés dátuma: 2023.04.24.
-
-\bibitem{VUE_BOOK}
-Olga Filipova: Learning Vue.js 2, 2016.
+A Vue.js hivatalos dokumentációja, útmutatója. \\ \url{https://vuejs.org/guide/introduction.html} \\Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{VITE}
-A Vue.js fejlesztéshez használt Vite szerver honlapja. \url{https://vitejs.dev/}
+A Vue.js fejlesztéshez használt Vite szerver honlapja. \\ \url{https://vitejs.dev/}
 
 \bibitem{JAVA_ABOUT}
-A Java nyelv rövid története. \url{https://www.java.com/en/download/help/whatis_java.html} Hozzáférés dátuma: 2023.04.24.
-
-\bibitem{JAVA_BOOK}
-David Flanagan: Java in a Nutshell, 2005
+A Java nyelv rövid története. \\ \url{https://www.java.com/en/download/help/whatis_java.html} \\Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{ORACLE_JAVA}
-A Java nyelv működése. \url{https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html}
-
-\bibitem{SPRING_BOOK}
-Iuliana Cosmina, Rob Harrop, Chris Schaefe, Clarence Ho: Pro Spring 5: An In-Depth Guide to the Spring Framework and Its Tools, 2017
+A Java nyelv működése. \\ \url{https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html}
 
 \bibitem{SPRING_INIT}
-A Spring Initializr eszköz. \url{https://start.spring.io/}
+A Spring Initializr eszköz. \\ \url{https://start.spring.io/}
 
 \bibitem{pd}
-A PureScript nyelv hivatalos dokumentációja.
-\url{https://github.com/purescript/documentation} Hozzáférés dátuma: 2023.04.24.
+A PureScript nyelv hivatalos dokumentációja.\\
+\url{https://github.com/purescript/documentation} \\Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{pgit}
-A PureScript nyelv hivatalos forráskódja.
-\url{https://github.com/purescript/purescript} Hozzáférés dátuma: 2023.04.24.
+A PureScript nyelv hivatalos forráskódja.\\
+\url{https://github.com/purescript/purescript}\\ Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{spago}
-A Spago hivatalos dokumentációja.
-\url{https://github.com/purescript/spago} Hozzáférés dátuma: 2023.04.24.
+A Spago hivatalos dokumentációja.\\
+\url{https://github.com/purescript/spago}\\ Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{purs}
-Pursuit. Hivatalos PureScript dokumentáció.
-\url{https://pursuit.purescript.org} Hozzáférés dátuma: 2023.04.24.
+Pursuit. Hivatalos PureScript dokumentáció.\\
+\url{https://pursuit.purescript.org} \\Hozzáférés dátuma: 2023.04.24.
 
 \bibitem{purs}
 \url{https://uizard.io} 
 
 \bibitem{FETCH_API}
-A Fetch API hivatalos, MDN dokumentációja. \url{https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API} Hozzáférés dátuma: 2023.04.26.
+A Fetch API hivatalos, MDN dokumentációja. \\ \url{https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API}\\ Hozzáférés dátuma: 2023.04.26.
+
+\bibitem{API_STYLES}
+A Vue.js API stílusainak bemutatása. \\ \url{https://vuejs.org/guide/introduction.html#api-styles} \\Hozzáférés dátuma: 2023.04.26.
+
+\bibitem{VUE_LIFECYCLE}
+A Vue.js életciklus diagramja. \\ \url{https://vuejs.org/guide/essentials/lifecycle.html#lifecycle-diagram} \\Hozzáférés dátuma: 2023.04.26.
 
 \bibitem{API_STYLES}
 A Vue.js API stílusainak bemutatása. \url{https://vuejs.org/guide/introduction.html#api-styles} Hozzáférés dátuma: 2023.04.26.
@@ -974,4 +980,53 @@ A Vue.js API stílusainak bemutatása. \url{https://vuejs.org/guide/introduction
 A Vue.js életciklus diagramja. \url{https://vuejs.org/guide/essentials/lifecycle.html#lifecycle-diagram} Hozzáférés dátuma: 2023.04.26.
 
 \end{thebibliography}
+
+\newpage
+\section*{Függelék}
+\addcontentsline{toc}{section}{Függelék}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}| } 
+\hline
+\textbf{Teszt} & \textbf{Köteg} &\textbf{PureScript (mp)} &\textbf{Java (mp)}\\
+\hline 1& 10& 0,1344&0,1515\\
+\hline 2& 10& 0,1138&0,1198\\
+\hline 3& 10&0,2615 &0,2754\\
+\hline 1& 100& 1,4171&1,5040\\
+\hline 2& 100& 1,2983&1,2965\\
+\hline 3& 100& 2,9061&2,9475\\
+\hline 1& 1000& 14,2713&14,6063\\
+\hline 2& 1000&15,0881 &13,7380\\
+\hline 3& 1000&29,0169 &29,1394\\
+\hline
+\end{tabular}
+\caption{Mérési eredmények Windows 10-en.}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}| } 
+\hline
+\textbf{Teszt} & \textbf{Köteg} &\textbf{PureScript (mp)} &\textbf{Java (mp)}\\
+\hline 1& 10&0,1763 &0,2261\\
+\hline 2& 10& 0,1091&0,1683\\
+\hline 3& 10& 0,3421&0,6094\\
+\hline 1& 100& 1,8837&2,8694\\
+\hline 2& 100& 1,8984&2,0486\\
+\hline 3& 100& 4,0703&5,1309\\
+\hline 1& 1000& 22,1610&30,8191\\
+\hline 2& 1000& 24,8790&29,3950\\
+\hline 3& 1000& 43,8844&48,9996\\
+\hline
+\end{tabular}
+\caption{Mérési eredmények MacOS-en.}
+\end{table}
+
+\begin{figure}[h!]
+	\includegraphics[width=\textwidth]{diagrams}
+	\caption{A tesztek eredménye másodpercben MacOS (bal oldal) és Windows operációs rendszereken (jobb oldal),  különböző kötegméretekkel.}
+\end{figure}
+
+
 \end{document}
