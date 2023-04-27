@@ -929,6 +929,23 @@ Ami még érdekes eredmény, hogy MacOS operációs rendszer alatt a sebességk�
 \section*{Összefoglalás}
 \addcontentsline{toc}{section}{Összefoglalás}
 
+A PureScript egy nagyon fiatal, tisztán funkcionális nyelv. Munkánk során elkészítettük egy edzőterem működését támogató szoftver backend-jének két implementációját, az egyiket tiszán PureScriptben, a másikat pedig Java nyelven a Spring keretrendzser felhasználásával. Készítettünk továbbá egy frontend alkalmazást Vue.js segítségével, melyen keresztül mindkét REST API-t el tudjuk érni. 
+
+Dolgozatunkban bemutatjuk a felhasznált technológiákat, majd a a fejlesztés menetéről és az elkészült szoftverekről számolunk be. Összefoglaljuk a fejlesztés tapasztalatait, kiemelt tekintettel a funkcionális fejlesztés vonatkozásaira.  Ezután bemutatjuk a két backend szerver sebességének mérésére szolgáló teszteket és azok eredményeit.
+
+A funkcionális programozás számos előnyt kínál. Ezeket az előnyöket számos nagy, imperatív nyelv is próbálja kihasználni funkcionális elemek beépítésével. Munkánk során megvizsgáltuk a tisztán funkcionális fejlesztést PureScript nyelven.  Az egyetemen mindketten megismerkedtünk a funkcionális programozás alapjaival, de egy ennyire komplex alkalmazás fejlesztése sok kihívást és újdonságot hozott számunkra. 
+
+Véleményünk szerint a funkcionális programozás elterjedését gátló tényező leginkább maga a népszerűtlensége: kevesebb oktatási anyag (szinte semmi) áll rendelkezésre velük kapcsolatban, kisebb közösség és nehezebb elsajátíthatóság. Ezek a tényezők megnehezítik a funkcionális fejlesztés népszerűbbé válását, noha számos előnnyel rendelkezik, melyeket a dolgozatunkban részletesen kifejtettünk. Röviden ezek az átláthatóság,  olvashatóság, egyértelműség és tesztelhetőség. Mivel a Java nyelven mindketten járatosabbak vagyunk, ezt a szoftvert hamarabb elkészítettük, de a kódok rövidsége miatt egy tapasztalt PureScript fejlesztő lényegesen hamarabb végzett volna
+
+A Vue.js frontend fejlesztése ehhez képest más tapasztalat volt. Mivel a keretrendszer a Javascript-re épül,  a könyvtárak, dokumentáció és az elérhető oktatási anyagok jóval frissebbek és karbantartottak. A Vue.js keretrendszer használatát hamar el tudtuk sajátítani.
+
+Miután a fejlesztési munkával elkészültünk, Python kódot írtunk, amivel teszteltük az elkészült alkalmazásokat. Különböző teszteseteket tízes, százas és ezres kötegekben hajtottuk végre többször, majd átlagoltuk az szerver által szükségelt időt. A teszteket két operációs rendszeren is lefuttattuk. A két backend fejlesztésénél igyekeztünk a lehető leghasonlóbb módon elkészíteni az alkalmazásokat.
+
+Eredményeinből az derül ki, hogy átlagosan a PureScript szerver 13,25 százalékkal gyorsabban tudta elvégezni ugyanazt a műveletet. Ez a különbség MacOS operációs rendszeren átlagosan szembetűnőbb, mint Windows alatt. Megfigyeltük továbbá, hogy a nagyobb méreteknél csökken a PureScript előnye.
+
+
+
+
 \addcontentsline{toc}{section}{Irodalomjegyzék}
 
 \newpage
