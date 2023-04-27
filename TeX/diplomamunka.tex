@@ -525,7 +525,7 @@ DELETE & /guest/deleteGuest/\{id\} & Egy vendég törlése  \\
 \end{table}
 
 
-Az Uizard\cite{uizard} nevű szoftverrel elkészítettük az oldalak kinézetének terveit, illetve az oldalak közötti navigációt modellező prototípust. Ez nagyon hasznos lehet a korai tesztelés szempontjából, ugyanis egy ilyen prototípus rövid idő alatt elkészíthető, így nagyon hamar egy kattintgatható prototípuson lehet kipróbálni, hogy az üzleti logikának megfelel-e. A harmadik ábrán az így elkészült navigációs térkép és mellette néhány képernyőkép terv látható.
+Az Uizard\cite{uizard} nevű szoftverrel elkészítettük az oldalak kinézetének terveit, illetve az oldalak közötti navigációt modellező prototípust. Ez nagyon hasznos lehet a korai tesztelés szempontjából, ugyanis egy ilyen modell rövid idő alatt elkészíthető, így nagyon hamar egy kattintgatható prototípuson lehet kipróbálni, hogy az elképzeléseknek eleget tesz-e a szoftver. A harmadik ábrán az így elkészült navigációs térkép és mellette néhány képernyőkép terv látható.
 \begin{figure}[h!]
 \centering
 \begin{subfigure}{0.45\textwidth}
@@ -537,22 +537,32 @@ Az Uizard\cite{uizard} nevű szoftverrel elkészítettük az oldalak kinézetén
 \caption{Az oldalak közötti navigáció és az oldalak tervezése.}
 \end{figure}
 
+A funkcionális tervezés részeként továbbá készítettünk egy UML használati eset diagramot, mely a második ábrán látható. Célja a szereplők és az általuk végezhető műveletek bemutatása. Az első két ábrát a Visual Pradigm szoftverrel készítettük.
+
+A tervezés után a két backend implementálása következett, melyet a következőkben ismertetünk.
+
 \newpage
 \subsection{PureScript}
 
-Az alkalmazás fejlesztéséhez első lépésként telepítettük a szükséges szoftvereket a npm csomagkezelő segítségével. 
+Az alkalmazás fejlesztéséhez első lépésként telepítettük a szükséges szoftvereket az npm csomagkezelő segítségével. 
 \begin{verbatim}
 npm install -g purescript
 npm install -g spago
 \end{verbatim}
 
-Az első sor maga a PureScript, a második pedig Spago telepítéséhez szükséges. A Spago egyrészt a csomagokat is kezeli, illetve a szoftver életciklusát is menedzseli, például az \textit{install, build, run} parancsok segítségével.  Fejlesztő környezetként a Visual Studio Code-ot választottuk, mely rendelkezik PureScript kiterjesztésekkel és kiemeléssel is.
+Az első sor maga a PureScript, a második pedig Spago telepítése A \textit{-g} kapcsoló a globális telepítés miatt szükséges. A Spago egyrészt a csomagokat, függőségeket is kezeli, illetve a szoftver életciklusát is menedzseli, például az \textit{install, build, run} parancsok segítségével.  A Spagoban előredefiniált könyvtárak importálása egyszerű, és ezek a könyvtárak naprakészek,  jól karban vannak tartva. Hátránya, hogy nem feltétlen minden PureScript könyvtár van itt, amire szükség lenne. 
+
+Fejlesztő környezetként a Visual Studio Code-ot választottuk, mely rendelkezik PureScript kiterjesztésekkel és kiemeléssel is. A fejlesztés során ez egy jó döntésnek bizonyult.
 
 Ezután jó darabig ismerkedtünk magával a nyelvvel, mivel valamennyi funkcionális tapasztalattal mindketten rendelkeztünk korábban, de nagyrészt imperatív nyelveket használunk.  Ehhez jó segítség volt a PSCI, amit a \textit{spago repl} paranccsal lehet elindítani. Lehetőség van egy alap kód megadására, ami minden indításnál lefut, ide helyeztük a szükséges importokat. Ezután soronként futtattuk a programot, példáuk gyakran lekértük az elemek típusát a \textit{:type} paranccsal.
 
-A következő lépés az üzleti logika átgondolása, a funkcionális tervezés volt. Mivel a szoftver nem egy valós üzleti igényt elégít ki, hanem inkább kísérleti jellegű (Proof of Concept), így hatalmas hangsúlyt nem kapott ez a szakasz. 
+\begin{verbatim}
+> x = 5
+> :type x
+Int
+\end{verbatim}
 
-A szoftver alapvetően az MVC (model - nézet - vezérlő) architektúrális mintát követi.  A modell megalkotásával kezdtük, ehhez készítettünk egy adatbázismodellt, mely az első ábrán látható. A PureScript kódban ez szolgált a típusok vázaként is. Minden típushoz egy \textit{.purs} fájlt készítettünk, melyben magának a típusnak és a hozzá tartozó függvényeknek a leírása található. A következő módon készítettünk egy ilyen típust:
+A szoftver alapvetően az MVC (model - nézet - vezérlő) architektúrális mintát követi.  A modell leképezésével kezdtük, ehhez az első ábrán bemutatott adatbázis modellt vettük alapon, a PureScript kódban ez szolgált a típusok vázaként. Minden típushoz egy \textit{.purs} fájlt készítettünk, melyben magának a típusnak és a hozzá tartozó függvényeknek a leírása található. A következő módon készítettünk egy ilyen típust:
 
 \begin{verbatim}
 newtype Guest = Guest
@@ -564,12 +574,27 @@ newtype Guest = Guest
     , email :: String
     }
 \end{verbatim}
-?readforeign
+Ahhoz, hogy egy Guest típusú értéket kiírassunk, szükség van a \textit{Show} beépített típusosztály példányosítására, mely egy adott típusból egy sztringet készít.
+\begin{verbatim}
+instance showGuest :: Show Guest where
+    show = genericShow
+\end{verbatim}
+Továbbá szükség van ehhez a ReadForeign és WriteForeign típusosztályok felüldefiniálására:
+\begin{verbatim}
+derive instance genericGuest :: Generic Guest _
+derive newtype instance readForeignGuest :: ReadForeign Guest
+derive newtype instance writeForeignGuest :: WriteForeign Guest
+\end{verbatim}
 Egy Guest típusú elemet a következőképp hozhatunk ezután létre repl-ben:
 \begin{verbatim}
-g = Guest {id:1, name: "Doma" gender:"male", bdate:"2005.04.26", phone:"+36401234567", email:"doma@mail.com"}
+g = Guest {id:1, name: "Doma" gender:"male", bdate:"2005.04.26"
+           , phone:"+36401234567", email:"doma@mail.com"}
 \end{verbatim}
-
+Majd kiíratjuk:
+\begin{verbatim}
+Show g
+\end{verbatim}
+Következő lépés a getter és setter függvények elkészítése volt minden típushoz:
 \begin{verbatim}
 getGuestId :: Guest -> Int
 getGuestId (Guest guest) = guest.id
@@ -578,9 +603,65 @@ getGuestId (Guest guest) = guest.id
 \begin{verbatim}
 setGuestId :: Int -> Guest -> Guest
 setGuestId s (Guest guest) = Guest {id:s, name:guest.name, gender:guest.gender, bdate:guest.bdate, phone:guest.phone, email:guest.email}
+\end{verbatim}
+Ez manuálisan kicsit hosszadalmas folyamat ahhoz képest, hogy más nyelvekben gyakran lehetőség van őket automatikusan generálni (például a Lombok szoftverrel). 
 
+A main függvényünk visszatérési értéke \textit{Effect Unit}, ami az Effekt monádban való egységet jelenti.  A számítások alapból az Effekt monádban futnak, de lehetóség van az \textit{Aff} aszinkron monád használatára is.
+\begin{verbatim}
+main :: Effect Unit
+main = do
+  shutdown <- serve port router $ log $ "Server up running on port: " <> show port
+  let shutdownServer = do
+        log "Shutting down server..."
+        shutdown $ log "Server shutdown."
+  onSignal SIGINT shutdownServer
+  onSignal SIGTERM shutdownServer
 \end{verbatim}
 
+A do kulcsszóval lehetőség van egy olyan blokk létrehozására, melynek a visszatérési értéke unit, vagyis nem egy konkét érték, hanem egy cselekvés. Ezzel technikailag van visszatérési értékünk.  A main annyit csinál, hogy a HTTPure csomagból származó  \textit{serve} függvény segítségével elindítja a szervert, bizonyos szignálok esetén pedig leállítja. A portot 3000-re állítottuk, és implementáltuk a router függvényt, mely gyakorlatilag a szoftver szíve.
+
+Az adatbázissal való kapcsolat adatait egy purs fájlban tároltuk. A típusok adatbázisba való írása és kiolvasása végett szükségünk volt egy perzisztencia réteg kialakítására. Minden típushoz létrehoztunk a fájlrendszerben egy olyan purs fájlt, mely a perzsztálásra szolgáló függvényeket tartalmazza az adott típusra vonatkozóan. Ilyen függvények tipikusan a CRUD (create, read, update, delete - létrehozás, olvasás, módosítás, törlés) műveleteket implementáló függvények, illetve speciálisabbak, például az aktív felhasználók vagy az érvényes bérletek lekérdezése.
+
+\begin{verbatim}
+deleteMembershipQuery :: String
+deleteMembershipQuery = "delete from membership where guestId = ?"
+
+deleteMembership :: Int -> Connection -> Aff Unit
+deleteMembership guestId conn = execute deleteMembershipQuery
+                           [toQueryValue guestId] conn
+\end{verbatim}
+A fenti példa egy bérlet törlését mutatja.  A \textit{deleteMembershipQuery-ben} megadjuk a végrehajtandó SQL szkriptet. 
+ A \textit{deleteMembership} függvény egy Int és egy Connection típusú értékből Aff Unit-ot állít elő, mely aszinkron számítások végrehajtását jelenti.  A \textit{MySQL.Connection} könyvtár \textit{execute} függvénye hajtja végre majd az adott műveletet. Szüksége van bemenetként az SQL szkriptre sztring formában, melybe a benne szereplő kérdőjelek helyére illeszti a következő tömb bemenet elemeit. Ezen felül szüksége van az adott kapcsolatra is.
+
+A vezérlés megvalósításáért a \textit{Server.purs}-ben található \textit{router} függvény felel. Gyakorlatilag ebben van definiálva a szoftver működése.
+\begin{verbatim}
+router :: Request -> ResponseM
+\end{verbatim}
+Egy kérést kap bemenetként, melyre előállítja a megfelelő választ. Az"M" betű a monádra utal, ugyanis a \textit{ResponseM} típus egy HTTPure monádot (Aff) becsomagolva egy választ tartalmaz. A router működésére a legegyszerűbb példa:
+\begin{verbatim}
+router { method: Get, path: [ "guest", "getAll" ] } = do
+  pool <- liftEffect $ createPool connectionInfo defaultPoolInfo
+  guests <- flip withPool pool \conn -> getGuests conn
+  liftEffect $ closePool pool
+  ok' corsHeader $ writeJSON guests
+\end{verbatim}
+A kérés típusát és az útvonalat definiáljuk a Request típusban. Az útvonalat tömbként kell megadni, melynek elemeire később ellenőrzés végett a következőképpen tudunk hivatkozni:
+\begin{verbatim}
+path !@ 0 == "guest"
+\end{verbatim}
+A do kulcsszóval nyitunk egy blokkot, melyben létrehozzuk a kapcsolatot az adatbázissal. A \textit{guests} tömbbe lekérjük a vendégek listáját. Ehhez egy lambda függvényen belül hívjuk a \textit{getGuests} getter függvényt. Lezárjuk a kapcsolatot, majd a guest tömböt JSON formátummá alakítjuk, ez kerül a válaszba.
+
+Komplikáltabb függvények esetén vizsgáljuk a paramétereket és esetleg a törzsben kapott JSON-t. Ezeknek szerinte a megfelelő hibával térünk vissza.
+\begin{verbatim}
+      let lastParam = path !! 2
+      case lastParam of
+        Nothing -> badRequest' corsHeader $ wrapMessageinJSON 
+                      "Missing id parameter"
+        Just idParam -> do
+\end{verbatim}
+A fenti kódcsipetben az útvonal első elemét vizsgáljuk. Amennyiben hiányzik, erről hibaüzenetben tájékoztatjuk a frontendet. Ellenkező esetben a do utáni blokk kerül végrehajtásra. A \textit{lastParam} visszatérési értéke \textit{Maybe}, ami egy speciális kezelést igénylő típus. A \textit{Maybe}, tulajdonsága, hogy például egy \textit{Maybe Guest} típus lehet semmi, vagy \textit{Guest}. Külön kezelést igényel, hogy az adott típus üres, vagy sem. Ezt a fenti példában nagyon jól ki lehet használni annak ellenőrzésére, hogy hiányzik-e a paraméter.
+
+\newpage
 \subsection{Java - Spring Boot backend}
 
 Ebben az alfejezetben az összehasonlítás alapjául szolgáló Java Spring Boot REST API fejlesztését fogjuk bemutatni. Fontos megjegyezni, hogy ha csupán a Spring segítségével szerettük volna elkészíteni a REST API-nkat, akkor valószínüleg nem mindenhol a most implementált megoldásokat alkalmaztuk volna. Mindent olyan módszerrel kívántunk megoldani, ami a legjobban hasonlít a PureScriptben használtakra, mindezt azért, hogy a dolgozatban szereplő összevetésben szereplő különbségek inkább a nyelvbeli különbségekből fakadjanak és ne a megoldások különbségéből. Ez növeli az összehasonlítás értékét, eredményének jelentőségét. Ennek tudatában vegyük végig a fejlesztés lépéseit.
