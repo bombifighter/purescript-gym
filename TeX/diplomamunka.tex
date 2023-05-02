@@ -134,9 +134,9 @@
 \section*{Bevezetés}
 \addcontentsline{toc}{section}{Bevezetés}
 
-A funkcionális programozás egy kevésbé elterjedt programozási paradigma. Noha számos népszerű nyelv használ funkcionális elemeket \cite{Java} \cite{py} \cite{cpp},  a teljesen funkcionális fejlesztés nem annyira népszerű. Megismerése az oktatásban sem igazán hangsúlyos. Ennek ellenére számos előnnyel rendelkezik, melyeket a későbbi fejezetekben fogunk részletezni. Másfajta gondolkosámódot igényel, mint az imperatív megközelítés: a "hogyan?" helyett a "mit csináljon a program?" kérdésre adja meg a választ.
+A funkcionális programozás több, mint hatvan évre tekint vissza, mégis egy kevésbé elterjedt programozási paradigma. Noha  a teljesen funkcionális fejlesztés még nem annyira népszerű, számos elterjedt nyelv használ funkcionális elemeket \cite{Java} \cite{py} \cite{cpp}. Talán ez összefüggésben van azzal, hogy a funkcionális paradigma az oktatásban nem igazán hangsúlyos. Ennek ellenére számos előnnyel rendelkezik, melyeket a későbbi fejezetekben fogunk részletezni. Másfajta gondolkosámódot igényel, mint az imperatív megközelítés: a "hogyan?" helyett a "mit csináljon a program?" kérdésre adja meg a választ.
 
-A dolgozatban tárgyalt szoftver backend komponensének elkészítésére a PureScript nyelvet választottuk. Ez egy tisztán funkcionális és erősen típusos programozási nyelv, mely Javascript-re fordul. Azért választottuk ezt a nyelvet, mert tisztán funkcionális, a közelmúltban megjelent nyelv, mely a többi funkcionális nyelvhez (Haskell, Elm) képest modernebb, erőteljesebb, könnyebben használható és teljesebb \cite{CS}.
+A dolgozatban tárgyalt szoftver backend komponensének elkészítésére a PureScript nyelvet választottuk. Ez egy tisztán funkcionális és erősen típusos programozási nyelv, mely Javascript-re fordítódik. Azért választottuk ezt a nyelvet, mert tisztán funkcionális, a közelmúltban megjelent nyelv, mely a többi funkcionális nyelvhez (Haskell, Elm) képest modernebb, erőteljesebb, könnyebben használható és teljesebb \cite{CS}.
 
 Munkánk elsődleges célja egy edzőterem működését támogató szoftver elkészítése PureScript backend és Vue.js frontend használatával. Ezen felül szeretnénk megvizsgálni és bemutatni a funkcionális nyelvek használatának előnyeit és lehetőségeit leginkább webalkalmazások fejlesztése során. A szoftver elkészültét követően implementálásra kerül ugyanez a backend Java nyelven a Spring keretrendszer használatával. Célunk a két verzió sebességének és fejlesztési tapasztalatainak összehasonlítása. A sebesség összehasonlítására többféle operációs rendszerrel és különböző specifikációkkal rendelkező számítógépeken ugyanazokat a kéréseket 10,  100 és 1000-es kötegekben küldjük el a két különböző szervernek, majd elemezzük az így kapott eredményeket.
 
@@ -150,7 +150,7 @@ Az alkalmazás felhasználói az edzőterem recepciós kollégái. A rendszerben
 \item öltözőszekrényeket
 \end{itemize}
 
-A\textit{Vendégek} oldalon listázhatjuk a regisztrált vendégeket, újat regisztrálhatunk, a meglévők adatait módosíthatjuk, vendéget törölhetünk. A vendégek számára bérleteket vagy jegyeket lehet vásárolni. A továbbiakban bérletnek nevezzük azt a tagásgot, ami egy időtartamra engedélyezi a terem használatát, jegynek pedig ami alkalmakhoz kötött. A jegyeknek is van egy elévülési ideje. Minden belépőnek három ára van: teljes, diák és klub ár. A felhasználóknak klubtagság vásárlására van lehetőségük, amely különböző előnyökkel jár, például kedvezőbb bérletárak.
+A\textit{Vendégek} oldalon listázhatjuk a regisztrált vendégeket, újat regisztrálhatunk, a meglévők adatait módosíthatjuk, vendéget törölhetünk. A vendégek számára bérleteket vagy jegyeket lehet vásárolni. A továbbiakban bérletnek nevezzük azt a tagságot, ami egy időtartamra engedélyezi a terem használatát, jegynek pedig ami alkalmakhoz kötött. A jegyeknek is van egy elévülési ideje. Minden belépőnek három ára van: teljes- diák- és klubár. A felhasználóknak klubtagság vásárlására van lehetőségük, amely különböző előnyökkel jár, például kedvezőbb bérletárak.
 
 A vezérlőpulton lehetőség van a vendégek beléptetésére: a regisztrált vendégek listájából ki kell választani az illetőt. A listában csak az aktív bérlettel vagy érvényes jeggyel rendelkezők jelennek meg. A illetőhöz hozzárendelődik a neme szerint egy szabad öltözőszekrény. Jeggyel rendelkező vendégek számára a jegyen található fennmaradó alkalmak száma eggyel csökken. Az öltözőszekrények megtekintésére egy külön lap szolgál. Itt nemek szerint meg lehet tekinteni minden szekrény állapotát, illetve az előzménytörténetét, vagyis mikor és ki használta. A foglalt szekrények piros színnel jelennek meg.
 
@@ -165,7 +165,7 @@ A közös munka során az egyik legnépszerűbb verziókezelő rendszert, a git-
 
 \subsection{Funkcionális programozás}
 A funkcionális programozás egy programozási paradigma. Több programozási nyelv is tartozik ide, melyeket bizonyos tulajdonságok, módszereik, lehetőségeik, gondolkodási logikájuk köti össze. Az egyik korai funkcionális nyelv a Lisp, melyet John McCarthy alkotott meg az 1950-es évek végén \cite{JM}. Ismertebb funkcionális nyelvek például Haskell, Elm, Erlang, Scala vagy a PureScript. 
-A funkcionális programozás során a fejlesztő azt specifikálja a programban, hogy mit kell kiszámítani, és nem azt, hogy hogyan, milyen lépésekben \cite{VD}. A program függvények hívásából és ezek kiértékeléséből áll, nincs értékadás, csak érték kiszámítás \cite{VD}. A függvényt leginkább úgy értjük, hogy egy leképezés egy adott halmazról egy másik halmazra\cite{sy}. A listák (vagy halmazok) kezelésének ezért kiemelt szerep jut a funkcionális nyelvekben. A program tartalmazhat a nyelvben előre definiált, és a programozó által definiált függvényeket. A függvények névvel és opcionálisan argumentumokkal rendelkeznek. Az előállított érték(ek) megegyező paraméterekkel mindig ugyanaz. A rekurzió egy nagyon gyakori koncepció funkcionális nyelvekben.
+A funkcionális programozás során a fejlesztő azt specifikálja a programban, hogy mit kell kiszámítani, és nem azt, hogy hogyan, milyen lépésekben \cite{VD}. A program függvények hívásából és ezek kiértékeléséből áll, nincs értékadás, csak érték kiszámítás \cite{VD}. A függvényt leginkább úgy értjük, hogy egy leképezés egy adott halmazról egy másik halmazra\cite{sy}. A listák (vagy halmazok) kezelésének ezért kiemelt szerep jut a funkcionális nyelvekben. A program tartalmazhat a nyelvben előre definiált, és a programozó által definiált függvényeket. A függvények névvel és opcionálisan argumentumokkal rendelkeznek. A rekurzió egy nagyon gyakori koncepció funkcionális nyelvekben.
 
 Egy másik nagy paradigma az imperatív programozás. Az imperatív nyelvek lényege, hogy a programozó a lépéseket definiálja a kódban, melyet a számítógépnek el kell végeznie (utasítások). A legismertebb imperatív nyelv a C.
 
@@ -179,7 +179,7 @@ A Java mellett több elterjedt, nem tisztán funkcionális nyelv, mint például
 \subsubsection{A funkcionális programozás előnyei}
 A funkcionális programozás, mint paradigma, számos előnnyel rendelkezik. Az imperatív gondolkodás kötöttségét egy másfajta megközelítéssel oldja fel. A lényeg, hogy \textit{mit} csináljon a program, és nem az, hogy \textit{hogyan}. Ez az ötlet a programozótól is  másfajta megközelítést, gondolkodásmódot kíván, és máshogy strukturált kódot is fog eredményezni. 
 
-Ránézésre jobban érthető, átláthatóbb, esztétikusabb kód. A szoftver "viselkedése" jobban olvasható \cite{CS}. Ez az előny egyszerűen a funkcionális szintaktikából és gondolkodásmódból adódik. A következő Java kódrészletek Boris Radojicic 2022-es cikkéből \cite{sy} származnak. Az elsőn az iteratív megközelítés látható:
+Ránézésre jobban érthető, átláthatóbb, esztétikusabb kód. A szoftver "viselkedése" jobban olvasható \cite{CS}, valamint formális helyességellenőrzésre is többnyire alkalmasabb. Ez az előny egyszerűen a funkcionális szintaktikából és gondolkodásmódból adódik. A következő Java kódrészletek Boris Radojicic 2022-es cikkéből \cite{sy} származnak. Az elsőn az iteratív megközelítés látható:
 
 \begin{verbatim}
 public List<String> getAddresses(List<Person> persons) {
@@ -210,7 +210,7 @@ Nagy fokú újrafelhasználhatóság. Mivel egy funkcionális program gyakorlati
 
 Könnyebb tesztelhetőség. Mivel a funkcionális programban nincsenek állapotok és mellékhatások, így könnyebb lefedni az összes esetet. Illetve ebből kifolyóan, a függvénynek bizonyos bemenő paraméterekre mindig ugyanazt az egyértelmű kimenetet kell előállítania.
 
-A rekurzió hatékony használata. A rekurzió a funkcionális nyelvek gyakori eleme. Átláthatóvá és egyértelművé teszi a kódot teszi a kódot bizonyos problémák esetében, ahol a rekurzív definiálás a természetesebb megoldás. A rekurziónak egy speciális esete a farokrekurzió. Ez azt jelenti, hogy a rekurzív hívás a legutolsó művelet, amit a függvény végrehajt. Nagy előnye, hogy idő és erőforrás takarékos a nem farokrekurzív függvényekkel szemben, ugyanis a fordító kevesebb információt kell, hogy tároljon ilyen módon a veremben.
+A rekurzió hatékony használata. A rekurzió a funkcionális nyelvek gyakori eleme. Átláthatóvá és egyértelművé teszi a kódot teszi a kódot bizonyos problémák esetében, ahol a rekurzív definiálás a természetesebb megoldás. A rekurziónak egy speciális esete a farokrekurzió. Ez azt jelenti, hogy a rekurzív hívás a legutolsó művelet, amit a függvény végrehajt. Nagy előnye az idő- és erőforrástakarékosság a nem farokrekurzív függvényekkel szemben, ugyanis a fordító kevesebb információt kell, hogy tároljon ilyen módon a veremben.
 
 \subsubsection{A funkcionális programozás nehézségei}
 
@@ -218,13 +218,13 @@ Az előnyök között első helyen állt az átláthatóság és érthetőség. 
 
 Memóriahasználat és teljesítmény. Mivel a funkcionális nyelvek nem használnak érték-átadást, sokszor egy változó értékének megváltozása helyett létrejön egy újabb, ami így több erőforrást igényel \cite{JN}. A legtöbb funkcionális nyelv ennek ellenére számos módon ígyekszik ezt kompenzálni: farokrekurzió, lusta kiértékelés, "smart linking". A több paradigmát támogató vagy OOP nyelvek nem feltétlen implementálják ezeket az optimalizációkat \cite{JN}.
 
-Mivel a funkcionális nyelvek használata kevésbé elterjedt, kevesebb eszköz, keretrendszer áll rendelkezésre és kevesebb a felhasználók, szakértők száma. Ennek következtében a fejlesztést nehezíti néha a dokumentáció hiányossága vagy teljes hiánya, illetve az interneten fellelhető minta kódok hiánya és elavultsága.
+Mivel a funkcionális nyelvek használata kevésbé elterjedt, kevesebb eszköz, keretrendszer áll rendelkezésre és kevesebb a felhasználók, szakértők száma. Ennek következtében a fejlesztést nehezíti néha a dokumentáció hiányossága vagy teljes hiánya, illetve az interneten fellelhető mintakódok hiánya és elavultsága.
 
 \subsection{PureScript}
 
 A nyelvet Phil Freeman tervezte 2013-ban, ugyanis nem volt megelégedve a Haskell-t Javascript-re fordító próbálkozásokkal (például Fay, Haste, vagy GHCJS) \cite{pd}. A nyelv teljes forráskódja és dokumentációja megtalálható a GitHubon \cite{pgit}. Hasznos dokumentációs forrás továbbá a Pursuit \cite{purs}, illetve a nyelv alkotója által publikált PureScript by Example könyv \cite{PE}.
 
-A PureScript egy erősen típusos, tisztán funkcionális nyelv. Javascript kódra fordul. Ennek előnye, hogy a kód írására egy szép, könnyen áttekinthető és egyértelmű nyelvet haszálunk, amiből egy hatékony Javascript kód generálódik. Amit Javascriptben meg lehet írni, azt nagyjából PureScriptben is \cite{CS}. A böngészőben és  a szerveren egyaránt futtatható.
+A PureScript egy erősen típusos, tisztán funkcionális nyelv. Javascript kódra fordítódik. Ennek előnye, hogy a kód írására egy szép, könnyen áttekinthető és egyértelmű nyelvet használunk, amiből egy hatékony Javascript kód generálódik. Amit Javascriptben meg lehet írni, azt nagyjából PureScriptben is \cite{CS}. A böngészőben és  a szerveren egyaránt futtatható.
 
 A nyelv alapja a Haskell, nagyban hasonlít rá. Maga a szintkaxis annyira hasonló, hogy néhány fejlesztői eszköz a kód megjelenítéséhez a Haskell kiemelését használja. A nyelv fordítója is Haskell nyelven íródott \cite{CS}. Charles Scalfani \cite{CS} szerint erősebb, de egyben könnyebben is használható, mint a Haskell.
 
@@ -234,7 +234,7 @@ A PureScriptnek saját csomagkezelő - fordító szoftvere van, a Spago \cite{sp
 
 A PureScript rendelkezik egy parancsoros végrehajtási móddal,  ezt PSCI-nek vagy REPL-nek nevezik.  Soronként történik a kód begépelése és végrehajtása. Több sort is megadhatunk egyszerre a \textit{:paste} paranccsal (kilépés: ctrl + D).  A nyelvvel való ismerkedés és a tesztelés során hasznos lehet,  ugyanis lépésről lépésre tudjuk irányítani a kódot,  például típusok lekérdezéséhez. 
 
-A következő kódcsipet a  \textit{Hello,  world!} program PureScript változata:
+A következő kód a  \textit{Hello,  world!} program PureScript változata:
 
 \begin{verbatim}
 module Main where
@@ -248,7 +248,7 @@ main :: Effect Unit
 main = log "Hello World!"
 \end{verbatim}
 
-Előre definiált könyvtárakból lehetőség van függvényeket importálni,  ezt a fájl elején tehetjük meg.  Elég explicit módon kell megadni a konkrét behívandó függvényeket és komponenseket.  Ezután (mint tiszta funkcionális nyelvhez illik) függvények deklarációja és definíciója következik.  A következő kódcsipet egy függvényt ábrázol:
+Előre definiált könyvtárakból lehetőség van függvényeket importálni,  ezt a fájl elején tehetjük meg.  Elég explicit módon kell megadni a konkrét behívandó függvényeket és komponenseket.  Ezután (mint tiszta funkcionális nyelvhez illik) függvények deklarációja és definíciója következik.  A következő kódrészlet egy függvényt ábrázol:
 
 \begin{verbatim}
 add :: Int -> Int -> Int
@@ -261,7 +261,9 @@ Az első sor nem kötelező,  de az átláthatóság érdekében érdemes megadn
 \item elvégez bizonyos számításokat
 \item visszaad egy értéket
 \end{itemize}
-Egy tiszta függvény mellékhatás mente, és mindig ugyanazt a kimenetet állítja elő\cite{CS}.  A tiszta funkcionális elvek szerint egy függvénynek csak egy kimeneti értéket adhat vissza. Ez nehézségnek tűnhet, de az úgy nevezett \textit{Currying} koncepció segíthet: egy több paraméteres függvény egy paraméteres függvények halmazára cserélését jelenti.
+Egy tiszta függvény mellékhatásmentes, és mindig ugyanazt a kimenetet állítja elő\cite{CS}. 
+
+% A tiszta funkcionális elvek szerint egy függvénynek csak egy kimeneti értéket adhat vissza. Ez nehézségnek tűnhet, de az úgy nevezett \textit{Currying} koncepció segíthet: egy több paraméteres függvény egy paraméteres függvények halmazára cserélését jelenti.
 
 A nyelv további jellemzője, hogy minden változó "Immutable", vagyis a létrejöttük után nem módosulhatnak. Ez is egy érdekes tulajdonság az imperatív világban járatosabb fejlesztők számára.  Az imperatív nyelvekben is van lehetőség objektumoknak ilyen tulajdonság beállítására.  PureScriptben a \textit{let} kulcsszó gyakran segítségünkre lehet ilyenkor, például:
 
@@ -271,9 +273,9 @@ add x = do
   let y = 20
     x + 20
 \end{verbatim}
-A fenti függvény visszaadja a bemeneti értéknél hússzal nagyobb integert. PureScriptben a sorok behúzása is lényeges, a Pythonéhoz hasonló elven működik. Ott, ahol a legtöbb nyelv zárójeleket használna, a PureScriptben behúzás található: eggyel bentebbi behúzás egy zárójelezett blokknak felel meg.
+A fenti függvény visszaadja a bemeneti értéknél hússzal nagyobb egészet. PureScriptben a sorok behúzása is lényeges, a Pythonéhoz hasonló elven működik. Ott, ahol a legtöbb nyelv zárójeleket használna, a PureScriptben behúzás található: eggyel bentebbi behúzás egy zárójelezett blokknak felel meg.
 
-Az imperatív nyelvek egyik alap építőelemét, a ciklusokat is el kell felejteni PureScriptben. Más megközelítés helyettük például a rekurzió használata, mely a funkcionális nyelvekben gyakori koncepció. Példaként Charles Scalfani könyvéből \cite{CS} mutatok két Javascript kódcsipetet, melyek ugyanazt a célt szolgálják. 
+Az imperatív nyelvek egyik alap építőelemét, a ciklusokat is el kell felejteni PureScriptben. Más megközelítés helyettük például a rekurzió használata, mely a funkcionális nyelvekben gyakori koncepció. Példaként Charles Scalfani könyvéből \cite{CS} mutatunk két Javascript kódrészletet, melyek ugyanazt a célt szolgálják. 
 A ciklusos megközelítés:
 
 \begin{verbatim}
@@ -290,7 +292,7 @@ Funkcionális módon:
 const factorial = n => n === 0 ? 1 : n * factorial (n - 1);
 \end{verbatim}
 
-A második kódcsipet úgy definiálja a függvényt, hogy azt mondja meg, \textit{mit} számoljon ki, míg az első a \textit{hogyan} kérdésre adja meg a választ. Ugyanez a kód PureScriptben:
+A második kódrészlet úgy definiálja a függvényt, hogy azt mondja meg, \textit{mit} számoljon ki, míg az első a \textit{hogyan} kérdésre adja meg a választ. Ugyanez a kód PureScriptben:
 
 \begin{verbatim}
 factorial :: Int -> Int
@@ -481,17 +483,17 @@ A hátránya ellenére is hatalmas népszerűségnek örvend, ma is gyakori felh
 
 A fejlesztés során szem előtt tartottuk azt az elvet,  hogy a két alkalmazás majd nemcsak hogy ugyanazt a funkcionalitást lássa el, de lehetőleg (már amennyire a nyelvi sajátosságok engedik) ugyanúgy is épüljön fel, ugyanúgy viselkedjen.  Mindkét alkalmazás ugyanazt a MySQL adatbázist és ugyanazt a frontendet használja.
 
-Az első lépés az üzleti logika átgondolása, a funkcionális tervezés volt. Mivel a szoftver nem egy valós üzleti igényt elégít ki, hanem inkább kísérleti jellegű (Proof of Concept), így ez a szakasz kisebb hangsúlyt kapott.
+Az első lépés az üzleti logika átgondolása, a funkcionális tervezés volt. Mivel a szoftver nem egy valós üzleti igényt elégít ki, hanem inkább kísérleti jellegű, így ez a szakasz kisebb hangsúlyt kapott.
 
 Az adatbázis megtervezésével kezdtük. A MySQL adatbáziskezelőt választottuk, mivel nyílt forráskodú, a tervezett funkcionalitást bőven ellátja és könnyen lehet használni. Elkészítettük a sémát, mely az első ábrán látható. Tartalmazza a táblák nevét,  az attribútumokat,  félkövér kiemeléssel az elsődleges kulcsot. A táblák közötti nyilak a külső kulcsokat és kapcsolattípusokat mutatják.
-
-A \textit{Vendégek} tábla tartalmazza egy vendég adatait stb.... ez kell?
-
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{database}
 \caption{A szoftver adatbázis modellje.}
 \end{figure}
+
+A \textit{Vendégek} tábla tartalmazza egy vendég adatait alapadatait. A klubtagságot egy külön táblában tartjuk nyilván, hogy később is visszakereshető legyen egy vendég klubtagsága egy bizonyos időpontra vonatkozóan. Egy táblában tároljuk a tagságtípusokat jellemzőikkel, illetve a szekrények állapotára is van egy külön tábla, hogy gyorsan lekérdezhető legyen. Két kapcsolótáblát is bevezettünk: a \textit{Tagságok} tábla tartja nyilván egy vendég bérleteit vagy belépőit, a \textit{Vendég-szekrény} táblában pedig egy konkrét belépés adatai tárolódnak.
+
 
 \begin{figure}[h!]
 \centering
@@ -500,7 +502,7 @@ A \textit{Vendégek} tábla tartalmazza egy vendég adatait stb.... ez kell?
 \end{figure}
 
 
-A Vue.js-ben implementált frontend ugyanazon a porton (3000, természetesen nem egyszerre) tud kommunikálni akár a PureScript,  akár a Spring Boot REST API-val. Ez HTTP kérések használatával történik: mindkét backend ugyanazokra a kérésekre ugyanazt a választ és ugyanazt a működést eredményezi.  Az első táblázatban néhány kérés látható a vendégekkel kapcsolatban. A szerver erre a kérésre küld egy választ, mely ha szükséges, tartalmazhat a body-ban egy JSON-t.
+A Vue.js-ben implementált frontend ugyanazon a porton (3000, természetesen nem egyszerre) tud kommunikálni akár a PureScript,  akár a Spring Boot REST API-val. Ez HTTP kérések használatával történik: mindkét backend ugyanazokra a kérésekre ugyanazt a választ és ugyanazt a működést eredményezi.  Az első táblázatban néhány kérés látható a vendégekkel kapcsolatban. A szerver erre a kérésre küld egy választ, mely ha szükséges, tartalmazhat a törzsben egy JSON-t.
 
 \begin{table}[h!]
 \centering
@@ -525,7 +527,7 @@ DELETE & /guest/deleteGuest/\{id\} & Egy vendég törlése  \\
 \end{table}
 
 
-Az Uizard\cite{uizard} nevű szoftverrel elkészítettük az oldalak kinézetének terveit, illetve az oldalak közötti navigációt modellező prototípust. Ez nagyon hasznos lehet a korai tesztelés szempontjából, ugyanis egy ilyen modell rövid idő alatt elkészíthető, így nagyon hamar egy kattintgatható prototípuson lehet kipróbálni, hogy az elképzeléseknek eleget tesz-e a szoftver. A harmadik ábrán az így elkészült navigációs térkép és mellette néhány képernyőkép terv látható.
+Az Uizard\cite{uizard} nevű szoftverrel elkészítettük az oldalak kinézetének terveit, illetve az oldalak közötti navigációt modellező prototípust. Ez nagyon hasznos lehet a korai tesztelés szempontjából, ugyanis egy ilyen modell rövid idő alatt elkészíthető, így nagyon hamar egy kattintgatható prototípuson lehet kipróbálni, hogy az elképzeléseknek eleget tesz-e a szoftver. A harmadik ábrán az így elkészült navigációs térkép és mellette néhány képernyőképterv látható.
 \begin{figure}[h!]
 \centering
 \begin{subfigure}{0.45\textwidth}
@@ -539,7 +541,7 @@ Az Uizard\cite{uizard} nevű szoftverrel elkészítettük az oldalak kinézetén
 
 A funkcionális tervezés részeként továbbá készítettünk egy UML használati eset diagramot, mely a második ábrán látható. Célja a szereplők és az általuk végezhető műveletek bemutatása. Az első két ábrát a Visual Pradigm szoftverrel készítettük.
 
-A tervezés után a két backend implementálása következett, melyet a következőkben ismertetünk.
+A tervezés után a két backend implementálása következett, melyeket a következőkben ismertetünk.
 
 \newpage
 \subsection{PureScript}
@@ -562,7 +564,7 @@ Ezután jó darabig ismerkedtünk magával a nyelvvel, mivel valamennyi funkcion
 Int
 \end{verbatim}
 
-A szoftver alapvetően az MVC (model - nézet - vezérlő) architektúrális mintát követi.  A modell leképezésével kezdtük, ehhez az első ábrán bemutatott adatbázis modellt vettük alapon, a PureScript kódban ez szolgált a típusok vázaként. Minden típushoz egy \textit{.purs} fájlt készítettünk, melyben magának a típusnak és a hozzá tartozó függvényeknek a leírása található. A következő módon készítettünk egy ilyen típust:
+A szoftver alapvetően az MVC (modell - nézet - vezérlő) architektúrális mintát követi.  A modell leképezésével kezdtük, ehhez az első ábrán bemutatott adatbázis modellt vettük alapon, a PureScript kódban ez szolgált a típusok vázaként. Minden típushoz egy \textit{.purs} fájlt készítettünk, melyben magának a típusnak és a hozzá tartozó függvényeknek a leírása található. A következő módon készítettünk egy ilyen típust:
 
 \begin{verbatim}
 newtype Guest = Guest
@@ -602,15 +604,18 @@ getGuestId (Guest guest) = guest.id
 
 \begin{verbatim}
 setGuestId :: Int -> Guest -> Guest
-setGuestId s (Guest guest) = Guest {id:s, name:guest.name, gender:guest.gender, bdate:guest.bdate, phone:guest.phone, email:guest.email}
+setGuestId s (Guest guest) = Guest {id:s, name:guest.name, 
+       gender:guest.gender, bdate:guest.bdate,
+       phone:guest.phone, email:guest.email}
 \end{verbatim}
 Ez manuálisan kicsit hosszadalmas folyamat ahhoz képest, hogy más nyelvekben gyakran lehetőség van őket automatikusan generálni (például a Lombok szoftverrel). 
 
-A main függvényünk visszatérési értéke \textit{Effect Unit}, ami az Effekt monádban való egységet jelenti.  A számítások alapból az Effekt monádban futnak, de lehetóség van az \textit{Aff} aszinkron monád használatára is.
+A main függvényünk visszatérési értéke \textit{Effect Unit}, ami az \textit{Effekt} monád \textit{Unit} típusát jelenti.  A számítások alapból az \textit{Effekt} monádban futnak, de lehetőség van az \textit{Aff} aszinkron monád használatára is.
 \begin{verbatim}
 main :: Effect Unit
 main = do
-  shutdown <- serve port router $ log $ "Server up running on port: " <> show port
+  shutdown <- serve port router $ log $ "Server up running on port: "
+          <> show port
   let shutdownServer = do
         log "Shutting down server..."
         shutdown $ log "Server shutdown."
@@ -618,9 +623,9 @@ main = do
   onSignal SIGTERM shutdownServer
 \end{verbatim}
 
-A do kulcsszóval lehetőség van egy olyan blokk létrehozására, melynek a visszatérési értéke unit, vagyis nem egy konkét érték, hanem egy cselekvés. Ezzel technikailag van visszatérési értékünk.  A main annyit csinál, hogy a HTTPure csomagból származó  \textit{serve} függvény segítségével elindítja a szervert, bizonyos szignálok esetén pedig leállítja. A portot 3000-re állítottuk, és implementáltuk a router függvényt, mely gyakorlatilag a szoftver szíve.
+A do kulcsszóval lehetőség van egy olyan blokk létrehozására, melynek a visszatérési értéke unit, vagyis nem egy konkét érték, hanem egy művelet. Ezzel technikailag van visszatérési értékünk.  A main annyit csinál, hogy a HTTPure csomagból származó  \textit{serve} függvény segítségével elindítja a szervert, bizonyos szignálok esetén pedig leállítja. A portot 3000-re állítottuk, és implementáltuk a router függvényt, mely gyakorlatilag a szoftver szíve.
 
-Az adatbázissal való kapcsolat adatait egy purs fájlban tároltuk. A típusok adatbázisba való írása és kiolvasása végett szükségünk volt egy perzisztencia réteg kialakítására. Minden típushoz létrehoztunk a fájlrendszerben egy olyan purs fájlt, mely a perzsztálásra szolgáló függvényeket tartalmazza az adott típusra vonatkozóan. Ilyen függvények tipikusan a CRUD (create, read, update, delete - létrehozás, olvasás, módosítás, törlés) műveleteket implementáló függvények, illetve speciálisabbak, például az aktív felhasználók vagy az érvényes bérletek lekérdezése.
+Az adatbázissal való kapcsolat adatait egy purs fájlban tároltuk. A típusok adatbázisba való írása és kiolvasása végett szükségünk volt egy perzisztencia réteg kialakítására. Minden típushoz létrehoztunk a fájlrendszerben egy olyan purs fájlt, mely a perzisztálásra szolgáló függvényeket tartalmazza az adott típusra vonatkozóan. Ilyen függvények tipikusan a CRUD (create, read, update, delete - létrehozás, olvasás, módosítás, törlés) műveleteket implementáló függvények, illetve speciálisabbak, például az aktív felhasználók vagy az érvényes bérletek lekérdezése.
 
 \begin{verbatim}
 deleteMembershipQuery :: String
@@ -651,7 +656,7 @@ path !@ 0 == "guest"
 \end{verbatim}
 A do kulcsszóval nyitunk egy blokkot, melyben létrehozzuk a kapcsolatot az adatbázissal. A \textit{guests} tömbbe lekérjük a vendégek listáját. Ehhez egy lambda függvényen belül hívjuk a \textit{getGuests} getter függvényt. Lezárjuk a kapcsolatot, majd a guest tömböt JSON formátummá alakítjuk, ez kerül a válaszba.
 
-Komplikáltabb függvények esetén vizsgáljuk a paramétereket és esetleg a törzsben kapott JSON-t. Ezeknek szerinte a megfelelő hibával térünk vissza.
+Komplikáltabb függvények esetén vizsgáljuk a paramétereket és esetleg a törzsben kapott JSON-t. Ezek szerint a megfelelő hibával térünk vissza.
 \begin{verbatim}
       let lastParam = path !! 2
       case lastParam of
@@ -659,7 +664,7 @@ Komplikáltabb függvények esetén vizsgáljuk a paramétereket és esetleg a t
                       "Missing id parameter"
         Just idParam -> do
 \end{verbatim}
-A fenti kódcsipetben az útvonal első elemét vizsgáljuk. Amennyiben hiányzik, erről hibaüzenetben tájékoztatjuk a frontendet. Ellenkező esetben a do utáni blokk kerül végrehajtásra. A \textit{lastParam} visszatérési értéke \textit{Maybe}, ami egy speciális kezelést igénylő típus. A \textit{Maybe}, tulajdonsága, hogy például egy \textit{Maybe Guest} típus lehet semmi, vagy \textit{Guest}. Külön kezelést igényel, hogy az adott típus üres, vagy sem. Ezt a fenti példában nagyon jól ki lehet használni annak ellenőrzésére, hogy hiányzik-e a paraméter.
+A fenti kódrészletben az útvonal első elemét vizsgáljuk. Amennyiben hiányzik, erről hibaüzenetben tájékoztatjuk a frontendet. Ellenkező esetben a do utáni blokk kerül végrehajtásra. A \textit{lastParam} visszatérési értéke \textit{Maybe}, ami egy speciális kezelést igénylő típus. A \textit{Maybe}, tulajdonsága, hogy például egy \textit{Maybe Guest} típus lehet semmi, vagy \textit{Guest}. Külön kezelést igényel, hogy az adott típus üres, vagy sem. Ezt a fenti példában nagyon jól ki lehet használni annak ellenőrzésére, hogy hiányzik-e a paraméter.
 
 \newpage
 \subsection{Java - Spring Boot backend}
@@ -841,7 +846,7 @@ Minden Vue.js alkalmazásnak szüksége van egy központi, magát az alkalmazás
 \section{Az eredmények ismertetése}
 \subsection{A fejlesztés tapasztalatai}
 
-A fejlesztés eredménye 3 alkalmazás. Két REST API implementáció, az egyik PureScript míg a másik Java Spring Boot felhasználásával. Illetve egy frontend alkalmazás, mely a REST szerverekre támaszkodva egy edzőterem kezelő alkalmazást valósít meg. E nyelvekben való tudásaink nagyban eltértek, így a fejlesztési fázisokban nyelvenként különböző élményekben, tapasztalásokban volt részünk. Ebben a fejezetben a fejlesztési folyamat nehézségeiről és az ezeknek köszönhetően megszerzett hasznos tudásról szeretnénk röviden értekezni.
+A fejlesztés eredménye három alkalmazás. Két REST API implementáció, az egyik PureScript míg a másik Java Spring Boot felhasználásával. Illetve egy frontend alkalmazás, mely a REST szerverekre támaszkodva egy edzőterem kezelő alkalmazást valósít meg. E nyelvekben való tudásaink nagyban eltértek, így a fejlesztési fázisokban nyelvenként különböző élményekben, tapasztalásokban volt részünk. Ebben a fejezetben a fejlesztési folyamat nehézségeiről és az ezeknek köszönhetően megszerzett hasznos tudásról szeretnénk röviden értekezni.
 
 \subsubsection{Fejlesztés funkcionális nyelven}
 
@@ -875,7 +880,7 @@ A keretrendszer fiatal kora ellenére hatalmas közösség szerveződött köré
 
 A két szoftver objektív összehasonlítására teszteseteket készítettünk Python-ban. A három különböző tesztesetben különböző kéréssorozatokat küldünk a szervernek feldolgozásra, és mérjük a közben eltelt időt. Például a hármas számú tesztesetben létrehozunk egy vendéget,  vásárolunk neki tagságot,  beléptetjük , kiléptetjük majd töröljük a vendégek közül.  A tesztesetek összeállításánál arra ügyeltünk, hogy a teszt olyan állapotban hagyja az adatbázist, amilyenben találta. Ennek köszönhetően több konfigurációban is zökkenőmentesen tudtuk a teszteket egymás után futtatni.
 
-A következő kódcsipet segítségével kommunikálunk a szerverrel:
+A következő kódrészlet segítségével kommunikálunk a szerverrel:
 \begin{verbatim}
     url = "http://127.0.0.1:3000/guest/insertGuest"
     payload = "{\"id\":1 , \"name\": \"Abel\", \"gender\": ...
@@ -885,18 +890,18 @@ A következő kódcsipet segítségével kommunikálunk a szerverrel:
 
 Megadjuk az URL címet, útvonalat, opcionálisan a rakományt és a HTTP kérés típusát a \textit{requests} Python könyvtárból származó függvénynek, mely a HTTP választ eredményezi.
 
-A frontend alkalmazás implementálása és a tesztek elvégzése közben egy számunkra új ismeretet gyűjtöttünk a lokális fejlesztéssel kapcsolatban. Mivel tesztjeinket nem csak Windows operációs rendszeren végeztük, hanem MacOS operációs rendszeren is, arra lettünk figyelmesek, hogy a Windows-os mért értékek szignifikánsan nagyobbak MacOS-es társaiknál (nagyjából két nagyságrend különbség mutatkozott). Ez kérdéseket vetett fel bennünk, ugyanis a két számítógép számításteljesítményének különbsége nem indokolt ekkora eltéréseket. A probléma forrása egy egyszerű Windows mechanizmus volt. Eredetileg a frontend alkalmazásunkban lévő HTTP hívásokhoz és a tesztekhez is \textit{http://localhost:3000} címet használtuk. Általános esetben ugyanazt jelenti Windows-os rendszereken, mintha a \textit{localhost} név helyett a számítógép lokális IP címét, a \textit{127.0.0.1}-et írnánk. Azonban van egy igen lényeges különbség a kettő között. Mégpedig az, hogy a \textit{localhost} nevet a rendszernek még fel kell oldania, mielőtt a kérést elküldené. A MacOS rendszeren ez a mechanizmus ettől eltérően működik, így nem okozott problémát. Miután a címeket kicseréltük az IP címet tartalmazókra, utána már nagyságrendileg hansoló eredményeink voltak mind a két típusú operációs rendszer esetében.
+A frontend alkalmazás implementálása és a tesztek elvégzése közben egy számunkra új ismeretet gyűjtöttünk a lokális fejlesztéssel kapcsolatban. Mivel tesztjeinket nem csak Windows operációs rendszeren végeztük, hanem MacOS operációs rendszeren is, arra lettünk figyelmesek, hogy a Windows-os mért értékek szignifikánsan nagyobbak MacOS-es társaiknál (nagyjából két nagyságrend különbség mutatkozott). Ez kérdéseket vetett fel bennünk, ugyanis a két számítógép számításteljesítményének különbsége nem indokolt ekkora eltéréseket. A probléma forrása egy egyszerű Windows mechanizmus volt. Eredetileg a frontend alkalmazásunkban lévő HTTP hívásokhoz és a tesztekhez is a \\ \textit{http://localhost:3000} címet használtuk. Általános esetben ugyanazt jelenti Windows-os rendszereken, mintha a \textit{localhost} név helyett a számítógép lokális IP címét, a \textit{127.0.0.1}-et írnánk. Azonban van egy igen lényeges különbség a kettő között. Mégpedig az, hogy a \textit{localhost} nevet a rendszernek még fel kell oldania, mielőtt a kérést elküldené. A MacOS rendszeren ez a mechanizmus ettől eltérően működik, így nem okozott problémát. Miután a címeket kicseréltük az IP címet tartalmazókra, utána már nagyságrendileg hansoló eredményeink voltak mind a két típusú operációs rendszer esetében.
 
 \begin{figure}[h!]
 	\includegraphics[width=\textwidth]{diag10}
 	\caption{A tesztek eredménye másodpercben MacOS és Windows operációs rendszereken, tízes kötegmérettel.}
 \end{figure}
 
-A teszteseteket tízes, százas és ezres kötegekben futtattuk, minden köteget ötször, és ebből számoltunk átlagot. Azért választottunk több kötegméretet, hogy azt is lássul, hogy egyre több kérés esetén hogy viszonyul a sebesség.
+A teszteseteket tízes, százas és ezres kötegekben futtattuk, minden köteget ötször, és ebből számoltunk átlagot. Azért választottunk több kötegméretet, hogy azt is lássul, hogy egyre több kérés esetén hogy alakul a sebesség.
 
 A teszteket lefuttattuk Windows 10 és MacOS Ventura operációs rendszereken is (Intel(R) Core(TM) i5-9400F CPU @ 2,90 GHz és Apple M1 3,2 GHz processzorokkal rendelkező gépeken). Célunk nem a két rendszer sebességének összehasonlítása volt ezzel, csak megerősítés és kíváncsiság az eredmények konzisztenciájára vonatkozóan.
 
-A mi esetünkben az általunk végzett PureScript tesztek átlagosan 13,25 százalékkal teljesítettek jobban.  A ? ábrákon tízes és ezres kötegek átlageredményei láthatók másodpercben, bal oldalon MacOS Ventura, jobb oldalon Windows 10 operációs rendszer alatt. A többi diagram megtalálható a függelékben.
+A mi esetünkben az általunk végzett PureScript tesztek átlagosan 13,25 százalékkal teljesítettek jobban.  A nyolcas és kilences ábrákon tízes és ezres kötegek átlageredményei láthatók másodpercben, bal oldalon MacOS Ventura, jobb oldalon Windows 10 operációs rendszer alatt. A többi diagram megtalálható a függelékben.
 
 \begin{figure}[h!]
 	\includegraphics[width=\textwidth]{diag1000}
@@ -904,8 +909,6 @@ A mi esetünkben az általunk végzett PureScript tesztek átlagosan 13,25 száz
 \end{figure}
 
 A második táblázatban a következő tendencia figyelhető meg az eredmények között: a kötegméret növekedésével egyértelműen csökken a PureScript előnye. Tízes kötegnél még átlagosan 20,4 százalékkal, míg ezres kötegméretnél már csak 7,8 százalékkal kevesebb időre volt szüksége a PureScript szervernek.
-
-Véleményünk szerint ez annak köszönhető, hogy ???
 
 Ami még érdekes eredmény, hogy MacOS operációs rendszer alatt a sebességkülönbség jóval nagyobb, mint Windows-on: Mac-en 24,15 százalék, míg Windows-on csak 2,36 százalék átlagosan.
 
@@ -929,22 +932,25 @@ Ami még érdekes eredmény, hogy MacOS operációs rendszer alatt a sebességk�
 \section*{Összefoglalás}
 \addcontentsline{toc}{section}{Összefoglalás}
 
-A PureScript egy nagyon fiatal, tisztán funkcionális nyelv. Munkánk során elkészítettük egy edzőterem működését támogató szoftver backend-jének két implementációját, az egyiket tiszán PureScriptben, a másikat pedig Java nyelven a Spring keretrendzser felhasználásával. Készítettünk továbbá egy frontend alkalmazást Vue.js segítségével, melyen keresztül mindkét REST API-t el tudjuk érni. 
+A PureScript egy nagyon fiatal, tisztán funkcionális nyelv. Munkánk során elkészítettük egy edzőterem működését támogató szoftver backend-jének két implementációját, az egyiket tisztán PureScriptben, a másikat pedig Java nyelven a Spring keretrendzser felhasználásával. Készítettünk továbbá egy frontend alkalmazást Vue.js segítségével, melyen keresztül mindkét REST API-t el tudjuk érni. 
 
-Dolgozatunkban bemutatjuk a felhasznált technológiákat, majd a a fejlesztés menetéről és az elkészült szoftverekről számolunk be. Összefoglaljuk a fejlesztés tapasztalatait, kiemelt tekintettel a funkcionális fejlesztés vonatkozásaira.  Ezután bemutatjuk a két backend szerver sebességének mérésére szolgáló teszteket és azok eredményeit.
+Dolgozatunkban bemutattuk a felhasznált technológiákat, majd a a fejlesztés menetéről és az elkészült szoftverekről számoltunk be. Összefoglaltuk a fejlesztés tapasztalatait, kiemelt tekintettel a funkcionális fejlesztés vonatkozásaira.  Ezután bemutattuk a két backend szerver sebességének mérésére szolgáló teszteket és azok eredményeit.
 
-A funkcionális programozás számos előnyt kínál. Ezeket az előnyöket számos nagy, imperatív nyelv is próbálja kihasználni funkcionális elemek beépítésével. Munkánk során megvizsgáltuk a tisztán funkcionális fejlesztést PureScript nyelven.  Az egyetemen mindketten megismerkedtünk a funkcionális programozás alapjaival, de egy ennyire komplex alkalmazás fejlesztése sok kihívást és újdonságot hozott számunkra. 
+A funkcionális programozás számos előnyt kínál. Ezeket az előnyöket számos nagy, elterjedt imperatív nyelv is próbálja kihasználni funkcionális elemek beépítésével. Munkánk során megvizsgáltuk a tisztán funkcionális fejlesztést PureScript nyelven.  Az egyetemen mindketten megismerkedtünk a funkcionális programozás alapjaival, de egy ennyire komplex alkalmazás fejlesztése sok kihívást és újdonságot hozott számunkra. 
 
 Véleményünk szerint a funkcionális programozás elterjedését gátló tényező leginkább maga a népszerűtlensége: kevesebb oktatási anyag (szinte semmi) áll rendelkezésre velük kapcsolatban, kisebb közösség és nehezebb elsajátíthatóság. Ezek a tényezők megnehezítik a funkcionális fejlesztés népszerűbbé válását, noha számos előnnyel rendelkezik, melyeket a dolgozatunkban részletesen kifejtettünk. Röviden ezek az átláthatóság,  olvashatóság, egyértelműség és tesztelhetőség. Mivel a Java nyelven mindketten járatosabbak vagyunk, ezt a szoftvert hamarabb elkészítettük, de a kódok rövidsége miatt egy tapasztalt PureScript fejlesztő lényegesen hamarabb végzett volna
 
 A Vue.js frontend fejlesztése ehhez képest más tapasztalat volt. Mivel a keretrendszer a Javascript-re épül,  a könyvtárak, dokumentáció és az elérhető oktatási anyagok jóval frissebbek és karbantartottak. A Vue.js keretrendszer használatát hamar el tudtuk sajátítani.
 
-Miután a fejlesztési munkával elkészültünk, Python kódot írtunk, amivel teszteltük az elkészült alkalmazásokat. Különböző teszteseteket tízes, százas és ezres kötegekben hajtottuk végre többször, majd átlagoltuk az szerver által szükségelt időt. A teszteket két operációs rendszeren is lefuttattuk. A két backend fejlesztésénél igyekeztünk a lehető leghasonlóbb módon elkészíteni az alkalmazásokat.
+Miután a fejlesztési munkával elkészültünk, Python kódot írtunk, amivel teszteltük az elkészült alkalmazásokat. Különböző teszteseteket tízes, százas és ezres kötegekben hajtottuk végre többször, majd átlagoltuk az szerver által igényelt időt. A teszteket két operációs rendszeren is lefuttattuk. A két backend fejlesztésénél igyekeztünk a lehető leghasonlóbb módon elkészíteni az alkalmazásokat.
 
-Eredményeinből az derül ki, hogy átlagosan a PureScript szerver 13,25 százalékkal gyorsabban tudta elvégezni ugyanazt a műveletet. Ez a különbség MacOS operációs rendszeren átlagosan szembetűnőbb, mint Windows alatt. Megfigyeltük továbbá, hogy a nagyobb méreteknél csökken a PureScript előnye.
+Eredményeinből az derül ki, hogy átlagosan a PureScript szerver 13,25 százalékkal gyorsabban tudta elvégezni ugyanazt a műveletet. Ez a különbség MacOS operációs rendszeren szembetűnőbb, mint Windows alatt. Megfigyeltük továbbá, hogy a nagyobb méreteknél csökken a PureScript előnye.
 
 
+\newpage
+\section*{Forráskód}
 
+Az általunk készített szoftverek teljes forráskódja megtalálható a következő linken:\\ \url{ https://github.com/bombifighter/purescript-gym}
 
 \addcontentsline{toc}{section}{Irodalomjegyzék}
 
@@ -1059,7 +1065,7 @@ A Spago hivatalos dokumentációja.\\
 Pursuit. Hivatalos PureScript dokumentáció.\\
 \url{https://pursuit.purescript.org} \\Hozzáférés dátuma: 2023.04.24.
 
-\bibitem{purs}
+\bibitem{uizard}
 \url{https://uizard.io} 
 
 \bibitem{FETCH_API}
